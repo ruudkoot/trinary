@@ -8,6 +8,8 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
+extern kippointer;
+
 void cmain(void);
 void dmain(void);
 void kdb_enter(void);
