@@ -126,24 +126,24 @@ void sys_arch_a20_enable_kbc(void)
     
     /* Disable the keyboard.                                                  */
     sys_arch_sig_disable();
-    /*sys_arch_kbc_waitsend();
-    sys_arch_kbc_sendcommand(0xAD);*/
+    sys_arch_kbc_waitsend();
+    sys_arch_kbc_sendcommand(0xAD);
 
     /* Read the current status.                                               */
-   /*sys_arch_kbc_waitsend();
+    sys_arch_kbc_waitsend();
     sys_arch_kbc_sendcommand(0xD0);
     sys_arch_kbc_waitread();
-    status = sys_arch_kbc_readdata();*/
+    status = sys_arch_kbc_readdata();
 
     /* Write the new status.                                                  */
-    /*sys_arch_kbc_waitsend();
+    sys_arch_kbc_waitsend();
     sys_arch_kbc_sendcommand(0xD1);
     sys_arch_kbc_waitsend();
-    sys_arch_kbc_senddata(status | 0x02);*/
+    sys_arch_kbc_senddata(status | 0x02);
 
     /* Enable the keyboard.                                                   */
-    /*sys_arch_kbc_waitsend();
-    sys_arch_kbc_sendcommand(0xAE);*/
+    sys_arch_kbc_waitsend();
+    sys_arch_kbc_sendcommand(0xAE);
     sys_arch_sig_enable();
 }
 
@@ -184,5 +184,5 @@ void sys_arch_a20_enable_ps2(void)
 /******************************************************************************/
 void sys_arch_a20_enable(void)
 {
-    sys_arch_a20_enable_kbc();
+    sys_arch_a20_enable_ps2();
 }

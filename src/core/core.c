@@ -23,11 +23,11 @@ void sys_arch_timer_setfrequency(unt8 timer, unt32 frequency);
 
 #include "heap.c"
 #include "schedule.c"
-#include "space.c"
 
 #include "system.c"
 //#include "cpu.c"
 #include "memory.c"
+#include "space.c"
 #include "signal.c"
 #include "smp.c"
 
@@ -59,6 +59,16 @@ void cmain(void)
     sched_init();
     syscall_init();
 	space_init();
+
+    space_create(1);
+    space_create(1);
+
+    space_switch(0x500000);
+    space_switch(0x501000);
+
+    space_map(((word*)(0xFF000000)), (word)0x80000000);
+
+    space_switch(0x500000);
 
     /* Enable multi-tasking.                                                  */
     logItem("Enabling Multi Tasking");

@@ -188,7 +188,7 @@ void entry(void)
         "cli;"
     );
 
-    //sys_arch_a20_enable();
+    sys_arch_a20_enable();
     init8259();
 
     idt48.limit = 0xABCD;
