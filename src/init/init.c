@@ -195,7 +195,7 @@ void entry(void)
     idt48.base = 0x12345678;
 
     gdt48.limit = 2048;
-    gdt48.base = ((unsigned)(gdt)) + 0x90000;
+    gdt48.base = ((unsigned)(gdt));
 
     gdt[0].b1 = 0; gdt[0].b2 = 0; gdt[0].w2 = 0;
     gdt[0].w1 = 0; gdt[0].t1 = 0; gdt[0].t2 = 0;
@@ -216,30 +216,26 @@ void entry(void)
         "m" (gdt48)
     );
 
-    asm
-    (
-        "movl %%edx, code32start;"
-        :
-        :
-        "d" (((unsigned)(Aye))+0x90000)
-    );
-
 	asm
     (
-        "xorl %eax, %eax;"
-	    "movl %eax, %cr3;"
-        "movl %cr0, %eax;"
-	    "orl $0x00000001, %eax;"
-	    "movl %eax, %cr0;"
+        "movl %%edx, code32start;"
+        "xorl %%eax, %%eax;"
+	    "movl %%eax, %%cr3;"
+        "movl %%cr0, %%eax;"
+	    "orl $0x00000001, %%eax;"
+	    "movl %%eax, %%cr0;"
         "jmp flush;"
         "flush:"
-
+        
         /* jmpi 0x0010, 0x10000 */
         ".byte 0x66, 0xea;"
         "code32start: .long 0x10000;"
         ".word 0x0010;"
 
         "cli; hlt;"
+        :
+        :
+        "d" (((unsigned)(Aye)))
     );
    
     return;

@@ -1,6 +1,6 @@
 /******************************************************************************/
-/* Boot Sector for TriFS Disks                                                */
-/* Copyright (c) 2003, Rudy Koot (Trinary Technologies)                       */
+/* Boot : IA-32 : IBM : TriFS Boot Sector                                     */
+/* Copyright (c) 2003, Rudy Koot (Mithrill Foundation)                        */
 /*                                                                            */
 /* This program is free software; you can redistribute it and/or modify       */
 /* it under the terms of the GNU General Public License as published by       */
@@ -80,11 +80,7 @@ x:              .quad 0;
 y:              .quad 0;
 z:              .quad 0;
 
-boot_title:     .asciz "Trinary Operating System"
-boot_step1:     .asciz "1"
-boot_step2:     .asciz "2"
-boot_step3:     .asciz "3"
-boot_step4:     .asciz "4"
+boot_title:     .asciz "Mithrill"
 
 boot_writestring:
 	cld;
@@ -114,7 +110,8 @@ start:
      *                                                                        *
      * Because we use 16 bit code and 32 bit divides and multiplies, the      *
      * maximum number of blocks is limited to 4 billion, which should still   *
-     * be enough to support disks up to 2 TB. I want to add check, that       *
+     * be enough to support disks up to 2 TB. I want to add check, that 
+     *
      * blocks aren't located above that limit.                                */
 	
     /* Detect the type of videocard, so we can use the right color sheme.     */
@@ -145,7 +142,7 @@ start:
 	int $0x10;
 
     /* Draw the caption.                                                      */
-    movw $0x001C, %dx;
+    movw $0x0024, %dx;
 	call boot_setcursorposition;
 	movw $boot_title, %si;
 	call boot_writestring;
@@ -159,7 +156,7 @@ start:
      * filenames), which requires too much code and is quite slow, because of *
      * excesive disk access. An additional advantage is the fact that we can  *
      * choose any file to boot from.                                          *
-     *                                                                        *     
+     *                                                                        *
      * The size of the file node is limited to 32 kB, although it can be      *
      * extended to 64 kB or even more.                                        *
      *                                                                        */
@@ -172,11 +169,9 @@ start:
     movw 0x8010, %si;
     movw 0x8012, %di;
     movw 0x8018, %cx;
-    movw $0x9000, %ax;
-    movw %ax, %es;
-    xorw %bx, %bx;
+    movw $0x1000, %bx;
 
-    myloadloop:
+    1:
         pushw %cx;
         pushw %si;
         pushw %di;
@@ -189,13 +184,10 @@ start:
         addw $1, %si;
         adcw $0, %di;
         popw %cx;
-    loop myloadloop;
+    loop 1b;
 
-    movw $0x9000, %ax;
-    movw %ax, %ds;
-    movw %ax, %ss;
     movw $0, %sp;
-    ljmp $0x9000, $0
+    ljmp $0x0000, $0x1000
 
 /******************************************************************************/
 /* loadblock - Load Block into Memory                                         */
@@ -211,11 +203,8 @@ loadblock:
     /* Calculate the number of sectors per block. If DX doesn't equal 0 eiter *
      * the sector size or the block size was invalid. We do not check for     *
      * this condition at the moment.                                          */
-   /* movw blocksize, %ax;*/
-   /* divw sectorsize;*/
 
     call loadsector;
-
 
     ret;
 

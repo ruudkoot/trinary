@@ -26,30 +26,30 @@ _Aye:
 
 	;Rescue the BDA before the page dirctory tramples it.
 	mov esi, 0
-	mov edi, 0x80000
+	mov edi, 0x90000
 	mov ecx, 0x4000
 	rep movsd
 
     ;Move Core, Root, Test, Ping and Pong to 1MB.
-    mov esi, 0x10000
+    mov esi, 0x20000
 	mov edi, 0x100000
 	mov ecx, 0x80000
 	rep movsd
 
 
  	;Create the Page Directory
-	mov esi, 0
-	mov edi, 0
+	mov esi, 0x10000
+	mov edi, 0x10000
 	mov ecx, 0x1600
 	mov eax, 0
 	rep stosd
 
-	mov dword [0x00000000], 0x00001007	;Page Table @ 0x00001000 (R/W, Supervisor, Present) [Direct Mapped]
-    mov dword [0x00000D00], 0x00006007  ;Page Table @ 0x00006000 (R/W, Supervisor, Present) [User Page Tables]
-    mov dword [0x00000FF0], 0x00005007  ;Page Table @ 0x00005000 (R/W, Supervisor, Present) [User Page Tables]
-    mov dword [0x00000FF4], 0x00002007	;Page Table @ 0x00002000 (R/W, Supervisor, Present) [Kernel Heap]
-    mov dword [0x00000FF8], 0x00003007	;Page Table @ 0x00003000 (R/W, Supervisor, Present) [Kernel CDS]
-    mov dword [0x00000FFC], 0x00004007	;Page Table @ 0x00004000 (R/W, Supervisor, Present) [Kernel Page Tables]
+	mov dword [0x00010000], 0x00011007	;Page Table @ 0x00001000 (R/W, Supervisor, Present) [Direct Mapped]
+    mov dword [0x00010D00], 0x00016007  ;Page Table @ 0x00006000 (R/W, Supervisor, Present) [User Page Tables]
+    mov dword [0x00010FF0], 0x00015007  ;Page Table @ 0x00005000 (R/W, Supervisor, Present) [User Page Tables]
+    mov dword [0x00010FF4], 0x00012007	;Page Table @ 0x00002000 (R/W, Supervisor, Present) [Kernel Heap]
+    mov dword [0x00010FF8], 0x00013007	;Page Table @ 0x00003000 (R/W, Supervisor, Present) [Kernel CDS]
+    mov dword [0x00010FFC], 0x00014007	;Page Table @ 0x00004000 (R/W, Supervisor, Present) [Kernel Page Tables]
 
 	;Create Page Table 1 [Direct Mapped]
     mov ecx, 0x0400
@@ -57,7 +57,7 @@ _Aye:
 		mov ebx, ecx
 		dec ebx
 		shl ebx, 2
-		add ebx, 0x1000
+		add ebx, 0x11000
 		xor eax, eax
 		mov eax, ecx
 		dec eax
@@ -71,7 +71,7 @@ _Aye:
 		mov ebx, ecx
 		dec ebx
 		shl ebx, 2
-		add ebx, 0x2000
+		add ebx, 0x12000
 		xor eax, eax
 		mov eax, ecx
 		dec eax
@@ -85,7 +85,7 @@ _Aye:
 		mov ebx, ecx
 		dec ebx
 		shl ebx, 2
-		add ebx, 0x3000
+		add ebx, 0x13000
 		xor eax, eax
 		mov eax, ecx
 		dec eax
@@ -99,7 +99,7 @@ _Aye:
 		mov ebx, ecx
 		dec ebx
 		shl ebx, 2
-		add ebx, 0x6000
+		add ebx, 0x16000
 		xor eax, eax
 		mov eax, ecx
 		dec eax
@@ -110,16 +110,15 @@ _Aye:
 
 
     ;Create the Page Table 4
-    mov dword [0x00004000], 0x00000007  ;Page Direc @ 0x00000000 (R/W, Supervisor, Present)
-    mov dword [0x00004004], 0x00001007	;Page Table @ 0x00001000 (R/W, Supervisor, Present) [Direct Mapped]
-    mov dword [0x00004D00], 0x00006007	;Page Table @ 0x00006000 (R/W, Supervisor, Present) [User Page Tabels]
-    mov dword [0x00004FF0], 0x00005007	;Page Table @ 0x00005000 (R/W, Supervisor, Present) [User Page Tabels]
-    mov dword [0x00004FF4], 0x00002007	;Page Table @ 0x00002000 (R/W, Supervisor, Present) [Kernel Heap]
-    mov dword [0x00004FF8], 0x00003007	;Page Table @ 0x00003000 (R/W, Supervisor, Present) [Kernel CDS]
-    mov dword [0x00004FFC], 0x00004007	;Page Table @ 0x00004000 (R/W, Supervisor, Present) [Page Tables]
+    mov dword [0x00014000], 0x00010007  ;Page Direc @ 0x00000000 (R/W, Supervisor, Present)
+    mov dword [0x00014004], 0x00011007	;Page Table @ 0x00001000 (R/W, Supervisor, Present) [Direct Mapped]
+    mov dword [0x00014D00], 0x00016007	;Page Table @ 0x00006000 (R/W, Supervisor, Present) [User Page Tabels]
+    mov dword [0x00014FF0], 0x00015007	;Page Table @ 0x00005000 (R/W, Supervisor, Present) [User Page Tabels]
+    mov dword [0x00014FF4], 0x00012007	;Page Table @ 0x00002000 (R/W, Supervisor, Present) [Kernel Heap]
+    mov dword [0x00014FF8], 0x00013007	;Page Table @ 0x00003000 (R/W, Supervisor, Present) [Kernel CDS]
+    mov dword [0x00014FFC], 0x00014007	;Page Table @ 0x00004000 (R/W, Supervisor, Present) [Page Tables]
 
-
-	xor eax, eax
+	mov eax, 0x00010000
 	mov cr3, eax
 	mov eax, cr0
 	or eax, 0x80000000
