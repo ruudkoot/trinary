@@ -51,6 +51,6 @@ void sched_schedule(void)
     
     TEMP_sched_current++;
     if (TEMP_sched_current > 3) TEMP_sched_current = 1;
-
+   
     sched_arch_switch(&(task[previous]), (&task[TEMP_sched_current]));
 }

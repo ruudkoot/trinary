@@ -26,7 +26,7 @@ void smp_init(void)
     /* Until we get real SMP, just fake the core into thinking that there is  *
      * only one CPU.                                                          */
 
-    cpu_count = 1;
+/*    cpu_count = 1;
     cpu_list = heap_alloc(sizeof(smp_cpu));
 
     cpu_list[0].hid = 0;
@@ -35,7 +35,7 @@ void smp_init(void)
     logStatus(logSuccess);
 
     logNote("SMP support has been disabled for this release!");
-    logSubItem("Processor Count", "1");
+    logSubItem("Processor Count", "1");*/
 
-    //  smp_arch_init();
+    smp_arch_init();
 }

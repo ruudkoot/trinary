@@ -145,8 +145,12 @@ void smp_arch_init(void)
 
     unt8 checksum;
     unt8* j;
+
+    logStatus(logSuccess);
         
     mpfps = smp_arch_findmpfps();
+
+    if (mpfps == 0) return;
     
     logSubItem("MP Revision", mpfps->revision == 4 ? "1.4" :
                               mpfps->revision == 1 ? "1.1" :
@@ -269,6 +273,7 @@ void* smp_arch_findmpfps(void)
     }
 
     logNote("SMP is not supported on this machine!");
+    return 0;
 }
 
 /******************************************************************************/

@@ -136,12 +136,11 @@ void sys_arch_timer_setfrequency(unt8 timer, unt32 frequency)
      * lower frequency.                                                       */
     divider = 1193181 / frequency;
 
-    logDec("PIT Frequency", frequency);
-    logDec("PIT Divider", divider);
+    logDec("PIT : Frequency", frequency);
+    logDec("PIT : Divider", divider);
+   
 
-    sys_arch_iowrite8(0x61, 0x03);
-
-    sys_arch_iowrite8(0x43, 0xB6);
-    sys_arch_iowrite8(0x42, divider & 0xFF);
-    sys_arch_iowrite8(0x42, divider >> 8);
+    sys_arch_iowrite8(0x43, 0x34);
+    sys_arch_iowrite8(0x40, divider & 0xFF);
+    sys_arch_iowrite8(0x40, divider >> 8);
 }
