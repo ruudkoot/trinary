@@ -38,14 +38,14 @@ void arch_gdt_init(void)
     (*(unsigned short*)(0xFF480002)) = 0x0800;
     (*(word*)(0xFF480004)) = 0xFF480000;
 
-    /*    0     Null Selector                                                 */
-    /*    1     TSS Selector                                                  */
-    /*    2     Kernel Code                                                   */
-    /*    3     Kernel Data                                                   */
-    /*    4     User Code                                                     */
-    /*    5     User Data                                                     */
-    /*    6     UTCB Segment                                                  */
-    /*    7     LDT Selector                                                  */
+    /*    0     0x00    Null Selector                                         */
+    /*    1     0x08    TSS Selector                                          */
+    /*    2     0x10    Kernel Code                                           */
+    /*    3     0x18    Kernel Data                                           */
+    /*    4     0x20    User Code                                             */
+    /*    5     0x28    User Data                                             */
+    /*    6     0x30    UTCB Segment                                          */
+    /*    7     0x38    LDT Selector                                          */
     
     arch_gdt_set
     (

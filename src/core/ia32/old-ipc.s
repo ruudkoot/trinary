@@ -48,16 +48,90 @@ _asm_ipc:
     movl %ebx, %fs;
     movl %ebx, %gs;
 
-    
+    /* Check if we are a receive IPC.                                         */
+    cmp $0, %eax;
+    je c1;
 
-_asm_ipc_return:
+    /* Retrieve the state of the receiving thread.                            */
+    movl _ipc_threadstate(,%eax,4), %ebx;
+    cmp $2, %ebx;
+    je c1;
 
-    /* Restore the user segments.                                             */
+    movl $1234, %esi;
     movl $0x2B, %ebx;
     movl %ebx, %ds;
     movl %ebx, %es;
     movl %ebx, %fs;
     movl %ebx, %gs;
+    iretl;
+
+c1:
+
+    /* Check if we are a receive IPC.                                         */
+    cmp $0, %eax;
+    jne c2;
+
+    /* WE SHOULD SWITCH TO THE SCHEDULER THREAD OR SELECT A GOOD THREAD
+       JUST SWITCHING TO THREAD 2 WILL DO FOR NOW. THIS WILL EMULATE A CLOSED
+       RECEIVE TO THREAD 2.                                                   */
+    movl $2, %edx;
+    movl $1, _ipc_threadstate(,%edx,4);
+    
+    /* Hmmm... We're waiting!                                                 */
+    movl _ipc_currentthread, %ebp;
+    movl $2, _ipc_threadstate(,%ebp,4);
+    movl %esp, _ipc_threadstack(,%ebp,4);
+    movl $2, _ipc_currentthread;
+
+
+        /* Switch kernel stacks.                                                  */
+        movl _ipc_currentthread, %ebp;
+        movl _ipc_threadstack(,%ebp,4), %esp;
+
+        /* Change ESP0.                                                           */
+        movl _ipc_threadesp0(,%ebp,4), %eax;
+        movl %eax, 0xFF490004;
+
+        /* Switch address space.                                                  */
+        movl _ipc_threadspace(,%ebp,4), %eax;
+        movl %eax, %cr3;
+
+        /* Restore the user segments.                                             */
+        movl $0x2B, %eax;
+        movl %eax, %ds;
+        movl %eax, %es;
+        movl %eax, %fs;
+        movl %eax, %gs;
+
+        iretl;
+
+c2:
+
+    /* Save the stack pointer.                                                */
+    movl _ipc_currentthread, %ebp;
+    movl %esp, _ipc_threadstack(,%ebp,4);
+
+    /* Change ESP0.                                                           */
+    movl %eax, %edx;
+    movl _ipc_threadesp0(,%edx,4), %eax;
+    movl %eax, 0xFF490004;
+
+    /* Switch address space.                                                  */
+    movl _ipc_threadspace(,%edx,4), %eax;
+    movl %eax, %cr3;
+
+    /* Switch the stack.                                                      */
+    movl _ipc_threadstack(,%edx,4), %esp;
+
+    /* Update ipc_currentthread.                                              */
+    movl %edx, _ipc_currentthread;
+
+    /* Restore the user segments.                                             */
+    movl $0x2B, %eax;
+    movl %eax, %ds;
+    movl %eax, %es;
+    movl %eax, %fs;
+    movl %eax, %gs;
 
     iretl;
 
@@ -122,8 +196,8 @@ switch_1:
 
     /* Make sure it is runnable.                                              */
     movl _ipc_threadstate(,%ebp,4), %eax;
-    cmpl $2, %eax; 
-    je next_thread;
+    cmpl $1, %eax; 
+    jne next_thread;
 
     /* Display the selected thread.                                           */
     xorl %eax, %eax;

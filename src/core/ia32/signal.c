@@ -77,7 +77,9 @@ idt_t sigIDT[256];
 
 void (*sigTable[256])(void);
 void sig_arch_setinterruptgate(unsigned intr, void (*func)(void));
+void sig_arch_setinterruptgateu(unsigned intr, void (*func)(void));
 void sig_arch_settrapgate(unsigned intr, void (*func)(void));
+void sig_arch_settrapgateu(unsigned intr, void (*func)(void));
 
 void discardable sig_arch_init(void)
 {
@@ -100,7 +102,7 @@ void discardable sig_arch_init(void)
     
     for (i = 0; i < 256; i++)
     {
-		sigIDT[i].d1 = 0x00080000 + (((unsigned)(sig_arch_interrupt_wrapper)) & 0x0000FFFF);
+		sigIDT[i].d1 = 0x00100000 + (((unsigned)(sig_arch_interrupt_wrapper)) & 0x0000FFFF);
 		sigIDT[i].d2 = 0x00008E00 + (((unsigned)(sig_arch_interrupt_wrapper)) & 0xFFFF0000);
     }
 
@@ -154,19 +156,31 @@ void discardable sig_arch_init(void)
     sig_arch_setinterruptgate(0x2E, sig_arch_irq14_wrapper);
     sig_arch_setinterruptgate(0x2F, sig_arch_irq15_wrapper);
 
-    sig_arch_settrapgate(0xC0, sig_arch_exception_unknown1f_wrapper);
+    sig_arch_settrapgateu(0xC0, sig_arch_exception_unknown1f_wrapper);
 }
 
 void sig_arch_setinterruptgate(unsigned intr, void (*func)(void))
 {
-	sigIDT[intr].d1 = 0x00100000 + (((unsigned)(func)) & 0x0000FFFF);   //Segment 8
+	sigIDT[intr].d1 = 0x00100000 + (((unsigned)(func)) & 0x0000FFFF);   //Segment 10
 	sigIDT[intr].d2 = 0x00008E00 + (((unsigned)(func)) & 0xFFFF0000);   //Present / RPL 0 / 32 bits / Interrupt
+}
+
+void sig_arch_setinterruptgateu(unsigned intr, void (*func)(void))
+{
+	sigIDT[intr].d1 = 0x00100000 + (((unsigned)(func)) & 0x0000FFFF);   //Segment 10
+	sigIDT[intr].d2 = 0x0000EE00 + (((unsigned)(func)) & 0xFFFF0000);   //Present / RPL 3 / 32 bits / Interrupt
 }
 
 void sig_arch_settrapgate(unsigned intr, void (*func)(void))
 {
-	sigIDT[intr].d1 = 0x00100000 + (((unsigned)(func)) & 0x0000FFFF);   //Segment 8
+	sigIDT[intr].d1 = 0x00100000 + (((unsigned)(func)) & 0x0000FFFF);   //Segment 10
 	sigIDT[intr].d2 = 0x00008F00 + (((unsigned)(func)) & 0xFFFF0000);   //Present / RPL 0 / 32 bits / Trap
+}
+
+void sig_arch_settrapgateu(unsigned intr, void (*func)(void))
+{
+	sigIDT[intr].d1 = 0x00100000 + (((unsigned)(func)) & 0x0000FFFF);   //Segment 10
+	sigIDT[intr].d2 = 0x0000EF00 + (((unsigned)(func)) & 0xFFFF0000);   //Present / RPL 3 / 32 bits / Trap
 }
 
 /*************************************************************/
@@ -361,6 +375,8 @@ void sig_arch_irq1(void)
     logHex("Scancode", key);
 
     asm ("outb %%al,%%dx"::"a" (0x20),"d" (0x20));
+
+    if (key == 0x01) kdb_enter();
 }
 
 void sig_arch_irq2(void)

@@ -10,6 +10,7 @@
 
 void cmain(void);
 void dmain(void);
+void kdb_enter(void);
 
 #define NOMEM
 #include "../lib/config.c"
@@ -39,6 +40,8 @@ void sys_arch_timer_setfrequency(unt8 timer, unt32 frequency);
 
 #include "ia32/gdt.c"
 #include "ia32/tss.c"
+
+#include "kdb.c"
 
 /******************************************************************************/
 
@@ -126,12 +129,11 @@ void cmain(void)
     asm volatile
     (
         "movl %%eax, %%esp;"
-        "movl $0x23, %%eax;"
+        "movl $0x2B, %%eax;"
         "movl %%eax, %%ds;"
         "movl %%eax, %%es;"
         "movl %%eax, %%fs;"
         "movl %%eax, %%gs;"
-            "cli;hlt;"
         "pushl $0x2B;"
         "pushl $0x80002000;"
         "pushl $0x202;"
