@@ -69,6 +69,7 @@ typedef struct idt_t
 extern void sigWrapper(void);
 
 extern void switch_switch(void);
+extern void int_entry(void);
 
 
 idt_t sigIDT[256];
@@ -151,7 +152,7 @@ void discardable sig_arch_init(void)
     sig_arch_setinterruptgate(0x2B, sig_arch_irq11_wrapper);
     sig_arch_setinterruptgate(0x2C, sig_arch_irq12_wrapper);
     sig_arch_setinterruptgate(0x2D, sig_arch_irq13_wrapper);
-    sig_arch_setinterruptgate(0x2E, sig_arch_irq14_wrapper);
+    sig_arch_setinterruptgate(0x2E, int_entry);
     sig_arch_setinterruptgate(0x2F, sig_arch_irq15_wrapper);
 
     sig_arch_settrapgateu(0xC0, sig_arch_exception_unknown1f_wrapper);

@@ -22,6 +22,53 @@
 /* real root server.                                                          */
 /******************************************************************************/
 
+typedef unsigned short io_port_t;
+
+typedef enum
+{	ata_locationMaster,
+	ata_locationSlave
+}  ata_location_t;
+
+typedef struct
+{	io_port_t			portData;
+	union
+	{	io_port_t		portError;
+		io_port_t		portFeatures;
+	};
+	io_port_t			portCount;
+	io_port_t			portBlockLow;
+	io_port_t			portBlockMid;
+	io_port_t			portBlockHigh;
+	io_port_t			portDevice;
+	union
+	{	io_port_t		portStatus;
+		io_port_t		portCommand;
+	};
+	union
+	{	io_port_t		portAlternate;
+		io_port_t		portControl;
+	};
+}  ata_controller_t;
+
+typedef struct
+{	ata_controller_t	controller;
+	ata_location_t		location;
+} ata_disk_t;
+
+typedef struct
+{	ata_disk_t			disk;
+	unsigned char		features;
+	unsigned int		block;
+	unsigned char		count;
+	unsigned char		command;
+} ata_command_t;
+
+void ata_command(ata_command_t command);
+void ata_clearInterrupt(ata_controller_t controller);
+void ata_inputPio(ata_controller_t controller, unsigned char* buffer, unsigned n);
+void ata_readSector(ata_disk_t disk, unsigned int block, unsigned char count);
+void io_write(io_port_t port, unsigned char value);
+
 void out(char* output)
 {
     int i;
@@ -50,6 +97,8 @@ void cmain(void)
 {
 	unsigned i;
 	char s[30];
+    ata_disk_t disk;
+    unsigned char buffer[513];
 
     out("");
 	out("");
@@ -57,10 +106,112 @@ void cmain(void)
     out("");
 	out("Root Server Running!");
 	out("");
-  
-    for (i = 0;; i++)
-	{
-		i32toa(i, s, 16);
-		out(s);
-	}
+    out("************************************************************");
+    out("");
+	out("");
+
+    disk.location = ata_locationMaster;
+    disk.controller.portData = 0x1f0;
+    disk.controller.portError = 0x1f1;
+    disk.controller.portCount = 0x1f2;
+    disk.controller.portBlockLow = 0x1f3;
+    disk.controller.portBlockMid = 0x1f4;
+    disk.controller.portBlockHigh = 0x1f5;
+    disk.controller.portDevice = 0x1f6;
+    disk.controller.portCommand = 0x1f7;
+    disk.controller.portAlternate = 0x3f6;
+
+    for (;;)
+    {
+        ata_readSector(disk, rand() * 16 , 1);
+
+        asm
+        (
+            "pushl %%ebp;"
+            "int $0xC0;"
+            "popl %%ebp;"
+            :
+            :
+            "a" (0),
+            "d" (5)
+        );
+
+        ata_inputPio(disk.controller, buffer, 256);
+        ata_clearInterrupt(disk.controller);
+
+        buffer[60] = '\0';
+        out(buffer);
+    }
+
+    out("");
+	out("");
+	out("************************************************************");
+    out("");
+	out("Root Server Halted!");
+	out("");
+    out("************************************************************");
+    out("");
+	out("");
+
+    for (;;);  
+}
+
+void ata_command(ata_command_t command)
+{	io_write(command.disk.controller.portFeatures,	command.features);
+	io_write(command.disk.controller.portCount,		command.count);
+	io_write(command.disk.controller.portBlockLow,	(command.block & 0x000000FF) >> 0);
+	io_write(command.disk.controller.portBlockMid,	(command.block & 0x0000FF00) >> 8);
+	io_write(command.disk.controller.portBlockHigh,	(command.block & 0x00FF0000) >> 16);
+	io_write(command.disk.controller.portDevice,
+		((command.block & 0x0F000000) >> 24) + (command.disk.location << 4) + 0xE0);
+	io_write(command.disk.controller.portCommand, command.command);
+}
+
+void ata_clearInterrupt(ata_controller_t controller)
+{
+    asm
+    (
+        "inb %%dx, %%al;"
+        :
+        :
+        "d" (controller.portStatus)
+    );
+}
+
+void ata_inputPio(ata_controller_t controller, unsigned char* buffer, unsigned n)
+{
+    asm
+    (
+        "cld;"
+        "rep insw;"
+        :
+        :
+        "c" (n),
+        "d" (controller.portData),
+        "D" (buffer)
+    );
+}
+
+void ata_readSector(ata_disk_t disk, unsigned int block, unsigned char count)
+{	ata_command_t	command;
+
+	command.block		= block;
+	command.count		= count;
+	command.disk		= disk;
+	command.features	= 0x00;
+	command.command		= 0x20;
+
+	ata_command(command);
+}
+
+void io_write(io_port_t port, unsigned char value)
+{
+    asm
+    (
+        "outb %%al, %%dx;"
+        :
+        :
+        "a" (value),
+        "d" (port)
+    );
 }

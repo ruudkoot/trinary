@@ -88,7 +88,7 @@ void sched_arch_init(void)
     {
         task[i].stack[4095] = 0x2B;         /* SS                             */
         task[i].stack[4094] = 0x80002000;   /* ESP                            */
-        task[i].stack[4093] = 0x00000202;   /* EFLAGS                         */
+        task[i].stack[4093] = 0x00003202;   /* EFLAGS                         */
         task[i].stack[4092] = 0x23;         /* CS                             */
         task[i].stack[4091] = 0x80000000;   /* EIP                            */
         task[i].stack[4090] = 0xAAAAAAAA;   /* EAX                            */
