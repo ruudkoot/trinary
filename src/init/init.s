@@ -14,8 +14,7 @@
 ;******************************************************************************;
 
 bits 16
-global _enterPM
-section text class=code public align=16 use16
+org 0x0000
 
 _enterPM:
 
@@ -446,6 +445,4 @@ init8259:
 
 	ret
 
-;times (9216-4096)-($-$$) db 0
-
-group init text
+times (9216-4096)-($-$$) db 0
