@@ -13,6 +13,8 @@
 /* user experience more pleasant.                                             */
 /******************************************************************************/
 
+/* WHAT TO DO?                                                                */
+
 typedef struct
 {
     unsigned (*listfiles)(char*);

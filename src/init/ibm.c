@@ -8,7 +8,7 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-void fs_ibm_init(void)
+
+void ext2_init(void)
 {
-    return;
 }
