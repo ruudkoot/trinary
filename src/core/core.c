@@ -8,11 +8,12 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-#include "compiler.c"
+void cmain(void);
+void dmain(void);
+
+#include "config.c"
 
 #include "lib.c"
-
-#include "lib/container.c"
 
 #include "log.c"
 #include "debug.c"
@@ -30,6 +31,8 @@
 #include "syscall.c"
 
 /******************************************************************************/
+
+/******************************************************************************/
 /* cmain - Entry Point                                                        */
 /*                                                                            */
 /* This is the first entry point. You should only do basic core               */
@@ -39,6 +42,8 @@ void cmain(void)
 {
     /* Check the previous item to indicated the core was booted correctly.    */
     logStatus(logSuccess);
+
+    logSubItem("Compiler", COMPILER);
 
     /* Initialize the basic core modules.                                     */
     heap_init();
@@ -50,18 +55,13 @@ void cmain(void)
     sched_init();
     syscall_init();
 
+
     /* Enable multi-tasking.                                                  */
+    logItem("Enabling Multi Tasking");
 
     asm volatile
     (
         "mov %%eax, %%esp;"
-        "mov $0xFFFFFFFF, %%eax;"
-        "mov $0xFFFFFFFF, %%ebx;"
-        "mov $0xFFFFFFFF, %%ecx;"
-        "mov $0xFFFFFFFF, %%edx;"
-        "mov $0xFFFFFFFF, %%esi;"
-        "mov $0xFFFFFFFF, %%edi;"
-        "mov $0xFFFFFFFF, %%ebp;"
         "sti"
         ::
         "a" (task[0].esp)
@@ -78,4 +78,7 @@ void cmain(void)
 /******************************************************************************/
 void dmain(void)
 {
+    logStatus(logSuccess);
+    
+    for (;;) asm volatile ("hlt");
 }
