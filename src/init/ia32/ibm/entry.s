@@ -19,6 +19,7 @@
 /* This function setups up the environment, and checks if we really have a    */
 /* 32-bit processor.                                                          */
 /******************************************************************************/
+
 entry_start:
 
     /* Setup a real-mode stack, so interrupt can occur safely.                */

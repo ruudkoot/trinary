@@ -51,7 +51,7 @@ void trifs_load(void)
 
         asm
         (
-            "movw $0x1000, %%ax;"
+            "movw $0x2000, %%ax;"
             "movw %%ax, %%es;"
             "rep movsw;"
             "movw %%cs, %%ax;"
@@ -79,7 +79,7 @@ void trifs_load(void)
 
         asm
         (
-            "movw $0x5000, %%ax;"
+            "movw $0x6000, %%ax;"
             "movw %%ax, %%es;"
             "rep movsw;"
             "movw %%cs, %%ax;"
@@ -107,7 +107,7 @@ void trifs_load(void)
 
         asm
         (
-            "movw $0x6000, %%ax;"
+            "movw $0x7000, %%ax;"
             "movw %%ax, %%es;"
             "rep movsw;"
             "movw %%cs, %%ax;"
@@ -135,7 +135,7 @@ void trifs_load(void)
 
         asm
         (
-            "movw $0x7000, %%ax;"
+            "movw $0x8000, %%ax;"
             "movw %%ax, %%es;"
             "rep movsw;"
             "movw %%cs, %%ax;"
@@ -163,7 +163,7 @@ void trifs_load(void)
 
         asm
         (
-            "movw $0x7800, %%ax;"
+            "movw $0x8800, %%ax;"
             "movw %%ax, %%es;"
             "rep movsw;"
             "movw %%cs, %%ax;"
