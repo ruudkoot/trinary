@@ -24,10 +24,12 @@ void heap_init(void)
 void* heap_alloc(unsigned size)
 {
     unsigned address;
-    address = heap_start;
-    
-    heap_start += size;
-    heap_start += heap_start % 32;
+
+    /* Make sure the area is aligned.                                         */
+	heap_start += (size - (heap_start % size));
+
+	address = heap_start;
+	heap_start += size;
 
     return ((void*)address);
 }

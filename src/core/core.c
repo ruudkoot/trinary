@@ -22,6 +22,7 @@ void sys_arch_timer_setfrequency(unt8 timer, unt32 frequency);
 
 #include "heap.c"
 #include "schedule.c"
+#include "space.c"
 
 #include "system.c"
 //#include "cpu.c"
@@ -52,10 +53,18 @@ void cmain(void)
     sys_init();
     //cpu_init();
     sig_init();
-    smp_init();
+    //smp_init();
     mm_init();
     sched_init();
     syscall_init();
+	space_init();
+
+	space_create(12);
+	space_create(13);
+	heap_alloc(256);
+	space_create(14);
+	heap_alloc(13);
+	space_create(15);
 
 
     /* Enable multi-tasking.                                                  */

@@ -106,10 +106,6 @@ void sys_arch_iowrite32(unt16 port, unt32 value)
 /*                                                                            */
 /* This function initializes the Intel 8254 PIT, which is present on all IBM  */
 /* compatible machines.                                                       */
-/*                                                                            */
-/* Note: The 8254 PIT might not be available on all IA-32 machines. We should */
-/* probably make a hierachical achitecture system that could look something   */
-/* like this: Trinary => IA-32 => IBM.                                        */
 /******************************************************************************/
 void sys_arch_timer_init(void)
 {
@@ -135,10 +131,6 @@ void sys_arch_timer_setfrequency(unt8 timer, unt32 frequency)
      * up, because a higher frequency causes less noticable error that a      *
      * lower frequency.                                                       */
     divider = 1193181 / frequency;
-
-    logDec("PIT : Frequency", frequency);
-    logDec("PIT : Divider", divider);
-   
 
     sys_arch_iowrite8(0x43, 0x34);
     sys_arch_iowrite8(0x40, divider & 0xFF);
