@@ -121,6 +121,115 @@ void cmain(void)
     disk.controller.portCommand = 0x1f7;
     disk.controller.portAlternate = 0x3f6;
 
+    /* TEST                                                                   */
+    
+    asm
+    (
+        "pushl %%ebp;"
+        "int $0xC1;"
+        "popl %%ebp"
+        :
+        "=a" (i)
+    );
+
+    u32toa(i, s, 10);
+    out(s);
+
+    asm
+    (
+        "pushl %%ebp;"
+        "int $0xC2;"
+        "popl %%ebp"
+        :
+        :
+        "a" (i),
+        "b" (0x00810000)
+    );
+
+    /* PING                                                                   */
+    
+    asm
+    (
+        "pushl %%ebp;"
+        "int $0xC1;"
+        "popl %%ebp"
+        :
+        "=a" (i)
+    );
+
+    u32toa(i, s, 10);
+    out(s);
+
+    asm
+    (
+        "pushl %%ebp;"
+        "int $0xC2;"
+        "popl %%ebp"
+        :
+        :
+        "a" (i),
+        "b" (0x00820000)
+    );
+
+    /* PONG                                                                   */
+    
+    asm
+    (
+        "pushl %%ebp;"
+        "int $0xC1;"
+        "popl %%ebp"
+        :
+        "=a" (i)
+    );
+
+    u32toa(i, s, 10);
+    out(s);
+
+    asm
+    (
+        "pushl %%ebp;"
+        "int $0xC2;"
+        "popl %%ebp"
+        :
+        :
+        "a" (i),
+        "b" (0x00828000)
+    );
+
+    /* Start threads.                                                         */
+
+    asm
+    (
+        "pushl %%ebp;"
+        "int $0xC3;"
+        "popl %%ebp;"
+        :
+        :
+        "a" (1)
+    );
+
+    asm
+    (
+        "pushl %%ebp;"
+        "int $0xC3;"
+        "popl %%ebp;"
+        :
+        :
+        "a" (2)
+    );
+
+    asm
+    (
+        "pushl %%ebp;"
+        "int $0xC3;"
+        "popl %%ebp;"
+        :
+        :
+        "a" (3)
+    );
+
+
+
     for (;;)
     {
         ata_readSector(disk, rand(), 1);

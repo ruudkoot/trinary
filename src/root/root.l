@@ -11,7 +11,7 @@
 ENTRY(_entry)
 SECTIONS
 {
-    .text 0x80000000 :
+    .text 0x00800000 :
     {
         *(.text)
     }

@@ -34,6 +34,7 @@ void sys_arch_timer_setfrequency(unt8 timer, unt32 frequency);
 
 
 #include "syscall.c"
+#include "ia32/api.c"
 
 
 #include "vesa.c"
@@ -69,53 +70,12 @@ void cmain(void)
     syscall_init();
 	space_init();
 
-    //vesa_init();    /* This won't be in the real kernel. Just for testing!    */
+    arch_api_init();
+
+    //vesa_init();    /* This won't be in the real kernel. Just for testing!  */
     
     arch_gdt_init();
     arch_tss_init();
-
-    space_create(1);
-    space_create(2);
-    space_create(3);
-    space_create(4);
-    space_switch(0x900000);
-
-    space_map(((word*)(0xFF000000)), 0x80000000);
-
-    logItem("Downloading Root");
-
-    memcpy(0x80000000, 0xFF840000, 16 * 1024);
-
-    space_switch(0x901000);
-
-    space_map(((word*)(0xFF001000)), 0x80000000);
-
-    logStatus(logSuccess);
-
-
-    logItem("Downloading Test");
-
-    memcpy(0x80000000, 0xFF850000, 16 * 1024);
-
-    space_switch(0x902000);
-
-    space_map(((word*)(0xFF002000)), 0x80000000);
-
-    logStatus(logSuccess);
-
-    logItem("Downloading Ping");
-
-    memcpy(0x80000000, 0xFF860000, 16 * 1024);
-
-    space_switch(0x903000);
-
-    space_map(((word*)(0xFF003000)), 0x80000000);
-
-    logStatus(logSuccess);
-
-    logItem("Downloading Pong");
-
-    memcpy(0x80000000, 0xFF868000, 16 * 1024);
 
     logStatus(logSuccess);
 
@@ -124,21 +84,24 @@ void cmain(void)
 
     arch_tss->esp0 = ipc_threadesp0[0];
 
-    space_switch(0x900000);
+    logHex("0xD001000", (*(unt32*)(0xD0001000)));
+    logHex("0xD000FFC", (*(unt32*)(0xD0000FFC)));
+    logHex("0xD000FF8", (*(unt32*)(0xD0000FF8)));
+    logHex("0xD000FF4", (*(unt32*)(0xD0000FF4)));
+    logHex("0xD000FF0", (*(unt32*)(0xD0000FF0)));
+    logHex("0xD000FEC", (*(unt32*)(0xD0000FEC)));
+    logHex("0xD000FE8", (*(unt32*)(0xD0000FE8)));
+
+    logStatus(logSuccess);
 
     asm volatile
     (
-        "movl %%eax, %%esp;"
+        "movl $0xD0000FEC, %%esp;"
         "movl $0x2B, %%eax;"
         "movl %%eax, %%ds;"
         "movl %%eax, %%es;"
         "movl %%eax, %%fs;"
         "movl %%eax, %%gs;"
-        "pushl $0x2B;"
-        "pushl $0x80002000;"
-        "pushl $0x3202;"
-        "pushl $0x23;"
-        "pushl $0x80000000;"
         "iretl;"
         ::
         "a" (ipc_threadstack[0])

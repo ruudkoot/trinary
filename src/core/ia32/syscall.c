@@ -20,9 +20,16 @@
 /******************************************************************************/
 
 extern void syscall_arch_ipc_wrapper(void);
+
 extern void asm_ipc(void);
+extern void api_spacecontrol(void);
+extern void api_threadcontrol(void);
+extern void api_threadstart(void);
 
 void discardable syscall_arch_init(void)
 {
     sig_arch_setinterruptgateu(0xC0, asm_ipc);
+    sig_arch_setinterruptgateu(0xC1, api_spacecontrol);
+    sig_arch_setinterruptgateu(0xC2, api_threadcontrol);
+    sig_arch_setinterruptgateu(0xC3, api_threadstart);
 }

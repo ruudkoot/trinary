@@ -25,11 +25,15 @@ void* heap_alloc(unsigned size)
 {
     unsigned address;
 
+    logHex("Allocating Heap", size);
+
     /* Make sure the area is aligned.                                         */
 	heap_start += (size - (heap_start % size));
 
 	address = heap_start;
 	heap_start += size;
+
+    logHex("Allocated Heap", address);
 
     return ((void*)address);
 }
