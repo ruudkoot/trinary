@@ -8,6 +8,7 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
+
 void panic(char* title);
 void panicWrite(unsigned r, unsigned c, char* s);
 void panicHalt(void);
