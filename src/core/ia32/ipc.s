@@ -66,13 +66,13 @@ _asm_ipc_return:
 _switch_switch:
 
     /* Save user state.                                                       */
-    push %eax;
-    push %ecx;
-    push %edx;
-    push %ebx;
-    push %ebp;
-    push %esi;
-    push %edi;
+    movl %eax, -4(%esp);
+    movl %ecx, -8(%esp);
+    movl %edx, -12(%esp);
+    movl %ebx, -16(%esp);
+    movl %ebp, -20(%esp);
+    movl %esi, -24(%esp);
+    movl %edi, -28(%esp);
 
     /* Clear the interrupt controller.                                        */
     movl $0x20, %eax;
@@ -155,13 +155,13 @@ standard_switch:
     movl %eax, %gs;
 
     /* Restore user state.                                                    */
-    pop %edi;
-    pop %esi;
-    pop %ebp;
-    pop %ebx;
-    pop %edx;
-    pop %ecx;
-    pop %eax;
+    movl -4(%esp), %eax;
+    movl -8(%esp), %ecx;
+    movl -12(%esp), %edx;
+    movl -16(%esp), %ebx;
+    movl -20(%esp), %ebp;
+    movl -24(%esp), %esi;
+    movl -28(%esp), %edi;
 
     iretl;
 
