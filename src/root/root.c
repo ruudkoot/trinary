@@ -230,9 +230,9 @@ void cmain(void)
     );
 
 
-  /*  for (;;)
-    {*/
-        ata_readSector(disk, rand() * 1024, 1);
+    for (;;)
+    {
+        ata_readSector(disk, rand() * 32, 1);
 
         asm
         (
@@ -261,7 +261,7 @@ void cmain(void)
 
         buffer[60] = '\0';
         out(buffer);
-  /*  }*/
+    }
 
     out("");
 	out("");
@@ -319,7 +319,7 @@ void ata_readSector(ata_disk_t disk, unsigned int block, unsigned char count)
 	command.count		= count;
 	command.disk		= disk;
 	command.features	= 0x00;
-	command.command		= 0xEC;
+	command.command		= 0x20;
 
 	ata_command(command);
 }
