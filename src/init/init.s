@@ -17,10 +17,6 @@ org 0x0000
 
 _enterPM:
 
-	mov si, aha
-	call WriteString
-
-
 	mov ax, 0x9000
 	mov ds, ax
 	mov es, ax
@@ -447,8 +443,6 @@ init8259:
 	jmp $+2
 
 	ret
-
-	aha db "Init", 13, 10, 0;
 
 	times 11776-($-$$) db 0
 
