@@ -27,6 +27,7 @@
 #include "ia32/ibm/log.c"
 #include "ia32/ibm/disk.c"
 #include "ia32/ibm/system.c"
+#include "ia32/ibm/a20.c"
 #include "ia32/ibm/memory.c"
 
 #include "ibm.c"
@@ -188,7 +189,8 @@ void entry(void)
         "cli;"
     );
 
-    sys_arch_a20_enable();
+    a20_enable(0);
+
     init8259();
 
     idt48.limit = 0xABCD;
