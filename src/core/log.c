@@ -20,7 +20,7 @@ void logScroll(void)
     int i;
     unsigned source, destination;
     
-    for (i = 2; i < 22; i++)
+    for (i = 0; i < 22; i++)
     {
         source        = 0xB8000 + 160 * i + 488;
         destination    = 0xB8000 + 160 * i + 328;
