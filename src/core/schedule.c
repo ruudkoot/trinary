@@ -10,6 +10,12 @@
 
 #include "arch/ia32/schedule.c"
 
+void sched_init(void)
+{
+    logItem("Initailizing Task Management");
+    sched_arch_init();
+}
+
 /******************************************************************************/
 /* sched_arch_shedule - Schedule Thread for Execution                         */
 /*                                                                            */
@@ -37,8 +43,12 @@
 /******************************************************************************/
 void sched_schedule(void)
 {
+    unsigned fuck;
+
+    fuck = TEMP_sched_current;
+    
     TEMP_sched_current++;
     if (TEMP_sched_current > 2) TEMP_sched_current  = 1;
 
-    sched_arch_switch(&(task[!TEMP_sched_current]), (&task[TEMP_sched_current]));
+    sched_arch_switch(&(task[fuck]), (&task[TEMP_sched_current]));
 }

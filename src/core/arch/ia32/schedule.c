@@ -30,8 +30,10 @@ void task0(void)
 
 void task1(void)
 {
-    static unsigned i = 0;
+    unsigned i = 0;
     char s[20];
+
+    i = 33333;
 
     for (;;)
     {
@@ -43,8 +45,10 @@ void task1(void)
 
 void task2(void)
 {
-    static unsigned i = 0;
+    unsigned i = 0;
     char s[20];
+
+    i = 33333;
     
     for (;;)
     {
@@ -81,9 +85,9 @@ void sched_arch_init(void)
     
     task[0].eip = ((unsigned)(task0));
     task[1].eip = ((unsigned)(task1));
-    task[2].eip = ((unsigned)(pci_probe));
+    task[2].eip = ((unsigned)(task2));
 
-    for (i = 0; i < 256; i++)
+    for (i = 0; i < 4096; i++)
     {
         task[0].stack[i] = 0xAAAAAAAA;
         task[1].stack[i] = 0xBBBBBBBB;
@@ -94,7 +98,7 @@ void sched_arch_init(void)
 
     logHex("Task 1 : Entry Point", ((unsigned)(task[1].eip)));
     logHex("Task 1 : Stack : Start", ((unsigned)(task[1].stack)));
-    logHex("Task 1 : Stack : End", ((unsigned)(task[1].stack + 256)));
+    logHex("Task 1 : Stack : End", ((unsigned)(task[1].stack + 4096)));
     logHex("Task 1 : Stack : Pointer", ((unsigned)(task[1].esp)));
 
 }
@@ -120,12 +124,13 @@ void sched_arch_switch(sched_arch_task* current, sched_arch_task* next)
 {
     asm volatile
     (
+        "pushl %%esi; pushl %%edi; pushl %%ebp;"
         /* Store the ESP of the current thread.                               */
         "movl %%esp, %0"                                                  "\n\t"
         /* Restore the ESP of the new thread                                  */
         "movl %2, %%esp"                                                  "\n\t"
         /* Store the EIP of the current thread.                               */
-        "movl $sched_arch_spawnpoint, %1"                                 "\n\t"
+        "movl $1f, %1"                                                    "\n\t"
         /* Restore the EIP of the previous thread.                            */
         "pushl %3"                                                        "\n\t"
         /* Reenable interrupts (I'll have to think about this!!!)             */
@@ -133,7 +138,8 @@ void sched_arch_switch(sched_arch_task* current, sched_arch_task* next)
         /* Save some extra parts of the context.                              */
         "ret"                                                             "\n\t"
         /* This is the spawnpoint (all thread continue execution here).       */
-        "sched_arch_spawnpoint:"                                          "\n\t"
+        "1:"                                                              "\n\t"
+        "popl %%ebp; popl %%edi; popl %%esi;"
         :
         /* Outputs                                                            */
         /*     0: ESP of the current thread.                                  */

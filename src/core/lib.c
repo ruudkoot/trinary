@@ -8,6 +8,9 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-#include "container/list.c"
-#include "container/tree.c"
-#include "container/circ.c"
+#include "lib/char.c"
+#include "lib/convert.c"
+#include "lib/math.c"
+#include "lib/mem.c"
+#include "lib/string.c"
+#include "lib/util.c"

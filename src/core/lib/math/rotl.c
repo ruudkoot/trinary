@@ -49,4 +49,3 @@ unsigned rotl (
 
         return num;
 }
-
