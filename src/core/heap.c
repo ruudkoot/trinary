@@ -17,7 +17,7 @@ unsigned heap_start;
 void heap_init(void)
 {
     logItem("Initializing Heap Management");
-    heap_start = 0xC0100000;
+    heap_start = 0xFF400000;
     logStatus(logSuccess);
 }
 

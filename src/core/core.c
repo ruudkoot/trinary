@@ -20,6 +20,7 @@ void dmain(void);
 
 void sys_arch_timer_setfrequency(unt8 timer, unt32 frequency);
 
+
 #include "heap.c"
 #include "schedule.c"
 #include "space.c"
@@ -58,14 +59,6 @@ void cmain(void)
     sched_init();
     syscall_init();
 	space_init();
-
-	space_create(12);
-	space_create(13);
-	heap_alloc(256);
-	space_create(14);
-	heap_alloc(13);
-	space_create(15);
-
 
     /* Enable multi-tasking.                                                  */
     logItem("Enabling Multi Tasking");

@@ -16,7 +16,7 @@ void discardable mm_arch_init(void)
 
     
     mmPhysicalInit();
-    //mmVirtualInit();
+    mmVirtualInit();
 
     logStatus(logSuccess);
 
@@ -60,8 +60,8 @@ void discardable mmPhysicalInit(void)
 	buffer = (unsigned*)(0x40000);
     bufferIterator = (unsigned*)(0x40000);
 
-	for (i = 0; i < 32; i++) buffer[i]		= 0xFFFFFFFF;
-	for (i = 32; i < size; i++) buffer[i]	= 0x00000000;
+	for (i = 0; i < 40; i++) buffer[i]      = 0xFFFFFFFF;
+	for (i = 40; i < size; i++) buffer[i]   = 0x00000000;
 }
 
 unsigned mmPhysicalAlloc(void)
@@ -92,25 +92,6 @@ void mmPhysicalFree(unsigned page)
 /*******************************************************************/
 
 void discardable mmVirtualInit(void)
-{
-    unsigned    physDirectory;
-    unsigned*   virtDirectory   = (unsigned*)(0xE0000000);
-    unsigned*   tempDirectory   = (unsigned*)(0x00000000);
-    unsigned*   tempTable       = (unsigned*)(0x00003000);
-
-    //Allocate space for the page directory and tempory page table
-    physDirectory               = mmPhysicalAlloc();
-
-    //Map the page table in the old page directory so that it maps the new page
-    //directory into the virtual address space.
-    tempDirectory[0xE00]        = 0x00003003;
-    tempTable[0x000]            = physDirectory + 0x00000003;
-
-    //virtDirectory[0x000]        = ;
-
-}
-
-unt32 mmCreateGalaxy(void)
 {
 
 }
