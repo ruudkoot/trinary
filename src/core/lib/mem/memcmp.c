@@ -30,10 +30,10 @@
 *
 *******************************************************************************/
 
-int __cdecl memcmp (
+int  memcmp (
         const void * buf1,
         const void * buf2,
-        size_t count
+        size count
         )
 {
         if (!count)

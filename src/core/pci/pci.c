@@ -34,8 +34,8 @@ void pci_probe(void)
                 if (data != last && data != 0xFFFFFFFF)
                 {
                     last = data;
-                    itoa(data, z, 16);
-                    itoa(b * 256 * 256 * 256 + d * 256 * 256 + f * 256, w, 16);
+                    i32toa(data, z, 16);
+                    i32toa(b * 256 * 256 * 256 + d * 256 * 256 + f * 256, w, 16);
                     logSubItem(w, z);
                 }
            }

@@ -8,6 +8,42 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
+/***
+*strncat.c - append n chars of string to new string
+*
+*       Copyright (c) 1985-1997, Microsoft Corporation. All rights reserved.
+*
+*Purpose:
+*       defines strncat() - appends n characters of string onto
+*       end of other string
+*
+*******************************************************************************/
+
+
+/***
+*char *strncat(front, back, count) - append count chars of back onto front
+*
+*Purpose:
+*       Appends at most count characters of the string back onto the
+*       end of front, and ALWAYS terminates with a null character.
+*       If count is greater than the length of back, the length of back
+*       is used instead.  (Unlike strncpy, this routine does not pad out
+*       to count characters).
+*
+*Entry:
+*       char *front - string to append onto
+*       char *back - string to append
+*       unsigned count - count of max characters to append
+*
+*Exit:
+*       returns a pointer to string appended onto (front).
+*
+*Uses:
+*
+*Exceptions:
+*
+*******************************************************************************/
+
 /******************************************************************************/
 /* strcat - Concatenate String                                                */
 /*                                                                            */
@@ -46,17 +82,23 @@ string* strcat(string* s,const string* t)
 /* n    The maximum lenght of the concatednated string.                       */
 /* @    The destination string.                                               */
 /******************************************************************************/
-string* strncat(string* s, string* t, size n)
+
+char * strncat (
+        char * front,
+        const char * back,
+        size count
+        )
 {
-    string* c = s;
+        char *start = front;
 
-    /* Find the end of the destination string.                                */
-    while (*s) s++;
+        while (*front++)
+                ;
+        front--;
 
-    while (n--)
-            if (!(*front++ = *back++))
-                    return(start);
+        while (count--)
+                if (!(*front++ = *back++))
+                        return(start);
 
-    *front = '\0';
-    return(start);
+        *front = '\0';
+        return(start);
 }

@@ -28,10 +28,10 @@
 *Exceptions:
 *******************************************************************************/
 
-void * __cdecl memmove (
+void * memmove (
         void * dst,
         const void * src,
-        size_t count
+        size count
         )
 {
         void * ret = dst;

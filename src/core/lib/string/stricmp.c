@@ -41,7 +41,7 @@
 
 /* strcmpi */
 
-int __cdecl stricmp(const char * dst, const char * src)
+int stricmp(const char * dst, const char * src)
 {
         int f,l;
 

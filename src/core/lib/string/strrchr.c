@@ -40,7 +40,7 @@
 *
 *******************************************************************************/
 
-char * __cdecl strrchr (
+char * strrchr (
         const char * string,
         int ch
         )

@@ -8,10 +8,10 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-char * __cdecl strncpy (
+char * strncpy (
         char * dest,
         const char * source,
-        size_t count
+        size count
         )
 {
         char *start = dest;

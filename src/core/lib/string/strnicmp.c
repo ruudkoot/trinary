@@ -42,10 +42,10 @@
 *
 *******************************************************************************/
 
-int __cdecl strnicmp (
+int strnicmp (
         const char * first,
         const char * last,
-        size_t count
+        size count
         )
 {
         int f,l;

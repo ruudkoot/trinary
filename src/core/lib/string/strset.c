@@ -8,7 +8,7 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-char * __cdecl _strset (
+char * _strset (
         char * string,
         int val
         )

@@ -47,7 +47,7 @@
 *
 *******************************************************************************/
 
-size_t __cdecl strcspn (
+size strcspn (
         const char * string,
         const char * control
         )
