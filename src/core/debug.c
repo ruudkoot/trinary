@@ -12,7 +12,6 @@ void panic(char* title);
 void panicWrite(unsigned r, unsigned c, char* s);
 void panicHalt(void);
 
-
 void panic(char* title)
 {
     unsigned char* v;
