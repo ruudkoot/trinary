@@ -29,6 +29,11 @@
 
 #define unt32 unsigned int
 
+typedef struct
+{
+    unt32   magic;
+} kip;
+
 void pm32(void)
 {
     unsigned i;
@@ -36,6 +41,8 @@ void pm32(void)
     unt32 *arch_pm32_pagedirectory = 0x00610000;
     unt32 *arch_pm32_rootthread = 0xD0000000;
     unt32 *arch_pm32_pagetable;
+
+    kip   *arch_kip = 0x00700000;
 
     /* Zero fill kernel memory.                                               */
     asm
@@ -68,6 +75,9 @@ void pm32(void)
             "S" (0x00060000),           /* Source       :  384 kB             */  
             "D" (0x00800000)            /* Destination  :    8 MB             */
     );
+
+    /* Build the Kernel Information Page.                                     */
+    arch_kip->magic = 0xDEADBEEF;
 
     /* Create the Page Directory.                                             */
     arch_pm32_pagedirectory[0x000/4] = 0x00611007;
@@ -122,6 +132,7 @@ void pm32(void)
     /* Start Core.                                                            */
     asm
     (
+        "movl $0x00700000, %eax;"       /* KIP Pointer.                       */
         "movl $0xFFC00000, %esp;"
         "ljmp $0x10, $0xFF800000;"
     );

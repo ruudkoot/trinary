@@ -1,6 +1,6 @@
 /******************************************************************************/
-/* Entry Stub                                                                 */
-/* Copyright (c) 2003, Rudy Koot (Trinary Technologies)                       */
+/* Mithrill Core : Inter Process Communication                                */
+/* Copyright (c) 2003, Rudy Koot (Mithrill Foundation)                        */
 /*                                                                            */
 /* This program is free software; you can redistribute it and/or modify       */
 /* it under the terms of the GNU General Public License as published by       */
@@ -8,12 +8,11 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-extern void cmain(void);
+.global _kippointer;
+.global _entry;
 
-void entry(void)
-{
+_entry:
+movl %eax, _kippointer;
+jmp _cmain;
 
-    cmain();
-    asm ("cli");
-    asm ("hlt");
-}
+_kippointer: .long 0x00000000;
