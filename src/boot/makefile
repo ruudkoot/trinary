@@ -8,35 +8,9 @@
 # (at your option) any later version.                                          #
 ################################################################################
 
-cc = gcc -c -o
-sources     = core.c cpu.c debug.c heap.c ipc.c kdb.c log.c memory.c   \
-              schedule.c signal.c smp.c space.c spinlock.c syscall.c system.c  \
-              vesa.c
+trifs : trifs.o
+	ld -s -Tia32/ibm/trifs.l -o trifs trifs.o
+	objcopy -O binary trifs
 
-core : entry.o core.o wrapper.o ipc.o kdb.o
-	ld -s -Tcore.l -o core entry.o core.o ipc.o kdb.o wrapper.o ../../bin/gcc/libgcc.a
-	objcopy core -S -O binary
-
-entry.o : entry.c
-	$(cc) entry.o entry.c
-
-core.o : $(sources)
-	$(cc) core.o core.c
-
-wrapper.o : ia32/wrapper.s
-	nasm ia32/wrapper.s -o wrapper.o -f elf
-
-ipc.o : ia32/ipc.s
-	as ia32/ipc.s -o ipc.o
-
-kdb.o : ia32/kdb.s
-	as ia32/kdb.s -o kdb.o
-
-clean :
-	rm core
-	rm entry.o
-	rm core.o
-	rm wrapper.o
-	rm ipc.o
-	rm kdb.o
-
+trifs.o : ia32/ibm/trifs.s
+	as -o trifs.o ia32/ibm/trifs.s
