@@ -54,8 +54,8 @@ void pm32(void)
         :
         :
         "a" (0x00000000),               /* Value : 0x00000000                 */
-        "c" (0x00300000),               /* Lenght: 12 MB                      */
-        "D" (0x00400000)                /* Start : 1 MB                       */
+        "c" (0x00001600),               /* Lenght: .. MB                      */
+        "D" (0x00010000)                /* Start : . MB                       */
     );
 
     /* Create the Page Directory.                                             */
