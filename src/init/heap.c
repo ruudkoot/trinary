@@ -30,13 +30,14 @@ void heap_init(word start, word size)
 /******************************************************************************/
 /* heap_alloc                           Allocate from Heap                    */
 /******************************************************************************/
-word heap_alloc(word size)
+pointer heap_alloc(word size)
 {
-    word pointer;
+    word address;
 
+    address = heap_pointer;
     heap_pointer += size;
 
-    return pointer;
+    return ((pointer)(address));
 }
 
 /******************************************************************************/

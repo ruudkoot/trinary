@@ -13,8 +13,8 @@ init : init.o pm32s.o pm32c.o init.l
 	objcopy init -S -O binary
 
 init.o : init.l ext2.c fat.c heap.c ibm.c init.c mem.c repository.c trifs.c    \
-         ia32/ibm/entry.s ia32/ibm/disk.c ia32/ibm/log.c ia32/ibm/memory.c     \
-         ia32/ibm/system.c
+         ia32/ibm/a20.c ia32/ibm/entry.s ia32/ibm/disk.c ia32/ibm/log.c        \
+         ia32/ibm/memory.c ia32/ibm/system.c
 	gcc -Os -S -o init.s init.c
 	copy ia32\ibm\entry.s + init.s init.t
 	as -o init.o init.t
