@@ -70,7 +70,7 @@ _asm_set_receive:
 
 _asm_do_send:
 
-   /****//**//**//**//**//**/
+
     
 _asm_ipc_return:
 
