@@ -136,7 +136,7 @@ void cmain(void)
         "movl %%eax, %%gs;"
         "pushl $0x2B;"
         "pushl $0x80002000;"
-        "pushl $0x202;"
+        "pushl $0x3202;"
         "pushl $0x23;"
         "pushl $0x80000000;"
         "iretl;"

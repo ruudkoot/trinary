@@ -224,9 +224,7 @@
 
 
 #include <io.h>
-#include "ata.h"
-
-typedef unsigned short io_port_t;
+#include "ata.h"typedef unsigned short io_port_t;
 
 void ata_command(ata_command_t command)
 {	io_write(command.disk.controller.portFeatures,	command.features);
@@ -258,3 +256,5 @@ void ata_readSector(ata_disk_t disk, unsigned int block, unsigned char count)
 
 	ata_command(command);
 }
+
+

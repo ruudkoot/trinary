@@ -21,6 +21,7 @@
 
 .global _asm_ipc;
 .global _switch_switch;
+.global _int_entry;
 
 .global _ipc_currentthread;
 .global _ipc_schedulethread;
@@ -86,6 +87,7 @@ _asm_send_unwait:
 _asm_thread_select:
     
     /* DOESNT WORK ENTIERLY YET, JUST ENOUGH FOR ping AND pong!               */
+    /* AND SPECIAL HANDLING FOR root!                                         */
 
     /* If we are not sending select a thread to switch to.                    */
     movl %eax, %ebp;
@@ -94,6 +96,11 @@ _asm_thread_select:
     jne _asm_ipc_switch;
 
     movl %edx, %ebp;
+
+    cmpl $5, %ebp;
+    jne _asm_ipc_switch;
+
+    movl $1, %ebp;
 
 _asm_ipc_switch:
 
@@ -253,7 +260,75 @@ standard_switch:
 
     iretl;
 
+/******************************************************************************/
+
+_int_entry:
+
+    /* Save user state.                                                       */
+    movl %eax, -4(%esp);
+    movl %ecx, -8(%esp);
+    movl %edx, -12(%esp);
+    movl %ebx, -16(%esp);
+    movl %ebp, -20(%esp);
+    movl %esi, -24(%esp);
+    movl %edi, -28(%esp);
+
+    /* Clear the interrupt controllers.                                       */
+    movl $0x20, %eax;
+    movl $0x20, %edx;
+    outb %al, %dx;
+
+    movl $0xA0, %edx;
+    outb %al, %dx;
+
+    /* Restore the kernel segments.                                           */
+    movl $0x18, %eax;
+    movl %eax, %ds;
+    movl %eax, %es;
+    movl %eax, %fs;
+    movl %eax, %gs;
+
+    /* Update currentthread.                                                  */
+    movl $0, %ebp;
+    movl %ebp, _ipc_currentthread;
+
+    /* Make sure it is waiting.                                               */
+    movl _ipc_threadstate(,%ebp,4), %eax;
+    cmpl $2, %eax; 
+    jne _int_panic;
+
+    /* Let the thread stop waiting.                                           */
+    movl $1, _ipc_threadstate(,%ebp,4);
+
+    /* Change ESP0.                                                           */
+    movl _ipc_threadesp0(,%ebp,4), %eax;
+    movl %eax, 0xFF490004;
+
+    /* Switch Kernel Stack.                                                   */
+    movl %eax, %esp;
+    subl $20, %esp;
+
+    /* Switch address space.                                                  */
+    movl _ipc_threadspace(,%ebp,4), %eax;
+    movl %eax, %cr3;
+
+    /* Restore the user segments.                                             */
+    movl $0x2B, %eax;
+    movl %eax, %ds;
+    movl %eax, %es;
+    movl %eax, %fs;
+    movl %eax, %gs;
+
+    iretl;
+
+_int_panic:
+
+    pushl $_int_panicmessage;
+    call _panic;
+
 .data
+
+_int_panicmessage: .asciz "PANIC: INTERRUPT HANDLER NOT WAITING!";
 
 _ipc_currentthread: .long 0x00000000;
 _ipc_schedulethread:.long 0x00000000;
@@ -293,5 +368,6 @@ _ipc_threadesp0:    .long 0;
                     .long 3;
                     .long 4;
                     .long 5;
+
 
 
