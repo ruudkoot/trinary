@@ -27,12 +27,110 @@
 /* Supervisor   Read-Write  Supervisor  Read-Only   Supervisor  Read/Write*   */
 /* Supervisor   Read-Write  Supervisor  Read-Write  Supervisor  Read/Write    */
 
+#define unt8 unsigned char
+#define unt16 unsigned short
 #define unt32 unsigned int
+#define unt64 unsigned long long
+
+static char* _strcpy(char* s, const char* t)
+{
+	while (*(s++) = *(t++));
+
+	return s;
+}
+
+static char* _strnpst(char* s, const char* t, unsigned n)
+{
+	while (*t && n)
+	{
+		*(s++) = *(t++);
+		n--;
+	};
+
+	return s;
+}
+
+static void _u32toa (unt32 value, char *string, unt8 radix)
+{
+        char *i, *s, t, d;
+
+        s = i = string;
+
+        do
+        {   d = value % radix;
+            value /= radix;
+
+            if (d > 9)
+                *i++ = d + 'A' - 10;
+            else
+                *i++ = d + '0';
+        } while (value > 0);
+
+        *i-- = '\0';
+
+        do 
+        {   t = *i;
+            *i = *s;
+            *s = t;
+
+            --i;
+            ++s;
+        } while (s < i);
+}
+
+
+unsigned _strlen(const char* s)
+{
+	const char* c = s;
+	while (*c++);
+	return (unsigned)(c - s - 1);
+}
+
+void* _memcpy(void* s, const void* t, unsigned n)
+{
+        void * ret = s;
+
+        while (n--)
+		{
+                *(char *)s = *(char *)t;
+                s = (char *)s + 1;
+                t = (char *)t + 1;
+        }
+
+        return(ret);
+}
+
+int _max(int a, int b)
+{
+	return (a > b) ? a : b;
+}
+
+
+
+#include "log.c"
 
 typedef struct
 {
     unt32   magic;
 } kip;
+
+typedef struct
+{
+    unt8    ident[16];
+    unt16   type;
+    unt16   machine;
+    unt32   version;
+    unt32   entry;
+    unt32   phoff;
+    unt32   shoff;
+    unt32   flags;
+    unt16   ehsize;
+    unt16   phentsize;
+    unt16   phnum;
+    unt16   shentsize;
+    unt16   shnum;
+    unt16   shstrndx;
+} elf32_header __attribute__ ((packed));
 
 void pm32(void)
 {
@@ -79,10 +177,36 @@ void pm32(void)
     /* Build the Kernel Information Page.                                     */
     arch_kip->magic = 0xDEADBEEF;
 
+    /* Move Core from 0x00401000 to 0x00400000.                               */
+    asm
+    (
+        "rep movsl;"
+        :
+        :
+        "c" (0x00004000),               /* Lenght       :   64 kB             */
+        "S" (0x00401000),               /* Source       :    4 MB +    4 kB   */  
+        "D" (0x00400000)                /* Destination  :    4 MB             */
+    );
+
     /* Create the Page Directory.                                             */
     arch_pm32_pagedirectory[0x000/4] = 0x00611007;
     arch_pm32_pagedirectory[0x004/4] = 0x00617007;
     arch_pm32_pagedirectory[0x008/4] = 0x00618007;
+
+    arch_pm32_pagedirectory[0x00C/4] = 0x00503007;
+    arch_pm32_pagedirectory[0x010/4] = 0x00504007;
+    arch_pm32_pagedirectory[0x014/4] = 0x00505007;
+    arch_pm32_pagedirectory[0x018/4] = 0x00506007;
+    arch_pm32_pagedirectory[0x01C/4] = 0x00507007;
+    arch_pm32_pagedirectory[0x020/4] = 0x00508007;
+    arch_pm32_pagedirectory[0x024/4] = 0x00509007;
+    arch_pm32_pagedirectory[0x028/4] = 0x0050A007;
+    arch_pm32_pagedirectory[0x02C/4] = 0x0050B007;
+    arch_pm32_pagedirectory[0x030/4] = 0x0050C007;
+    arch_pm32_pagedirectory[0x034/4] = 0x0050D007;
+    arch_pm32_pagedirectory[0x038/4] = 0x0050E007;
+    arch_pm32_pagedirectory[0x03C/4] = 0x0050F007;
+
     arch_pm32_pagedirectory[0xD00/4] = 0x00616007;
     arch_pm32_pagedirectory[0xFF0/4] = 0x00615007;
     arch_pm32_pagedirectory[0xFF4/4] = 0x00612007;
@@ -91,6 +215,24 @@ void pm32(void)
 
     /* Create the Page Tables.                                                */
     for (i = 0; i < 1024; i++) ((unt32*)(0x00611000))[i] = i * 4096 + 0x000007;
+
+    for (i = 0; i < 1024; i++) ((unt32*)(0x00500000))[i] = i * 4096 + 0x0000007;
+    for (i = 0; i < 1024; i++) ((unt32*)(0x00501000))[i] = i * 4096 + 0x0400007;
+    for (i = 0; i < 1024; i++) ((unt32*)(0x00502000))[i] = i * 4096 + 0x0800007;
+    for (i = 0; i < 1024; i++) ((unt32*)(0x00503000))[i] = i * 4096 + 0x0C00007;
+    for (i = 0; i < 1024; i++) ((unt32*)(0x00504000))[i] = i * 4096 + 0x1000007;
+    for (i = 0; i < 1024; i++) ((unt32*)(0x00505000))[i] = i * 4096 + 0x1400007;
+    for (i = 0; i < 1024; i++) ((unt32*)(0x00506000))[i] = i * 4096 + 0x1800007;
+    for (i = 0; i < 1024; i++) ((unt32*)(0x00507000))[i] = i * 4096 + 0x1C00007;
+    for (i = 0; i < 1024; i++) ((unt32*)(0x00508000))[i] = i * 4096 + 0x2000007;
+    for (i = 0; i < 1024; i++) ((unt32*)(0x00509000))[i] = i * 4096 + 0x2400007;
+    for (i = 0; i < 1024; i++) ((unt32*)(0x0050A000))[i] = i * 4096 + 0x2800007;
+    for (i = 0; i < 1024; i++) ((unt32*)(0x0050B000))[i] = i * 4096 + 0x2C00007;
+    for (i = 0; i < 1024; i++) ((unt32*)(0x0050C000))[i] = i * 4096 + 0x3000007;
+    for (i = 0; i < 1024; i++) ((unt32*)(0x0050D000))[i] = i * 4096 + 0x3400007;
+    for (i = 0; i < 1024; i++) ((unt32*)(0x0050E000))[i] = i * 4096 + 0x3800007;
+    for (i = 0; i < 1024; i++) ((unt32*)(0x0050F000))[i] = i * 4096 + 0x3C00007;
+
     for (i = 0; i < 1024; i++) ((unt32*)(0x00612000))[i] = i * 4096 + 0xC00007;
     for (i = 0; i < 1024; i++) ((unt32*)(0x00613000))[i] = i * 4096 + 0x400007;
     for (i = 0; i < 1024; i++) ((unt32*)(0x00616000))[i] = i * 4096 + 0xE00007;
