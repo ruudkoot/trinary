@@ -1,0 +1,195 @@
+<HTML>
+    <HEAD>
+        <TITLE>Trinary Operating System : Core : System Calls</TITLE>
+    </HEAD>
+
+    <BODY>
+        <H1>System Calls</H1>
+        <P>
+            <A HREF="mailto:rudykoot@trinary.tk">Rudy Koot</A> (<A HREF="http://www.trinary.tk"><I>Trinary Technologies</I></A>)
+        </P>
+
+        <A NAME="contents">
+        <H2>Contents</H2>
+        <P>
+            <UL>
+                <LI><A HREF="#contents">Contents</A></LI>
+                <LI><A HREF="#abstact">0 Abstact</A></LI>
+                <LI><A HREF="#introduction">1 Introduction</A></LI>
+                <LI><A HREF="#conclusion">Concusion</A></LI>
+                <LI><A HREF="#acknowledgements">Acknowledgements</A></LI>
+                <LI><A HREF="#references">References</A></LI>
+            </UL>
+        </P>
+
+        <A NAME="abstract">
+        <H2>0 Abstract</H2>
+        <P>
+            As Trinary Operating System is a micro-kernel, it's system call
+            interface has been reduced to a minimum. It has been influenced
+            by other micro-kernels such as QNX and L4, but there are some
+            distinct differences.
+        </P>
+
+        <A NAME="introduction">
+        <H2>1 Introduction</H2>
+        <P>
+            Most micro-kernels allow inter process communication through message
+            passing. Although this is a fast and stabel technique, it has some
+            drawbacks. A major disadvantage for the caller is the fact that it
+            bockes blocked until the call it finished, and will therefore crash
+            if the server, it is making a call to, has already crashed. L4
+            solves this by adding a timeout parameter. Most applications will
+            not use this feature, because there is no smooth way to recover, in
+            most situations. A disadvantage for the callee is the fact that it
+            has to execute an infinite loop in which it receives messages and
+            dispatches them. The problem here is that is can only process one
+            message at a time, unless it uses threads. The code will therefore
+            always look like the following snippet:
+        </P>
+        <P>
+            <PRE>
+    <B>void</B> <I>message_handler</I>(<B>void</B>)
+    {
+        <I>message_t</I> <I>message</I>;
+        
+        <B>while</B> (<B>true</B>)
+        {
+            <I>message</I> = <I>receive_message</I>();
+
+            <B>switch</B> (<I>message</I>)
+            {
+                <B>case</B> <I>SOME_MESSAGE</I>:
+                    <I>spawn_thread</I>(<I>handle_some_message</I>);
+                    <B>break</B>;
+
+                <B>case</B> <I>ANOTHER_MESSAGE</I>:
+                    <I>spawn_thread</I>(<I>handle_another_message</I>);
+                    <B>break</B>;
+            }
+        }
+    }
+
+    <B>void</B> <I>handle_some_message</I>(<B>void</B>)
+    {
+        <B>...</B>
+    }
+
+    <B>void</B> <I>handle_another_message</I>(<B>void</B>)
+    {
+        <B>...</B>
+    }
+            </PRE>
+        </P>
+        <P>
+            Trinary handles things a little bit different. Little means there
+            isn't much difference for the the caller and a small change for
+            the callee. Basically the entire piece of code you can see above is
+            embedded in the core itself.
+        </P>
+
+        <A NAME="systemcalls">
+        <H2>2 System Calls</H2>
+        
+        <H3>2.1 Synchrone Call</H3>
+        <P>
+            This is Trinary's alternative for a IPC call.
+        </P>
+        <P>
+            <TABLE>
+                <TR>
+                    <TH>Register</TH><TH>Contents</TH>
+                </TR>
+                <TR>
+                    <TD>EAX</TD><TD>Function</TD>
+                </TR>
+                <TR>
+                    <TD>ESI</TD><TD>Buffer 1 Address</TD>
+                </TR>
+                <TR>
+                    <TD>ECX</TD><TD>Buffer 1 Size</TD>
+                </TR>
+                <TR>
+                    <TD>EDI</TD><TD>Buffer 2 Address</TD>
+                </TR>
+                <TR>
+                    <TD>EDX</TD><TD>Buffer 2 Size</TD>
+                </TR>
+                <TR>
+                    <TD>EBP</TD><TD>Buffer 3 Address</TD>
+                </TR>
+                <TR>
+                    <TD>EBX</TD><TD>Buffer 3 Size</TD>
+                </TR>
+                <TR>
+                    <TD>[ESP]</TD><TD>Buffer 4 Address</TD>
+                </TR>
+                <TR>
+                    <TD>[ESP+4]</TD><TD>Buffer 4 Size</TD>
+                </TR>
+                <TR>
+                    <TD>...</TD><TD>...</TD>
+                </TR>
+                <TR>
+                    <TD>[ESP+4<I>n</I>]</TD><TD>Buffer 4+<I>n</I> Address</TD>
+                </TR>
+                <TR>
+                    <TD>[ESP+4<I>n</I>+4]</TD><TD>Buffer 4+<I>n</I> Size</TD>
+                </TR>
+            </TABLE>
+        </P>
+        <P>
+            As you can functions with up to 3 parameters can be passed
+            efficiently within the registers. This should cover most calls.
+            Because parameters can also be placed on the stack, the maximum
+            number of parameters isn't limited.
+        </P>
+        <P>
+            <I>Function</I> is the function you want to call.
+        </P>
+        <P>
+            <I>Buffer # Address</I> is the address of the buffer in your address
+            space.
+        </P>
+        <P>
+            <I>Buffer # Size</I> is the size of the buffer. Bit 31 is used to
+            indicate if you want the data to passed is shared or not. 0 means
+            you want a copy. If the callee modifies the data, the changes are
+            not reflected in you address space. 1 means the data should be
+            shared. If either the caller or the callee changes the data, the
+            changes are reflected in both address spaces.
+        </P>
+        <P>
+            To make increase performance when passing messages, Trinary always
+            shares data, but makes it Copy-On-Write (COW) when you don't want to
+            share it. This ensres that onlythe data that is actually needed is
+            copied. This significantly enhances performance over classic message
+            passing systems like QNX. This machanism only works on page aligned
+            data. When the data isn't page aligned does copy the data until it
+            comes across a page boundary and copy-on-writes the rest, except for
+            the last bytes, if they do not cover a full page. Another problem
+            occurs when you use shared data that is not page aligned. The callee
+            might be able to access data that 
+        </P>
+
+        <H3>2.2 Asynchrone Call</H3>
+
+
+        <A NAME="conclusion">
+        <H2>Conclusion</H2>
+
+        <A NAME="acknowledgements">
+        <H2>Acknowedgements</H2>
+
+        <A NAME="references">
+        <H2>References</H2>
+        <P>
+            <UL>
+                <LI>[Liedtke96] J. Liedtke. L4 Reference Manual. September 4, 1996.</LI>
+                <LI>[Liedtke98] J. Liedtke. LN Reference Manual. March 8, 1998.</LI>
+                <LI>[QNX99] QNX Software Systems Ltd. QNX System Architecture. 1999.</LI>
+            </UL>
+        </P>
+
+    </BODY>
+</HTML>

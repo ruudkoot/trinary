@@ -27,6 +27,8 @@
 #include "signal.c"
 #include "smp.c"
 
+#include "syscall.c"
+
 /******************************************************************************/
 /* cmain - Entry Point                                                        */
 /*                                                                            */
@@ -46,6 +48,7 @@ void cmain(void)
     smp_init();
     mm_init();
     sched_init();
+    syscall_init();
 
     /* Enable multi-tasking.                                                  */
 

@@ -1,5 +1,5 @@
 /******************************************************************************/
-/* Memory Management                                                          */
+/* System Call Interface                                                      */
 /* Copyright (c) 2003, Rudy Koot (Trinary Technologies)                       */
 /*                                                                            */
 /* This program is free software; you can redistribute it and/or modify       */
@@ -8,9 +8,9 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-#include "arch/ia32/memory.c"
+#include "arch/ia32/syscall.c"
 
-void discardable mm_init(void)
+void discardable syscall_init(void)
 {
-    mm_arch_init();
+    syscall_arch_init();
 }

@@ -151,6 +151,8 @@ void discardable sig_arch_init(void)
     sig_arch_setinterruptgate(0x2D, sig_arch_irq13_wrapper);
     sig_arch_setinterruptgate(0x2E, sig_arch_irq14_wrapper);
     sig_arch_setinterruptgate(0x2F, sig_arch_irq15_wrapper);
+
+    sig_arch_settrapgate(0xC0, sig_arch_exception_unknown1f_wrapper);
 }
 
 void sig_arch_setinterruptgate(unsigned intr, void (*func)(void))

@@ -34,21 +34,23 @@ void sched_init(void)
 /* Threading processors, ...                                                  */
 /*                                                                            */
 /* As you can immedeately see this scheduler is quite a bit more complex that */
-/* Linux' (which just implements a roundn robin scheduler with some support   */
+/* Linux' (which just implements a round robin scheduler with some support    */
 /* for real time threads).                                                    */
 /*                                                                            */
 /* [1] Although it CAN be called from anywere in the kernel it SHOULD NOT be  */
 /*     called from every random spot. For example it would be a bad idea to   */
 /*     reschedule when your holding a spinlock.                               */
+/*                                                                            */
+/* THE REAL SCHEDULER ISN'T IMPLEMENTED YET!!!                                */
 /******************************************************************************/
 void sched_schedule(void)
 {
-    unsigned fuck;
+    unsigned previous;
 
-    fuck = TEMP_sched_current;
+    previous = TEMP_sched_current;
     
     TEMP_sched_current++;
-    if (TEMP_sched_current > 2) TEMP_sched_current  = 1;
+    if (TEMP_sched_current > 2) TEMP_sched_current = 1;
 
-    sched_arch_switch(&(task[fuck]), (&task[TEMP_sched_current]));
+    sched_arch_switch(&(task[previous]), (&task[TEMP_sched_current]));
 }
