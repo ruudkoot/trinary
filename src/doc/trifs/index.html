@@ -1,0 +1,398 @@
+<HTML>
+	<HEAD>
+		<TITLE>Trinary File System</TITLE>
+	</HEAD>
+	<BODY>
+		<H1>Trinary File System</H1>
+
+		<P>
+			<B>Working Draft 03.03.07</B>
+		</P>
+		<P>
+			Please mail any suggestions or comments to <A HREF="mailto:rudykoot@trinary.tk">rudykoot@trinary.tk</A>.
+
+		<H2>File System Layout</H2>
+
+		<H3>The Allocation Structure</H3>
+		<P>
+			All the available space of the file system is dived up in fixed size
+			bands. Comparable to HPFS's bands. The difference with Ext2's block
+			groups or BSD FFS's cylinder groups is the fact that there are many
+			more bands in the file system. Usualy one hundred to one thousand.
+		</P>
+		<P>
+			The first block or blocks of each band are occupied by a copy of the
+			critical data in the Super Block (non-critical data is only stored
+			in the Super Block in band 0). The bitmap is store at the sector
+			following the middle of the band. A band that would consist of 16
+			blocks could have the following layout:
+		</P>
+		<P>
+			<CENTER><IMG SRC="bands.gif"></CENTER>
+		</P>
+		<P>
+			The Super Block is stored in every block, because it is extremely
+			critical for the functioning of the file system. If the Super Block
+			is stored only once and it would get damaged, it will be imposible
+			to recovery the file system automaticaly and would require inside
+			knowledge to be repaired manualy. Almost no space is wasted by this
+			huge amount of redundancy.
+		</P>
+		<P>
+			Storing the bitmap in the begin of the band, but after the
+			Trasaction log gives the best performance. During the design of the
+			file system two other alternative locatings for the bitmap were
+			considerd. Stroring is in the middle, or splitting it in two and
+			storing one in the beginning and one in the end. While storing the
+			bitmap in the middle might decrease the average distance a random
+			piece of data, extra seeks are required, of which most are backward.
+			Due to the design of hard disk there seeks are much more costly than
+			forward seeks. (Because the bands are very small a seek usualy
+			doesn't required the heads to be moved, but simply involves waiting
+			for the right sector to move under the head. Because the sectors are
+			laid out sequentialy on the track. Higher sector number will be
+			there	soon, but you have to wait a whole rotation before the lower
+			sectors start appearing again.) A few long seeks are still faster
+			than a lot of small seeks. Splitting the Bitmap would require extra
+			seeks when actoins that need to use the Transaction Log are are
+			performed. To overcome this a second Transaction Log would be
+			necessary. In this case it more efficient to reduce the size of the
+			bands. (For completeness it should also be noted that storing the
+			bitmap at the end offers no benifits and might degrade performance
+			because they are stored further form the data.)
+		</P>
+		<P>
+			The Transaction Log is located before the Bitamp to increase speed,
+			again by avoiding (backward) seeks. Most actions that require the
+			Transaction Log add a log entry first and modify the Bitmap directly
+			after.
+		</P>
+
+		<H3>The Super Block</H3>
+		<P>
+			
+		</P>
+
+		<H3>The Bitmap</H3>
+		<P>
+			The Bitmap is used to keep track of the blocks that are and are not
+			allocated in the band it belongs to. The Bitmap is only used during
+			the allocation of file system space. All blocks of the bands are
+			included in this bitmap, including the Super Block and the Bitmap
+			itself. Bit <I>x</I> of the bitmap correspondend to block <I>X</I>
+			in the band. Note: this is a situation, where litle-endian
+			(Intel-style) machines really pay off.
+		</P>
+		<P>
+			The a bit in the bitmap can have on of the following meanings:
+			<TABLE>
+				<TR><TH>Value</TH><TH>Meaning</TH></TR>
+				<TR><TD>0</TD><TD>The block is free and can be allocated.</TD></TR>
+				<TR><TD>1</TD><TD>The block is already allocated, reserved or damaged.</TD></TR>
+			</TABLE>
+		</P>
+		<P>
+			Since the first block of the band is always used by the Super Block,
+			the first bit of the Bitmap should always be set to 1. A value of 0
+			here is reserved for the parallel file system extension.
+		</P>
+		<P>
+			The Bitmap is a non-critical structure. If it would be destroyed it
+			can be restruced (although this is a time consuming process).
+			Therefore there is no backup copy. Keeping multiple versions
+			synchronised would decrease the performance unnecesarily.
+		</P>
+
+		<H3>Directories</H3>
+		<P>
+			Directories are just stored as normal files. The only difference is
+			that they have the D flag set in their node, which may also affect
+			other flags in the node.
+		</P>
+		<P>
+			The directory is dived into 32 byte entries. The first entry is the
+			header and has following layout:
+		</P>
+		<P>
+			<TABLE BORDER=1>
+				<TR>
+					<TH>unt64</TH><TH>unt64</TH><TH>unt64</TH><TH>unt64</TH>
+				</TR>
+				<TR>
+					<TD>Identifier</TD><TD></TD><TD>File Entry Start</TD><TD>Empty Entry Start</TD>
+				</TR>
+			</TABLE>
+		</P>
+		<P>
+			The File Entry Starty entry points to the entry where the search
+			for a file should be started. A File Entry has the following layout:
+		</P>
+		<P>
+			<TABLE BORDER=1>
+				<TR>
+					<TH>unt64</TH><TH>unt64</TH><TH>unt64</TH><TH>unt64</TH>
+				</TR>
+				<TR>
+					<TD>Hash</TD><TD>Block</TD><TD>Left Leaf</TD><TD>Right Leaf</TD>
+				</TR>
+				<TR>
+					<TH COLSPAN=4>char(32)</TH>
+				</TR>
+				<TR>
+					<TD COLSPAN=4>Name</TD>
+				</TR>
+				<TR>
+					<TD COLSPAN=4>Name</TD>
+				</TR>
+				<TR>
+					<TD COLSPAN=4>Name</TD>
+				</TR>
+				<TR>
+					<TD COLSPAN=4>...</TD
+				</TR>
+				<TR>
+					<TD COLSPAN=4>Name</TD>
+				</TR>
+			</TABLE>
+		</P>
+		<P>
+			Hash contais the hashed file name (see Appendix ?). This helps
+			speeding up directory searches by avoiding string compares.
+		</P>
+		<P>
+			Block contains the block of the disk that contains the Node for the
+			file.
+		</P>
+		<P>
+			Left Leaf contains an entry that has a lower or equal Hash value and
+			Right Leaf contains an entry that has a higher Hash value. The
+			enties are linked together as a balanced tree. This solves the
+			problem of most file systems that lose speed when using directories
+			that contain a large number of files (100 000 - 1 000 000+).
+			Opening a file could have taken seconds. Unsing a balanced tree
+			reduces the maximum number of files to be compared to
+			log2(<I>x</I>). Where <I>x</I> is the number of files in the
+			directory. On average log2(<I>x</I> / 2) = log2(<I>x</I>) - 1 files
+			need to be compared. In directory that contains 1 000 000 files only
+			20 files need to be compared at maximum and 19 on average. An
+			improvement of over 25 000 times.
+		</P>
+		<P>
+			Note that is the directory becomes disbalanced no files are lost.
+			Performace is degraded at most, but the hashing of the filenames
+			usualy creates random values, meaning the degradation will be
+			undeteactable in most cases. Disbalanced trees are not always
+			detected and or repared by the file system driver. A disk
+			diagnostics utility should be used for that. Bug free drivers should
+			not create disbalanced trees even during sudden power failuers,
+			because of the Transaction Log.
+		</P>
+		<P>
+			Name contains the filename. It can span sereral entries and is
+			terminated by a NULL character. There no restriction on the lenght.
+			The filename is stored in ASCII and only charactes 0x20 through
+			0x7E should be used. Characters 0x00 is the termination character.
+			Charactes 0x01 through 0x01F and 0x7F are reserved. Character 0x80
+			through 0xFF are reserved for the Unicode / UTF-8 extension.
+		</P>
+
+		<H2>Comparision</H2>
+		<P>
+			In this table TriFS is compared to the other major file systems around. AS far as I'm aware other
+			file systems here are eiter standard UNIX file system, which are comparable (but often not as good
+			as) Ext2 FS.
+		</P>
+		<P>
+			Intel machines use the FAT 16, FAT 32, Ext2 FS, Ext3 FS, NTFS, ReiserFS, BeFS and HPFS file systems.
+			Apples running MacOS 9 or lower use HFS FI they run MacOS X they use uses HFS+. SPARCs often run
+			Solaris and therefore use EFS or XFS, but if they run Linux Ext2 FS is used. DEC Alpha's and MIPS
+			usualy run a UNIX clone or Linux using the Ext2 FS file system, or somthing comparable. If they run
+			Windows NT, NTFS is used. PowerPCs generaly run Linux using Ext2 FS or sometimes BeOS using BeFS.
+		</P>
+		<TABLE BORDER=1>
+			<TR>
+				<TH>X</TH><TH>TriFS</TH><TH>FAT 16</TH><TH>FAT 32</TH><TH>Ext2 FS</TH><TH>Ext3 FS</TH><TH>HFS</TH><TH>HFS+</TH><TH>NTFS</TH><TH>BeFS</TH><TH>ReiserFS</TH><TH>XFS</TH><TH>HPFS</TH><TH>ISO 9660</TH><TH>Joiliet</TH><TH>UDF</TH>
+			</TR>
+			<TR>
+				<TH>X</TH><TH>(TriOS)</TH><TH>(DOS)</TH><TH>(Windows 95)</TH><TH>(Linux)</TH><TH>(Linux)</TH><TH>(MacOS)</TH><TH>(MacOS X)</TH><TH>(Windows NT)</TH><TH>(BeOS)</TH><TH>(Linux)</TH><TH>(Solaris)</TH><TH>(OS/2)</TH><TH>Compact Disc</TH>Compact Disc<TH></TH><TH>Compact Disc</TH>
+			</TR>
+			<TR>
+				<TD>Maximum Disk Size</TD>
+				<TD>16 EB<SUP><A HREF="#comparision-overview-note1">[1]</A></SUP></TD>
+				<TD>2 GB</TD>
+				<TD>2 TB</TD>
+				<TD>4 TB</TD>
+				<TD>?</TD>
+				<TD>65536 B</TD>
+				<TD>2^32 B</TD>
+				<TD>?</TD>
+				<TD>?</TD>
+				<TD>?</TD>
+				<TD>?</TD>
+				<TD>?</TD>
+			</TR>
+				<TD>Maximum File Size</TD>
+				<TD>16 EB</TD>
+				<TD>2 GB</TD>
+				<TD>4 GB</TD>
+				<TD>2 GB</TD>
+				<TD>?</TD>
+				<TD>2 GB</TD>
+				<TD>8 EB</TD>
+				<TD>?</TD>
+				<TD>?</TD>
+				<TD>?</TD>
+				<TD>?</TD>
+				<TD>?</TD>
+			</TR>
+			</TR>
+				<TD>Consistancy</TD>
+				<TD>Transaction Log</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>Journal</TD>
+				<TD>-</TD>
+				<TD>Journal</TD>
+				<TD>Journal</TD>
+				<TD>Journal</TD>
+				<TD>Journal</TD>
+				<TD>Journal</TD>
+				<TD>?</TD>
+			</TR>
+			</TR>
+				<TD>Access Control</TD>
+				<TD>ACL</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>UNIX</TD>
+				<TD>UNIX</TD>
+				<TD>(UNIX)</TD>
+				<TD>(UNIX)</TD>
+				<TD>ACL</TD>
+				<TD>UNIX</TD>
+				<TD>UNIX</TD>
+				<TD>UNIX</TD>
+				<TD>?</TD>
+			</TR>
+			</TR>
+				<TD>Compression</TD>
+				<TD>Yes</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>Yes</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>?</TD>
+			</TR>
+			</TR>
+				<TD>Encryption</TD>
+				<TD>Yes</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>Yes</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>?</TD>
+			</TR>
+			</TR>
+				<TD>Versioning</TD>
+				<TD>Yes</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>?</TD>
+			</TR>
+			</TR>
+				<TD>Balanced Directories</TD>
+				<TD>Yes</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>Yes</TD>
+				<TD>Yes</TD>
+				<TD>?</TD>
+				<TD>?</TD>
+				<TD>?</TD>
+				<TD>Yes</TD>
+				<TD>Yes</TD>
+			</TR>
+			</TR>
+				<TD>File Name Lenght</TD>
+				<TD>Unlimited</TD>
+				<TD>8 : 3</TD>
+				<TD>255-</TD>
+				<TD>255 (1020)</TD>
+				<TD>?</TD>
+				<TD>31</TD>
+				<TD>255</TD>
+				<TD>255</TD>
+				<TD>?</TD>
+				<TD>?</TD>
+				<TD>?</TD>
+				<TD>?</TD>
+			</TR>
+			</TR>
+				<TD>File Name Encoding</TD>
+				<TD>Unicode</TD>
+				<TD>ASCII</TD>
+				<TD>Unicode</TD>
+				<TD>?</TD>
+				<TD>?</TD>
+				<TD>ASCII</TD>
+				<TD>Unicode</TD>
+				<TD>Unicode</TD>
+				<TD>Unicode</TD>
+				<TD>?</TD>
+				<TD>?</TD>
+				<TD>ASCII</TD>
+			</TR>
+			</TR>
+				<TD>Streams</TD>
+				<TD>Yes</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>2</TD>
+				<TD>2</TD>
+				<TD>Yes</TD>
+				<TD>Yes</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+				<TD>-</TD>
+			</TR>
+		</TABLE>
+		<P>
+			<A NAME="comparision-overview-note1">
+			<SUP>[1]</SUP> Bigger volumes are possible, but not supported by most drivers and operating systems. (The true maximum disk size is 16 EB times the block size in bytes.)
+		</P>
+		<TABLE>
+			<TR><TH>abbreviation</TH><TH>name</TH><TH>size indication</TH><TH>exact size<TH></TR>
+			<TR><TD>GB</TD><TD>Gigabyte</TD><TD>thousand MB</TD><TD></TD></TR>
+			<TR><TD>TB</TD><TD>Terabyte</TD><TD>million MB</TD><TD></TD></TR>
+			<TR><TD>PB</TD><TD>Petabyte</TD><TD>billion MB</TD><TD></TD></TR>
+			<TR><TD>EB</TD><TD>Exabyte</TD><TD>trillion MB</TD><TD></TD></TR>
+			<TR><TD>ZB</TD><TD>Zettabyte</TD><TD>thousand EB</TD><TD></TD></TR>
+			<TR><TD>YB</TD><TD>Yottabyte</TD><TD>million EB</TD><TD></TD></TR>
+		</TABLE>
+	</BODY>
+</HTML>

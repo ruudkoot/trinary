@@ -1,0 +1,113 @@
+<HTML>
+    <HEAD>
+        <TITLE>Trinary File System : Comparision</TITLE>
+    </HEAD>
+
+    <BODY>
+        <H1>Comparision</H1>
+        <P>
+            Copryright (c) 2003, <A HREF="mailto:rudykoot@trianry.tk">Rudy Koot</A> (<I>Trinary Technologies</I>)
+        </P>
+        <P>
+            Permission is granted to copy, distribute and/or modify this
+            document under the terms of the GNU Free Documentation License,
+            Version 1.2 or any later version published by the Free Software
+            Foundation; with no Invariant Sections, no Front-Cover Texts, and no
+            Back-Cover Texts. A copy of the license is included in the section
+            entitled "GNU Free Documentation License".
+        </P>
+
+        <A NAME="contents">
+        <H2>Contents</H2>
+        <P>
+            <UL>
+                <LI><A HREF="#contents">Contents</A></LI>
+            </UL>
+        </P>
+
+        <H3>NTFS</H3>
+        <P>
+            I´ll start of with NTFS (Microsoft´s New Technology File System)
+            because it is, in my humble opinion, the most advanced file system
+            designed, until this moment. It was designed in parallel with the
+            Microsoft Windows NT 3.1 operating system, by a seperate design
+            team. Internally it is layout as an transaction-based relational
+            database. We'l now explore the many features of NTFS.
+
+            <UL>
+                <LI>
+                    <B>Reliability</B> is achieved by several file system
+                    structures. The most important one is the Transaction Log,
+                    also known as the Journal. Journalling is quite a hot topic
+                    in file system design, but NTFS had the ability as early as
+                    1994. And more importantly NTFS's transaction really work,
+                    in contradiction to some of the file systems that have the
+                    capability of journalling added after it was designed. 
+                </LI>
+                <LI>
+                    The <B>Master File Table (MFT)</B> is the heart of the NTFS
+                    file system. The Master File Table allows the file system to
+                    work like a database, but it is also a database on it's own.
+                    It contains a record for each file, directory and metadata
+                    structure on disk. Each record contains the location of the
+                    attributes of a file and even some of the attributes
+                    themselves if they are small enough.
+                </LI>
+                <LI>
+                    Everything part of a file is stored as an <B>Attribute</B>.
+                    Each file contains several Attributes like the Creation
+                    Time, File Name and file's contents itself. The standard
+                    contents are store in the Unnamed Attribute, but NTFS allows
+                    multiple file streams using more attributes.
+                </LI>
+                <LI>
+                    NTFS allows <B>Compression</B> on a file basis. It splits
+                    files in 64 kB blocks so that files can be read and written
+                    efficiently even after they have been compressed.
+                    <I>
+                        TriFS will use a different (or maybe even an user
+                        selectable) compression algorithm. NTFS uses the
+                        copyrighted LZW while TriFS will most likely use the
+                        more advanced LZ77 algorithm. Next to that TriFS will
+                        allow dynamically sized compression blocks, becuase 64
+                        kB will be too small for future systems. Mabe the
+                        blocksize can even differ within a file, to increase
+                        compression, without loosing speed. Parts that don't
+                        change can use large blocks, while parts that do can use
+                        small blocks.
+                    </I>
+                </LI>
+                <LI>
+                    NTFS allows <B>Encryption</B> on a per file basis.
+                    <I>
+                        There's isn't much wrong with NTFS's encryption support,
+                        but it is rather limited. It always uses the same 
+                        encryption same encryption algorithms and will only
+                        store keys for the users who compressed it and for the
+                        recovery user (usually the administrator). TriFS will
+                        allows you store multiple keys, so you can share
+                        encrypted files among multiple users.
+                    </I>
+                </LI>
+                <LI>
+                    <B>Quotas</B> are now embedded inside the file system. This
+                    increases speed and reliability.
+                </LI>
+                <LI>
+                    <B>Reparse Points</B> are a really weak form of symbolic
+                    links, they only support directories. I guess Microsoft
+                    needs them for the Distributed File System, because I don't
+                    se why else they would have made them so useless.
+                </LI>
+                <LI>
+                    <B>Sparse Files</B> are files of which only the parts that
+                    are used (non zero) are stored. Although it decreases the
+                    space consumed by some files, it will cause files to become
+                    fragmented more quickly. They are only used for log files
+                    with a consumer at the beginning in the file and a producer
+                    writing at the end
+                </LI>
+            </UL>
+        </P>
+    </BODY>
+</HTML>

@@ -144,6 +144,13 @@ void disk_read(disk_t* disk, unt8* buffer, unt64 block, unt64 count)
     fflush(disk->file);
 }
 
+void disk_write(disk_t* disk, unt8* buffer, unt64 block, unt64 count)
+{
+    fseek(disk->file, block * disk->blocksize, SEEK_SET);
+    fwrite(buffer, disk->blocksize, count, disk->file);
+    fflush(disk->file);
+}
+
 void disk_close(FILE* disk)
 {
 	fclose(disk);
