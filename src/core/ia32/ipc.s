@@ -68,10 +68,29 @@ _asm_ipc:
     jne _asm_send_error;
 
 _asm_set_receive:
-    
+
     /* If we are receiving go into the receive state.                         */
     cmpl $0, %edx;
     je _asm_send_unwait;
+
+    /**************************************************************************/
+    
+    /* If we are waiting for an interrupt return if it is already pending.    */
+    cmpl $5, %edx;
+    jne _asm_set_continue;
+
+    cmpl $0, _int_flag14;
+    je _asm_set_continue;
+
+    movl $0, _int_flag14;
+    jmp _asm_ipc_return;
+
+
+xxx: .asciz "IPC: INTERRUPT 14 PENDING!";
+    
+    /**************************************************************************/
+
+_asm_set_continue:
 
     movl _ipc_currentthread, %ebp;
     movl $2, _ipc_threadstate(,%ebp,4);    
@@ -90,6 +109,8 @@ _asm_thread_select:
     /* AND SPECIAL HANDLING FOR root!                                         */
 
     /* If we are not sending select a thread to switch to.                    */
+    
+    /**************************************************************************/
     movl %eax, %ebp;
 
     cmpl $0, %eax;
@@ -101,6 +122,7 @@ _asm_thread_select:
     jne _asm_ipc_switch;
 
     movl $1, %ebp;
+    /**************************************************************************/
 
 _asm_ipc_switch:
 
@@ -273,6 +295,13 @@ _int_entry:
     movl %esi, -24(%esp);
     movl %edi, -28(%esp);
 
+    /* PRINT INTERRUPT COUNT!                                                 */
+    incb 0xB8098;
+    
+    /* HARDISK INTERRUPT ACKNOWLEDGE!                                         */
+    movw $0x1F7, %dx;
+    inb %dx, %al;
+    
     /* Clear the interrupt controllers.                                       */
     movl $0x20, %eax;
     movl $0xA0, %edx;
@@ -323,12 +352,32 @@ _int_entry:
 
 _int_panic:
 
-    pushl $_int_panicmessage;
-    call _panic;
+    /* Raise the interrupt flag.                                              */
+    movl $1, _int_flag14;
+
+    /* Restore the user segments.                                             */
+    movl $0x2B, %eax;
+    movl %eax, %ds;
+    movl %eax, %es;
+    movl %eax, %fs;
+    movl %eax, %gs;
+
+    /* Restore user state.                                                    */
+    movl -4(%esp), %eax;
+    movl -8(%esp), %ecx;
+    movl -12(%esp), %edx;
+    movl -16(%esp), %ebx;
+    movl -20(%esp), %ebp;
+    movl -24(%esp), %esi;
+    movl -28(%esp), %edi;
+
+    iretl;
 
 .data
 
 _int_panicmessage: .asciz "PANIC: INTERRUPT HANDLER NOT WAITING!";
+
+_int_flag14:        .long 0x00000000;
 
 _ipc_currentthread: .long 0x00000000;
 _ipc_schedulethread:.long 0x00000000;
