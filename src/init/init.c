@@ -197,13 +197,13 @@ void entry(void)
     gdt48.limit = 2048;
     gdt48.base = ((unsigned)(gdt)) + 0x90000;
 
-    gdt[0].b1 = 0; gdt[0].b1 = 0; gdt[0].w2 = 0;
+    gdt[0].b1 = 0; gdt[0].b2 = 0; gdt[0].w2 = 0;
     gdt[0].w1 = 0; gdt[0].t1 = 0; gdt[0].t2 = 0;
 
-    gdt[1].b1 = 0; gdt[1].b1 = 0; gdt[1].w2 = 0;
+    gdt[1].b1 = 0; gdt[1].b2 = 0; gdt[1].w2 = 0;
     gdt[1].w1 = 0xFFFF; gdt[1].t1 = 0x9A; gdt[1].t2 = 0xCF;
 
-    gdt[2].b1 = 0; gdt[2].b1 = 0; gdt[2].w2 = 0;
+    gdt[2].b1 = 0; gdt[2].b2 = 0; gdt[2].w2 = 0;
     gdt[2].w1 = 0xFFFF; gdt[2].t1 = 0x92; gdt[2].t2 = 0xCF;
 
     asm

@@ -18,6 +18,12 @@
 unsigned TEMP_sched_current;
 unsigned TEMP_ESP;
 
+extern unsigned ipc_threadstate[6];
+extern unsigned ipc_threadstack[6];
+extern unsigned ipc_threadspace[6];
+extern unsigned ipc_threadedi[6];
+extern unsigned ipc_threadeip[6];
+
 void task0(void);
 void task1(void);
 void task2(void);
@@ -71,41 +77,41 @@ typedef struct
 
 sched_arch_task task[6];
 
-void sched_arch_switch(sched_arch_task* current, sched_arch_task* next);
+void sched_arch_switch(unsigned current, unsigned next);
 
 void sched_arch_init(void)
 {
     unsigned i;
     
-    TEMP_sched_current = 0;
+    ipc_currentthread = 0;
 
-    task[0].esp = ((unsigned)(task[0].stack + 4096));
-    task[1].esp = ((unsigned)(task[1].stack + 4096));
-    task[2].esp = ((unsigned)(task[2].stack + 4096));
-    task[3].esp = ((unsigned)(task[3].stack + 4096));
-    task[4].esp = ((unsigned)(task[4].stack + 4096));
-    task[5].esp = ((unsigned)(task[5].stack + 4096));
+    ipc_threadstack[0] = ((unsigned)(task[0].stack + 4096));
+    ipc_threadstack[1] = ((unsigned)(task[1].stack + 4096));
+    ipc_threadstack[2] = ((unsigned)(task[2].stack + 4096));
+    ipc_threadstack[3] = ((unsigned)(task[3].stack + 4096));
+    ipc_threadstack[4] = ((unsigned)(task[4].stack + 4096));
+    ipc_threadstack[5] = ((unsigned)(task[5].stack + 4096));
 
-    task[0].eip = ((unsigned)(task0));
-    task[1].eip = ((unsigned)(task1));
-    task[2].eip = ((unsigned)(0x80000000));
-    task[3].eip = ((unsigned)(0x80000000));
-    task[4].eip = ((unsigned)(0x80000000));
-    task[5].eip = ((unsigned)(0x80000000));
+    ipc_threadeip[0] = ((unsigned)(task0));
+    ipc_threadeip[1] = ((unsigned)(task1));
+    ipc_threadeip[2] = ((unsigned)(0x80000000));
+    ipc_threadeip[3] = ((unsigned)(0x80000000));
+    ipc_threadeip[4] = ((unsigned)(0x80000000));
+    ipc_threadeip[5] = ((unsigned)(0x80000000));
 
-    task[0].space = 0x00000000;
-    task[1].space = 0x00000000;
-    task[2].space = 0x00900000;
-    task[3].space = 0x00901000;
-    task[4].space = 0x00902000;
-    task[5].space = 0x00903000;
+    ipc_threadspace[0] = 0x00000000;
+    ipc_threadspace[1] = 0x00000000;
+    ipc_threadspace[2] = 0x00900000;
+    ipc_threadspace[3] = 0x00901000;
+    ipc_threadspace[4] = 0x00902000;
+    ipc_threadspace[5] = 0x00903000;
 
-    task[0].ipcstate = 0;
-    task[1].ipcstate = 0;
-    task[2].ipcstate = 0;
-    task[3].ipcstate = 0;
-    task[4].ipcstate = 1;
-    task[5].ipcstate = 1;
+    ipc_threadstate[0] = 0;
+    ipc_threadstate[1] = 1;
+    ipc_threadstate[2] = 1;
+    ipc_threadstate[3] = 1;
+    ipc_threadstate[4] = 1;
+    ipc_threadstate[5] = 1;
 
     for (i = 0; i < 4096; i++)
     {
@@ -119,15 +125,15 @@ void sched_arch_init(void)
 
     logStatus(logSuccess);
 
-    logHex("Task 1 : Entry Point", ((unsigned)(task[1].eip)));
+    logHex("Task 1 : Entry Point", ((unsigned)(ipc_threadeip[1])));
     logHex("Task 1 : Stack : Start", ((unsigned)(task[1].stack)));
     logHex("Task 1 : Stack : End", ((unsigned)(task[1].stack + 4096)));
-    logHex("Task 1 : Stack : Pointer", ((unsigned)(task[1].esp)));
+    logHex("Task 1 : Stack : Pointer", ((unsigned)(ipc_threadstack[1])));
 
-    logHex("Task 2 : Entry Point", ((unsigned)(task[2].eip)));
+    logHex("Task 2 : Entry Point", ((unsigned)(ipc_threadeip[2])));
     logHex("Task 2 : Stack : Start", ((unsigned)(task[2].stack)));
     logHex("Task 2 : Stack : End", ((unsigned)(task[2].stack + 4096)));
-    logHex("Task 2 : Stack : Pointer", ((unsigned)(task[2].esp)));
+    logHex("Task 2 : Stack : Pointer", ((unsigned)(ipc_threadstack[2])));
 
 }
 
@@ -150,10 +156,9 @@ void sched_arch_savecontext(void);
 
 void sched_arch_switch(unsigned current, unsigned next)
 {
-    /* Switch to the correct address space.                                   */
-
     asm volatile
     (
+  
         /* Store the ESP of the current thread.                               */
         "movl %%esp, %0"                                                  "\n\t"
         /* Restore the ESP of the new thread                                  */
@@ -174,17 +179,17 @@ void sched_arch_switch(unsigned current, unsigned next)
         :
         /* Outputs                                                            */
         /*     0: ESP of the current thread.                                  */
-        "=m" (current->esp),
+        "=m" (ipc_threadstack[current]),
         /*     1: EIP of the current thread.                                  */
-        "=m" (current->eip)
+        "=m" (ipc_threadeip[current])
         :
         /* Inputs                                                             */
         /*     2: ESP of the next thread.                                     */
-        "m" (next->esp),
+        "m" (ipc_threadstack[next]),
         /*     3: EIP of the next thread.                                     */
-        "m" (next->eip),        
+        "m" (ipc_threadeip[next]),        
         /*     4: CR3 of the next thread.                                     */
-        "m" (next->space)
+        "m" (ipc_threadspace[next])
     );
 }
 

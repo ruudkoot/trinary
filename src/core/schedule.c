@@ -28,14 +28,14 @@ void sched_init(void)
 /*                                                                            */
 /* The scheduler uses quite a compicated algorithm to select the best thread. */
 /* to save space in the source code an make reading easy I've documented it   */
-/* a separate document (doc/core/scheduler.thml). In short the scheduler must */
+/* a separate document (doc/core/scheduler.html). In short the scheduler must */
 /* be able to make this operating system a true real-time system, make sure   */
 /* interrupt latencies are low, prevent starvation of processes, make sure    */
 /* threads are scheduled in such a way that caches don't become dirty,        */
 /* correct for unbalanced SMP systems, pair the best threads on Hyper         */
 /* Threading processors, ...                                                  */
 /*                                                                            */
-/* As you can immedeately see this scheduler is quite a bit more complex that */
+/* As you can immediately see this scheduler is quite a bit more complex that */
 /* Linux' (which just implements a round robin scheduler with some support    */
 /* for real time threads).                                                    */
 /*                                                                            */
@@ -48,11 +48,26 @@ void sched_init(void)
 void sched_schedule(void)
 {
     unsigned previous;
+    unsigned i;
+
+    unsigned char* v;
 
     previous = ipc_currentthread;
     
-    ipc_currentthread++;
-    if (ipc_currentthread > 5) ipc_currentthread = 1;
+    for (i = 0; i < 6; i++)
+    {
+        v = (unsigned char*)(0xB8000 + 2 * (56 + i));
+        *v = ipc_threadstate[i] + '0';
+        v++;
+        *v = 0x17;
+    }
+    
+    do
+    {
+        ipc_currentthread++;
+        if (ipc_currentthread > 5) ipc_currentthread = 0;
+    } while (ipc_threadstate[ipc_currentthread] != 1);
+
 
     sched_arch_switch(previous, ipc_currentthread);
 }
