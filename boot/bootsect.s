@@ -23,6 +23,8 @@
 ;  Prevouis Boot Parameters
 ;* COLD BOOT CODE
 ;  Cheack the Load Address
+;  Move the stack
+;  Memory Test
 
 [bits 16]
 [org 0x7C00]

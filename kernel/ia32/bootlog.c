@@ -52,9 +52,18 @@ void logSubItem(char* description, char* value)
 	logScroll();
 	char output[80];
 	strcpy(output, "   [.....................................................................]");
-	strcpy(output+4, description);
-	strcpy(output+73-strlen(value), value);
+	strpst(output+4, description);
+	strpst(output+73-strlen(value), value);
 	displayString(output, 0x07);
+}
+
+void logNote(char* description)
+{
+	logScroll();
+	char output[80];
+	strcpy(output, "   [.....................................................................]");
+	strpst(output+4, description);
+	displayString(output, 0x03);
 }
 
 void logScroll(void)
@@ -83,4 +92,14 @@ void displayString(char* output, unsigned char color)
 		m++;
 		output++;
 	}
+}
+
+/******************************************************************/
+
+void blItem(const char* item)
+{
+	char output[80];
+	strcpy(output, "[ ][.....................................................................]");
+	strpst(output + 4, item);
+	displayString(output, 0x0F);
 }

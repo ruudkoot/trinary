@@ -15,3 +15,8 @@ void logMessage(char* message);
 void logScroll(void);
 
 void displayString(char* output, unsigned char color);
+
+/*******************************/
+
+void blItem(const char* item);
+void logNote(char* description);

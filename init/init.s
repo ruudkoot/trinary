@@ -141,27 +141,99 @@ Start:
 	mov eax, cr0
 	or eax, 0x00000001
 	mov cr0, eax
+	jmp dword 8:Aye+0x90000
+
+[bits 32]
+
+Aye:
+
 	mov ax, 0x10
 	mov ss, ax
 	mov ds, ax
 	mov es, ax
 	mov fs, ax
 	mov gs, ax
-	jmp dword 8:0x11000
 
-[bits 32]
+	mov esi, 0
+	mov edi, 0
+	mov ecx, 0x4000
+	mov eax, 0
+	rep stosd
 
-Aye:
+	mov dword [0x00000000], 0x00001003	;Page Table @ 0x00001000 (R/W, Supervisor, Present) [Direct Mapped]
+	mov dword [0x00000C00], 0x00002003	;Page Table @ 0x00002000 (R/W, Supervisor, Present) [Kernel Code + Data]
+	mov dword [0x00000FFC], 0x00003003	;Page Table @ 0x00003000 (R/W, Supervisor, Present) [Kernel Stack]
 
+	mov ecx, 0x0400
+	PageTable1:
+		mov ebx, ecx
+		dec ebx
+		shl ebx, 2
+		add ebx, 0x1000
+		xor eax, eax
+		mov eax, ecx
+		dec eax
+		shl eax, 12
+		add eax, 3
+		mov [ebx], eax
+	loop PageTable1
 
+	mov ecx, 0x0400
+	PageTable2:
+		mov ebx, ecx
+		dec ebx
+		shl ebx, 2
+		add ebx, 0x2000
+		xor eax, eax
+		mov eax, ecx
+		dec eax
+		shl eax, 12
+		add eax, 0x00010003
+		mov [ebx], eax
+	loop PageTable2
 
-	;xor eax, eax
-	;mov cr3, eax
-	;mov eax, cr0
-	;or eax, 0x80000000
-	;mov cr0, eax
+	mov ecx, 16
+	PageTable3:
+		mov ebx, ecx
+		add ebx, 0x3F0
+		dec ebx
+		shl ebx, 2
+		add ebx, 0x3000
+		xor eax, eax
+		mov eax, ecx
+		dec eax
+		shl eax, 12
+		add eax, 0x00090003
+		mov [ebx], eax
+	loop PageTable3
+
+	xor eax, eax
+	mov cr3, eax
+	mov eax, cr0
+	or eax, 0x80000000
+	mov cr0, eax
+
+	;Life's beutiful isn't it. Protected Mode is enabled. Paging is only. Nothing crashes. And it
+	;only took me two days to get it to this point. (That's 48 hours, better get some more sleep now ;-)
+
+	xor eax, eax
+	xor ebx, ebx
+	xor ecx, ecx
+	xor edx, edx
+	xor esi, esi
+	xor edi, edi
+	mov ebp, 0xFFFFFFFF
+	mov esp, 0xFFFFFFFF
+	clc
+	cld
 	
-	jmp 0x11000
+	;STUPID FUCKING ORG!!!! YOU RUINED AN HOUR OF MY LIFE!!!!
+	jmp 8:0xC0001000
+
+
+	;Should we some how get here (i don't think it's possible because we f*cked up the stack) DIE.
+	;but don't use cli / hlt, because horrible things might happen. Almost as horrible as burning
+	;out the processor. (well no, but I'm hoping these lines won't)
 
 	abc:
 	jmp abc

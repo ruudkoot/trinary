@@ -12,13 +12,15 @@
 //be read-write.
 void main(void)
 {
+
+
 	unsigned char* a;
 	a = (unsigned char*)0xB8E6A;
 	*a = 0xFB;
 	a++;
 	*a = 0x0A;
 
-	heapInit(2*1024*1024, 0);
+	//heapInit(2*1024*1024, 0);
 
 	cpuInit();
 
