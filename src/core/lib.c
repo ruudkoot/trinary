@@ -14,3 +14,4 @@
 #include "lib/mem.c"
 #include "lib/string.c"
 #include "lib/util.c"
+#include "lib/container.c"

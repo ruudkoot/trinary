@@ -8,12 +8,13 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
+#include "arch/ia32/system.c"
+
 void discardable sys_init(void)
 {
     logItem("Initializing System Management");
 
-    asm ("outb %%al,%%dx"::"a" (0x26),"d" (0x43));     //MACRO!!!
-    asm ("outb %%al,%%dx"::"a" (255),"d" (0x40));     //MACRO!!!
+    sys_arch_init();
 
     logStatus(logSuccess);
 }

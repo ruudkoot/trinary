@@ -67,9 +67,7 @@ typedef struct
     unt32 stack[4096];
 } sched_arch_task;
 
-sched_arch_task task[3];
-
-/**/ void pci_probe(void); /**/
+sched_arch_task task[4];
 
 void sched_arch_switch(sched_arch_task* current, sched_arch_task* next);
 
@@ -82,18 +80,21 @@ void sched_arch_init(void)
     task[0].esp = ((unsigned)(task[0].stack + 4096));
     task[1].esp = ((unsigned)(task[1].stack + 4096));
     task[2].esp = ((unsigned)(task[2].stack + 4096));
+    task[3].esp = ((unsigned)(task[3].stack + 4096));
 
 
     
     task[0].eip = ((unsigned)(task0));
     task[1].eip = ((unsigned)(task1));
     task[2].eip = ((unsigned)(task2));
+    task[3].eip = ((unsigned)(dmain));
 
     for (i = 0; i < 4096; i++)
     {
         task[0].stack[i] = 0xAAAAAAAA;
         task[1].stack[i] = 0xBBBBBBBB;
         task[2].stack[i] = 0xCCCCCCCC;
+        task[3].stack[i] = 0xDDDDDDDD;
     }
 
     logStatus(logSuccess);
@@ -109,10 +110,10 @@ void sched_arch_init(void)
 /* sched_arch_switch - Switch to Thread                                       */
 /*                                                                            */
 /* This is THE function. It took me a long time to figure out how to          */
-/* implement it. It looks pretty much the same at the one in Linux. Why did   */
-/* took me such a long time to find the solution? Well basically because I    */
+/* implement it. It looks pretty much the same as the one in Linux. Why did   */
+/* it took me such a long time to find the solution? Well basically because I */
 /* overlooked one important fact. This function is always called in           */
-/* kernel mode. Thsi function is called by the ascheduler, which in it's turn */
+/* kernel mode. This function is called by the scheduler, which in it's turn  */
 /* is called by an interrupt. The interrupt handler saves all the registers   */
 /* for us, so we only have to save the point were the thread has to be        */
 /* restarted, which is right after this function (well actualy some were at   */
@@ -126,7 +127,6 @@ void sched_arch_switch(sched_arch_task* current, sched_arch_task* next)
 {
     asm volatile
     (
-        "pushl %%esi; pushl %%edi; pushl %%ebp;"
         /* Store the ESP of the current thread.                               */
         "movl %%esp, %0"                                                  "\n\t"
         /* Restore the ESP of the new thread                                  */
@@ -141,7 +141,6 @@ void sched_arch_switch(sched_arch_task* current, sched_arch_task* next)
         "ret"                                                             "\n\t"
         /* This is the spawnpoint (all thread continue execution here).       */
         "1:"                                                              "\n\t"
-        "popl %%ebp; popl %%edi; popl %%esi;"
         :
         /* Outputs                                                            */
         /*     0: ESP of the current thread.                                  */

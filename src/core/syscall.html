@@ -16,6 +16,16 @@
                 <LI><A HREF="#contents">Contents</A></LI>
                 <LI><A HREF="#abstact">0 Abstact</A></LI>
                 <LI><A HREF="#introduction">1 Introduction</A></LI>
+                <UL>
+                    <LI><A HREF="#interprocesscommunication">1.1 Inter Process Communication</A></LI>
+                    <LI><A HREF="#remoteprocedurecall">1.2 Remote Procedure Call</A></LI>
+                    <LI><A HREF="#security">1.3 Security</A></LI>
+                </UL>
+                <LI><A HREF="#systemcalls">2 System Calls</A></LI>
+                <UL>
+                    <LI><A HREF="#synchronecall">2.1 Synchrone Call</A></LI>
+                    <LI><A HREF="#asynchronecall">2.2 Asynchrone Call</A></LI>
+                </UL>
                 <LI><A HREF="#conclusion">Concusion</A></LI>
                 <LI><A HREF="#acknowledgements">Acknowledgements</A></LI>
                 <LI><A HREF="#references">References</A></LI>
@@ -33,11 +43,14 @@
 
         <A NAME="introduction">
         <H2>1 Introduction</H2>
+
+        <A NAME="interprocesscommunication">
+        <H3>1.1 Inter Process Communication</H3>
         <P>
             Most micro-kernels allow inter process communication through message
-            passing. Although this is a fast and stabel technique, it has some
+            passing. Although this is a fast and stable technique, it has some
             drawbacks. A major disadvantage for the caller is the fact that it
-            bockes blocked until the call it finished, and will therefore crash
+            becomes blocked until the call it finished, and will therefore crash
             if the server, it is making a call to, has already crashed. L4
             solves this by adding a timeout parameter. Most applications will
             not use this feature, because there is no smooth way to recover, in
@@ -85,12 +98,54 @@
             Trinary handles things a little bit different. Little means there
             isn't much difference for the the caller and a small change for
             the callee. Basically the entire piece of code you can see above is
-            embedded in the core itself.
+            embedded in the core itself. So instead of passing the messages to
+            the application, Trinary creates threads in the application's
+            address space.
+        </P>
+
+        <A NAME="remoteprocedurecall">
+        <H3>1.2 Remote Procedure Calls</H3>
+        <P>
+            Remote Procedure Calls are not directly implemented in the kernel.
+            This is quite logical because Trinary is a micro-kerenl, but QNX,
+            for example, does implement it to make distibuted calls transparent,
+            but it is possible to implement RPC transparent using IPC and
+            proxies.
+        </P>
+        <P>
+            <CENTER>
+                [Application]
+                <-- IPC -->
+                [Proxy]
+                <-- Network ->
+                [Proxy]
+                <-- IPC -->
+                [Application]
+            </CENTER>
+        </P>
+        <P>
+            Another requirement to implement RPC (efficiently) is Distibuted
+            Shared Memory (DSM). Because DSM is very complex to implement, we do
+            again not want to put it in the core.
+        </P>
+
+        <A NAME="security">
+        <H3>1.3 Security</H3>
+        <P>
+            Because the kernel doesn't contain a vitual filesystem, there is no
+            need to implement a full-fledged security system in the kernel
+            itself. However you don't want any random program to be able to call
+            every system call. Therefore programs can run in either user or
+            supervisor mode (this is a software mode, not a hardware mode). 
+            Normally all programs run in user mode, except for some critical
+            servers, that need to create, destory or modify tasks, like
+            Trinary's Object Repository.
         </P>
 
         <A NAME="systemcalls">
         <H2>2 System Calls</H2>
         
+        <A NAME="synchronecall">
         <H3>2.1 Synchrone Call</H3>
         <P>
             This is Trinary's alternative for a IPC call.
@@ -160,19 +215,25 @@
             changes are reflected in both address spaces.
         </P>
         <P>
-            To make increase performance when passing messages, Trinary always
+            To increase performance when passing messages, Trinary always
             shares data, but makes it Copy-On-Write (COW) when you don't want to
-            share it. This ensres that onlythe data that is actually needed is
+            share it. This ensures that only the data that is actually needed is
             copied. This significantly enhances performance over classic message
             passing systems like QNX. This machanism only works on page aligned
             data. When the data isn't page aligned does copy the data until it
             comes across a page boundary and copy-on-writes the rest, except for
             the last bytes, if they do not cover a full page. Another problem
             occurs when you use shared data that is not page aligned. The callee
-            might be able to access data that 
+            might be able to access data that #################
         </P>
 
+        <A NAME="asynchronecall">
         <H3>2.2 Asynchrone Call</H3>
+        <P>
+            This call is similar to the Synchrone Call, except that the caller
+            isn't put to sleep until the cellee returns. Not that, this call
+            will release the caller's quantum.
+        </P>
 
 
         <A NAME="conclusion">
