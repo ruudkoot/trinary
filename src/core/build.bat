@@ -1,5 +1,5 @@
 @ECHO OFF
-SET PATH=.\bin;.\bin\gcc;.\bin\nasm;.\bin\bochs;.\bin\trifs-tools
+SET PATH=.\bin;.\bin\gcc;.\bin\make;.\bin\bochs;.\bin\trifs-tools
 SET CC=gcc -c -o
 REM CC=gcc -fomit-frame-pointer -m386 -malign-double -mwide-multiply -O3 -c -mcpu=pentiumpro -o
 SET LD=ld -s
@@ -25,7 +25,7 @@ ECHO as: ipc.s
 ECHO as: kdb.s
 .\bin\gcc\as ./src/core/ia32/kdb.s -o ./tmp/kdb.o
 ECHO ld: core
-.\bin\gcc\ld -s -T./src/core/core.l -o ./tmp/core ./tmp/entry.o ./tmp/core.o ./tmp/ipc.o ./tmp/kdb.o ./tmp/wrapper.o ./bin/gcc/libgcc.a
+.\bin\gcc\ld -s -T./src/core/core.l -o ./tmp/core ./tmp/entry.o ./tmp/core.o ./tmp/ipc.o ./tmp/kdb.o ./bin/gcc/libgcc.a
 ECHO oc: core
 .\bin\gcc\objcopy ./tmp/core -O elf32-i386
 

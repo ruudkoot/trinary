@@ -99,6 +99,7 @@ void cmain(void)
 	char s[30];
     ata_disk_t disk;
     unsigned char buffer[513];
+    unsigned char a;
 
     out("");
 	out("");
@@ -229,10 +230,9 @@ void cmain(void)
     );
 
 
-
-    for (;;)
-    {
-        ata_readSector(disk, rand(), 1);
+  /*  for (;;)
+    {*/
+        ata_readSector(disk, rand() * 1024, 1);
 
         asm
         (
@@ -248,9 +248,20 @@ void cmain(void)
         ata_inputPio(disk.controller, buffer, 256);
         ata_clearInterrupt(disk.controller);
 
+        for (i = 0; i < 512; i++)
+        {
+            if (buffer[i] == '\0') buffer[i] = ' ';
+            if (i % 2)
+            {
+                a = buffer[i];
+                buffer[i] = buffer[i-1];
+                buffer[i-1] = a;
+            }
+        }
+
         buffer[60] = '\0';
         out(buffer);
-    }
+  /*  }*/
 
     out("");
 	out("");
@@ -308,7 +319,7 @@ void ata_readSector(ata_disk_t disk, unsigned int block, unsigned char count)
 	command.count		= count;
 	command.disk		= disk;
 	command.features	= 0x00;
-	command.command		= 0x20;
+	command.command		= 0xEC;
 
 	ata_command(command);
 }

@@ -33,4 +33,6 @@ SECTIONS
         . = ALIGN(4096);
         *(.bss)
     }
+
+    . = ALIGN(4096);
 }

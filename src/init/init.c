@@ -108,50 +108,50 @@ void init8259(void)
     (
 	    "mov $0x11, %al;"
 	    "out %al, $0x20;"
-	    "jmp .+2;"
-	    "jmp .+2;"
+	    "/*jmp .+2;*/"
+	    "/*jmp .+2;*/"
 
 	    "out %al, $0xA0;"
-	    "jmp .+2;"
-	    "jmp .+2;"
+	    "/*jmp .+2;*/"
+	    "/*jmp .+2;*/"
 
 	    "mov $0x20, %al;"
 	    "out %al, $0x21;"
-	    "jmp .+2;"
-	    "jmp .+2;"
+	    "/*jmp .+2;*/"
+	    "/*jmp .+2;*/"
 
 	    "mov $0x28, %al;"
 	    "out %al, $0xA1;"
-	    "jmp .+2;"
-	    "jmp .+2;"
+	    "/*jmp .+2;*/"
+	    "/*jmp .+2;*/"
 
 	    "mov $0x04, %al;"
 	    "out %al, $0x21;"
-	    "jmp .+2;"
-	    "jmp .+2;"
+	    "/*jmp .+2;*/"
+	    "/*jmp .+2;*/"
 
 	    "mov $0x02, %al;"
 	    "out %al, $0xA1;"
-	    "jmp .+2;"
-	    "jmp .+2;"
+	    "/*jmp .+2;*/"
+	    "/*jmp .+2;*/"
 
 	    "mov $0x01, %al;"
 	    "out %al, $0x21;"
-	    "jmp .+2;"
-	    "jmp .+2;"
+	    "/*jmp .+2;*/"
+	    "/*jmp .+2;*/"
 
 	    "out %al, $0xA1;"
-	    "jmp .+2;"
-	    "jmp .+2;"
+	    "/*jmp .+2;*/"
+	    "/*jmp .+2;*/"
 
 	    "mov $0x00, %al;"
 	    "out %al, $0x21;"
-	    "jmp .+2;"
-	    "jmp .+2;"
+	    "/*jmp .+2;*/"
+	    "/*jmp .+2;*/"
 
 	    "out %al, $0xA1;"
-	    "jmp .+2;"
-	    "jmp .+2;"
+	    "/*jmp .+2;*/"
+	    "/*jmp .+2;*/"
     );
 }
 
