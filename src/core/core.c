@@ -10,14 +10,14 @@
 
 #include "compiler.c"
 
-#include "lib/lib.c"
-
-#include "heap.c"
+#include "lib.c"
 
 #include "lib/container.c"
 
 #include "log.c"
 #include "debug.c"
+
+#include "heap.c"
 
 #include "schedule.c"
 
@@ -27,75 +27,52 @@
 #include "signal.c"
 #include "smp.c"
 
-
-
-#include "pci/pci.c"
-
-int cmain(void)
+/******************************************************************************/
+/* cmain - Entry Point                                                        */
+/*                                                                            */
+/* This is the first entry point. You should only do basic core               */
+/* initialization here, because multi-tasking isn't enabled yet.              */
+/******************************************************************************/
+void cmain(void)
 {
-    char s[20];
-    unsigned stop, time, i;
-    
-    /* :: TEMPORARY :: BEGIN :: */
-        logStatus(logSuccess);
-    /* :: TEMOPRARY ::  END  :: */
+    /* Check the previous item to indicated the core was booted correctly.    */
+    logStatus(logSuccess);
 
-    /* Initialize Heap Management */
-        logItem("Initializing Heap Management");
-        heap_init(0xC0100000);
-        logStatus(logSuccess);
+    /* Initialize the basic core modules.                                     */
+    heap_init();
+    sys_init();
+    cpu_init();
+    sig_init();
+    smp_init();
+    mm_init();
+    sched_init();
 
-    /* Initialize System Management */
-        logItem("Initializing System Management");
-        sysInit();
-        logStatus(logSuccess);
+    /* Enable multi-tasking.                                                  */
 
-    /* Initialize Processor Management */
-        logItem("Initializing Processor Management");
-        prcInit();
+    asm volatile
+    (
+        "mov %%eax, %%esp;"
+        "mov $0xFFFFFFFF, %%eax;"
+        "mov $0xFFFFFFFF, %%ebx;"
+        "mov $0xFFFFFFFF, %%ecx;"
+        "mov $0xFFFFFFFF, %%edx;"
+        "mov $0xFFFFFFFF, %%esi;"
+        "mov $0xFFFFFFFF, %%edi;"
+        "mov $0xFFFFFFFF, %%ebp;"
+        "sti"
+        ::
+        "a" (task[0].esp)
+    );
 
-    /* Initialize Signal Management */
-        logItem("Initializing Signal Management");
-        sig_init();
-        logStatus(logSuccess);
+    for (;;) asm volatile ("hlt");
+}
 
-    /* Initialize SMP Management */
-        logItem("Initializing SMP Management");
-        logStatus(logSuccess);
-        smp_init();
-        
-    /* Initialize Memory Management */
-        logItem("Initializing Memory Management");
-        mmInit();
-        logStatus(logSuccess);
-
-    /* :: TEMPORARY :: BEGIN :: */
-        logNote("The following parameters were set at compile time!");
-        logSubItem("Physical Memory", "16378 kB");
-        logSubItem("Reserved Memory", "1024 kB");
-
-        //pci_probe();
-        
-        logItem("Initailizing Task Management");
-        sched_arch_init();
-     
-
-        asm volatile
-        (
-            "mov %%eax, %%esp;"
-            "mov $0xFFFFFFFF, %%eax;"
-            "mov $0xFFFFFFFF, %%ebx;"
-            "mov $0xFFFFFFFF, %%ecx;"
-            "mov $0xFFFFFFFF, %%edx;"
-            "mov $0xFFFFFFFF, %%esi;"
-            "mov $0xFFFFFFFF, %%edi;"
-            "mov $0xFFFFFFFF, %%ebp;"
-            "sti"
-            ::
-            "a" (task[0].esp)
-        );
-
-        for (;;) asm volatile ("hlt");
-    /* :: TEMOPRARY ::  END  :: */
-
+/******************************************************************************/
+/* dmain - Multi-Tasking Entry Point                                          */
+/*                                                                            */
+/* This is the second entry point of the core. Multi-Tasking is enabled for   */
+/* this one.                                                                  */
+/******************************************************************************/
+void dmain(void)
+{
 }

@@ -10,4 +10,3 @@ void* memsetw(void* s, short i, unsigned n)
 
         return(start);
 }
-

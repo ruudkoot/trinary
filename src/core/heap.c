@@ -14,9 +14,11 @@
 
 unsigned heap_start;
 
-void heap_init(unsigned start)
+void heap_init(void)
 {
-    heap_start = start;
+    logItem("Initializing Heap Management");
+    heap_start = 0xC0100000;
+    logStatus(logSuccess);
 }
 
 void* heap_alloc(unsigned size)

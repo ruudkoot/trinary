@@ -1,5 +1,5 @@
 /******************************************************************************/
-/*                                                                            */
+/* Trinary Operating System Core Link Script                                  */
 /* Copyright (c) 2003, Rudy Koot (Trinary Technologies)                       */
 /*                                                                            */
 /* This program is free software; you can redistribute it and/or modify       */
@@ -8,9 +8,29 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-#include "char.c"
-#include "convert.c"
-#include "math.c"
-#include "mem.c"
-#include "string.c"
-#include "util.c"
+ENTRY(_entry)
+SECTIONS
+{
+    .text 0xC0000000 :
+    {
+        *(.text)
+    }
+
+    .rodata :
+    {
+        . = ALIGN(4096);
+        *(.rodata)
+    }
+
+    .data :
+    {
+        . = ALIGN(4096);
+        *(.data)
+    }
+
+    .bss :
+    {
+        . = ALIGN(4096);
+        *(.bss)
+    }
+}

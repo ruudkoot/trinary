@@ -17,5 +17,7 @@
 
 void sig_init(void)
 {
+    logItem("Initializing Signal Management");
     sig_arch_init();
+    logStatus(logSuccess);
 }

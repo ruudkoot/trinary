@@ -52,4 +52,3 @@ unsigned rotr (
 
         return num;
 }
-
