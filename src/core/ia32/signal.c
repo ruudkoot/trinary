@@ -8,8 +8,6 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-void sched_arch_switch_wrapper(void);
-
 void sig_arch_interrupt_wrapper(void);
 
 void sig_arch_exception_divideerror_wrapper(void);
@@ -360,8 +358,6 @@ void sig_arch_irq0(void)
 {
     TEMP_sig_arch_monitor(0);
     asm ("outb %%al,%%dx"::"a" (0x20),"d" (0x20));
-
-    sched_schedule();
 }
 
 void sig_arch_irq1(void)
