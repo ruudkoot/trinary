@@ -64,6 +64,7 @@ typedef struct
 {
     unt32 esp;
     unt32 eip;
+    unsigned space;
     unt32 stack[4096];
 } sched_arch_task;
 
@@ -84,8 +85,13 @@ void sched_arch_init(void)
 
     task[0].eip = ((unsigned)(task0));
     task[1].eip = ((unsigned)(task1));
-    task[2].eip = ((unsigned)(0xFF840000));
-    task[3].eip = ((unsigned)(0xFF850000));
+    task[2].eip = ((unsigned)(0x80000000));
+    task[3].eip = ((unsigned)(0x80000000));
+
+    task[0].space = 0x00000000;
+    task[1].space = 0x00000000;
+    task[2].space = 0x00900000;
+    task[3].space = 0x00901000;
 
     for (i = 0; i < 4096; i++)
     {
@@ -128,6 +134,8 @@ void sched_arch_savecontext(void);
 
 void sched_arch_switch(sched_arch_task* current, sched_arch_task* next)
 {
+    /* Switch to the correct address space.                                   */
+
     asm volatile
     (
         /* Store the ESP of the current thread.                               */
@@ -138,6 +146,9 @@ void sched_arch_switch(sched_arch_task* current, sched_arch_task* next)
         "movl $1f, %1"                                                    "\n\t"
         /* Restore the EIP of the previous thread.                            */
         "pushl %3"                                                        "\n\t"
+        /* Switch address spaces.                                             */
+        "movl %4, %%eax"                                                  "\n\t"
+        "movl %%eax, %%cr3"                                               "\n\t"
         /* Reenable interrupts (I'll have to think about this!!!)             */
         "sti"                                                             "\n\t"
         /* Save some extra parts of the context.                              */
@@ -155,7 +166,9 @@ void sched_arch_switch(sched_arch_task* current, sched_arch_task* next)
         /*     2: ESP of the next thread.                                     */
         "m" (next->esp),
         /*     3: EIP of the next thread.                                     */
-        "m" (next->eip)        
+        "m" (next->eip),        
+        /*     4: CR3 of the next thread.                                     */
+        "m" (next->space)
     );
 }
 

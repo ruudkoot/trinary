@@ -12,7 +12,7 @@
 /* This module manages address spaces.                                        */
 /******************************************************************************/
 
-#define word /* FUCK!!! I HATE MYSELF */ unsigned int
+#define word unsigned int
 
 unsigned pageholder = 0;
 unsigned* pageholdertable = ((unsigned*)(0xFFFFC000));
@@ -66,6 +66,7 @@ void space_create(word id)
 void space_map(word* d, unsigned a)
 {
     unsigned pt, pagetab;
+    unsigned pf;
     
     if (d[a / (4096 * 1024)] == 0x00000000)
     {
@@ -81,8 +82,42 @@ void space_map(word* d, unsigned a)
         logHex("New Page Table Created @ Physical Address", pt);
         logHex("New Page Table Created @ Virtual Address", pagetab);
 
+        pf = mmPhysicalAlloc() * 4096;
 
+        logHex("New Page Frame Created @ Physical Address", pf);
+        logHex("New Page Frame Created @ Virtual Address", a);
+
+        ((unsigned*)(pagetab))[(a & 0x003FFFFF) / 4096] = pf | 3;
+
+        a += 4096;
+        pf = mmPhysicalAlloc() * 4096;
+
+        logHex("New Page Frame Created @ Physical Address", pf);
+        logHex("New Page Frame Created @ Virtual Address", a);
+
+        ((unsigned*)(pagetab))[(a & 0x003FFFFF) / 4096] = pf | 3;
+
+        a += 4096;
+        pf = mmPhysicalAlloc() * 4096;
+
+        logHex("New Page Frame Created @ Physical Address", pf);
+        logHex("New Page Frame Created @ Virtual Address", a);
+
+        ((unsigned*)(pagetab))[(a & 0x003FFFFF) / 4096] = pf | 3;
+
+        a += 4096;
+        pf = mmPhysicalAlloc() * 4096;
+
+        logHex("New Page Frame Created @ Physical Address", pf);
+        logHex("New Page Frame Created @ Virtual Address", a);
+
+        ((unsigned*)(pagetab))[(a & 0x003FFFFF) / 4096] = pf | 3;
+
+
+        return;
     }
+
+    panic("CRAP: space_map() ISN't CORRECTLY IMPLEMENTED YET!");
 }
 
 /******************************************************************************/
