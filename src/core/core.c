@@ -1,6 +1,6 @@
 /******************************************************************************/
 /* Trinary Operating System Core                                              */
-/* Copyright (c) 2003, Rudy Koot (Trinary Technologies)                       */
+/* Copyright (c) 2004, Rudy Koot (Mithrill Foundation)                        */
 /*                                                                            */
 /* This program is free software; you can redistribute it and/or modify       */
 /* it under the terms of the GNU General Public License as published by       */
@@ -124,3 +124,4 @@ void dmain(void)
     
     for (;;) asm volatile ("hlt");
 }
+
