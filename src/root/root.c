@@ -12,27 +12,46 @@
 #include "../lib/config.c"
 #include "../lib/lib.c"
 
-void panicWrite(unsigned r, unsigned c, char* s)
+/******************************************************************************/
+/* Thsi will one day become the root server, the server that provides basic   */
+/* operating system features like process, file and network management which, */
+/* unlike most popular operating systems, do not resides inside the kernel.   */
+/*                                                                            */
+/* At the moment it is used to test the core and it quire a mess for that     */
+/* reason. It is highly unlikely that any of this code will make it into the  */
+/* real root server.                                                          */
+/******************************************************************************/
+
+void out(char* output)
 {
-    unsigned char* v;
-    v = (unsigned char*)(0xB8000 + 160 * r + 2 * c);
-    //Write a special strcpy() for this!
-    memcpybw(v, s, strlen(s));
+    int i;
+    unsigned source, destination;
+    char* m = (char*)0xB8E68;
+
+    for (i = 0; i < 22; i++)
+    {
+        source        = 0xB8000 + 160 * i + 488;
+        destination    = 0xB8000 + 160 * i + 328;
+
+        memcpy((void*)destination, (void*)source, 148);
+    }
+
+    while (*output)
+    {
+        *m = *output;
+        m++;
+        *m = 0x07;
+        m++;
+        output++;
+    }
 }
 
 void cmain(void)
 {
-    unsigned i = 0;
-    char s[20];
 
-    panicWrite(7, 7, "Root Server Running!");
+    out("");
+    out("Root Server Running!");
 
-    i = 33333;
-    
-    for (;;)
-    {
-        i+=2;
-        u32toa(i, s, 10);
-        panicWrite(2, 4, s);
-    }
+  
+    for (;;);
 }
