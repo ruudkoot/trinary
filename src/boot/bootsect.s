@@ -6,6 +6,7 @@
 ;TODO
 ;  Compact Code
 ;    PUSH/POP
+;    JMP SHORT
 ;  Beautify Code
 ;* Color/Monocrome support
 ;* Auto Reboot
@@ -174,12 +175,12 @@ TestIgnore:
 	cmp al, 'I'
 	jnz IllegalKey
 	call WriteChar
-	jmp StartBooting		;FUCK!
+	jmp short StartBooting		;FUCK!
 IllegalKey:
 	mov ax, 0x0E07
 	mov bx, 0x0007
 	int 0x10
-	jmp Failure
+	jmp short Failure
 Succes:
 ;	mov al, 0xFB
 ;	mov bl, 0x0A	;MONO???
@@ -198,32 +199,32 @@ WriteString:
                 mov ah,0x0E
                 mov bx,0x000F
                 int 0x10
-                jmp LoopWriteMessage
+                jmp short LoopWriteMessage
 	DoneWriteMessage:
                 ret
 CursorOn:
 	mov cx, 0x0020
-	jmp CursorDo
+	jmp short CursorDo
 CursorOff:
 	mov cx, 0x2000
 CursorDo:
 	mov ah, 0x01
-	jmp int10
+	jmp short int10
 SetCursorPosition:
 	mov ah, 0x02
 	mov bh, 0x00
-	jmp int10
+	jmp short int10
 WriteChar:
 	mov ah, 0x09
 	mov bh, 0x00
 	mov cx, 1
-	jmp int10
+	jmp short int10
 ScrollUp:
 	mov ax, 0x0601
 	mov bh, 0x0F
 	mov cx, 0x0202
 	mov dx, 0x184F
-	jmp int10
+	jmp short int10
 Blue:
 	mov ax, 0x0900
 	mov bx, [bp+4]
