@@ -387,13 +387,17 @@ PROCLIST ProcessorList[] =
 //  {"GenuineIntel", 0x0F, 0x02, 0x07, 0x0E, false, "Intel Pentium 4 Mobile (C1)"},
 //  {"AuthenticAMD", 0x06, 4, 4, 0, false, "AMD Athlon 'Thunderbird' Model 4 (B0)"},    //??Grzegorz
 //  {"AuthenticAMD", 0x06,5?, ?, 0, false, "AMD Athlon Ultra 'Mustang' Model 5? (??)"},         /* CANCELED */
+
 //  {"GenuineIntel",F?,3?, ?, ?, "Intel Pentium 4 'Prescott' (??)"},    //.09
 //  {"GenuineIntel",F?,3?, ?, ?, "Intel Xeon 4 'Nocona' (??)"},         //.09
 //  {"GenuineIntel",F?,4?, ?, ?, "Intel Pentium 4 'Tyler' (??)"},
 //  {"GenuineIntel",F?,4?, ?, ?, "Intel Pentium 4 'Tejas' (??)"},
 //  {"GenuineIntel",F?,4?, ?, ?, "Intel Xeon 4 'Potomac' (??)"},
+
 //  {"GenuineIntel", ?,?, ?, ?, "Intel Mobillium 'Banias' (??)"},
 //  {"GenuineIntel", ?,?, ?, ?, "Intel Mobillium 'Dothan' (??)"},
+//  {"GenuineIntel", ?,?, ?, ?, "Intel Mobillium 'Morem' (??)"}, /* Next GEN!!!! */
+//  {"GenuineIntel", ?,?, ?, ?, "Intel Mobillium 'Gilo' (??)"}, /* Next GEN!!!! */
 //  Intel's truly mobile processor. Intel says this is a completly new processor. Sources say it's just
 //  a rework of the PIII or P4. I don't believe this, beacause it has SSE2 (not in PIII) and is faster
 //  than the P4. I guess they just shortened the enormous 20 stage P4 pipeline a bit, which is too long
@@ -419,6 +423,7 @@ PROCLIST ProcessorList[] =
 //  {"GenuineIntel",A?, ?, ?, ?,  ???, "Intel Itanium 2 'Montecito' (??)"}
 //  {"GenuineIntel",A?, ?, ?, ?,  ???, "Intel Itanium 2 'Shavano' (??)"},
 //  {"GenuineIntel",A?, ?, ?, ?,  ???, "Intel Itanium 2? 'Yosemite' (??)"},
+//  {"GenuineIntel",A?, ?, ?, ?,  ???, "Intel Itanium 2? 'Tanglewood' (??)"},
 
 //  {"AuthenticAMD", ?, ?, ?, ?, "AMD Athlon XP64 / Hammer 'Clawhammer' (??)"},
 //  {"AuthenticAMD", ?, ?, ?, ?, "AMD Athlon XP64 / Hammer 'San Diego' (??)"},

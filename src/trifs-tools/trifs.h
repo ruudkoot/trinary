@@ -115,9 +115,33 @@ typedef struct
 	unt32 blocksize;
 } disk_t;
 
-FILE* disk_open(string* name)
+disk_t* disk_open(string* name)
 {
-	return 0;
+    disk_t* disk;
+    disk = malloc(sizeof(disk_t));
+
+    if (disk == NULL)
+    {
+        printf("trifs: Out of Memory");
+        exit(1);
+    }
+
+    disk->file = fopen(name, "r+b");
+
+    if (disk->file == NULL)
+    {
+        printf("trifs: Could not open \'%s\'\n", name);
+        exit(1);
+    }
+
+	return disk;
+}
+
+void disk_read(disk_t* disk, unt8* buffer, unt64 block, unt64 count)
+{
+    fseek(disk->file, block * disk->blocksize, SEEK_SET);
+    fread(buffer, disk->blocksize, count, disk->file);
+    fflush(disk->file);
 }
 
 void disk_close(FILE* disk)
