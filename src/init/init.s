@@ -30,10 +30,10 @@ _Aye:
 	mov ecx, 0x4000
 	rep movsd
 
-    ;Move Core, Root and Test to 1MB.
+    ;Move Core, Root, Test, Ping and Pong to 1MB.
     mov esi, 0x10000
 	mov edi, 0x100000
-	mov ecx, 0x60000
+	mov ecx, 0x80000
 	rep movsd
 
 

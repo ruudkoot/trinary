@@ -65,10 +65,11 @@ typedef struct
     unt32 esp;
     unt32 eip;
     unsigned space;
+    unsigned ipcstate;
     unt32 stack[4096];
 } sched_arch_task;
 
-sched_arch_task task[4];
+sched_arch_task task[6];
 
 void sched_arch_switch(sched_arch_task* current, sched_arch_task* next);
 
@@ -82,16 +83,29 @@ void sched_arch_init(void)
     task[1].esp = ((unsigned)(task[1].stack + 4096));
     task[2].esp = ((unsigned)(task[2].stack + 4096));
     task[3].esp = ((unsigned)(task[3].stack + 4096));
+    task[4].esp = ((unsigned)(task[4].stack + 4096));
+    task[5].esp = ((unsigned)(task[5].stack + 4096));
 
     task[0].eip = ((unsigned)(task0));
     task[1].eip = ((unsigned)(task1));
     task[2].eip = ((unsigned)(0x80000000));
     task[3].eip = ((unsigned)(0x80000000));
+    task[4].eip = ((unsigned)(0x80000000));
+    task[5].eip = ((unsigned)(0x80000000));
 
     task[0].space = 0x00000000;
     task[1].space = 0x00000000;
     task[2].space = 0x00900000;
     task[3].space = 0x00901000;
+    task[4].space = 0x00902000;
+    task[5].space = 0x00903000;
+
+    task[0].ipcstate = 0;
+    task[1].ipcstate = 0;
+    task[2].ipcstate = 0;
+    task[3].ipcstate = 0;
+    task[4].ipcstate = 1;
+    task[5].ipcstate = 1;
 
     for (i = 0; i < 4096; i++)
     {
@@ -99,6 +113,8 @@ void sched_arch_init(void)
         task[1].stack[i] = 0xBBBBBBBB;
         task[2].stack[i] = 0xCCCCCCCC;
         task[3].stack[i] = 0xDDDDDDDD;
+        task[4].stack[i] = 0xEEEEEEEE;
+        task[5].stack[i] = 0xFFFFFFFF;
     }
 
     logStatus(logSuccess);
@@ -132,7 +148,7 @@ void sched_arch_init(void)
 /******************************************************************************/
 void sched_arch_savecontext(void);
 
-void sched_arch_switch(sched_arch_task* current, sched_arch_task* next)
+void sched_arch_switch(unsigned current, unsigned next)
 {
     /* Switch to the correct address space.                                   */
 

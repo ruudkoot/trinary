@@ -162,7 +162,12 @@ sig_arch_irqx_wrapper 15
     extern _syscall_arch_%1
 
     _syscall_arch_%1_wrapper:
+        push ebx
+        push eax
         call _syscall_arch_%1
+        pop ecx
+        pop ecx
+        mov ebx, eax
         iretd
 
 %endmacro

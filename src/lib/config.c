@@ -38,7 +38,7 @@
 
     typedef unt32                       size;
 
-#define discardable
+#define discardable /*__attribute__ ((section (".text.init")))*/
 #endif /* __GNUC__ */
 
 /* Microsoft C / Microsoft Visual C++                                         */
@@ -63,6 +63,6 @@
 
     typedef unt32                       size;
 
-#define discardable
+#define discardable __attribute__ ((section(".init.text")))
 
 #endif /* _MSC_VER */

@@ -57,7 +57,6 @@ void cmain(void)
     out("");
 	out("Root Server Running!");
 	out("");
-
   
     for (i = 0;; i++)
 	{

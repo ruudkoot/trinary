@@ -34,6 +34,9 @@ void sys_arch_timer_setfrequency(unt8 timer, unt32 frequency);
 
 #include "syscall.c"
 
+
+#include "vesa.c"
+
 /******************************************************************************/
 
 /******************************************************************************/
@@ -60,16 +63,16 @@ void cmain(void)
     syscall_init();
 	space_init();
 
+    vesa_init();    /* This won't be in the real kernel. Just for testing!    */
+
     space_create(1);
     space_create(2);
+    space_create(3);
+    space_create(4);
     space_switch(0x900000);
 
     space_map(((word*)(0xFF000000)), 0x80000000);
-    ((unsigned*)(0x80000000))[0] = 0xDEADBEEF;
-    ((unsigned*)(0x80000000))[1] = 0xC0DEBABE;
 
-    logHex("Test 0", ((unsigned*)(0x80000000))[0]);
-    logHex("Test 1", ((unsigned*)(0x80000000))[1]);
 
     logItem("Downloading Root");
 
@@ -78,17 +81,29 @@ void cmain(void)
     space_switch(0x901000);
 
     space_map(((word*)(0xFF001000)), 0x80000000);
-    ((unsigned*)(0x80000000))[0] = 0xDEADBEEF;
-    ((unsigned*)(0x80000000))[1] = 0xC0DEBABE;
 
-    logHex("Test 0", ((unsigned*)(0x80000000))[0]);
-    logHex("Test 1", ((unsigned*)(0x80000000))[1]);
 
     logItem("Downloading Test");
 
     memcpy(0x80000000, 0xFF850000, 16 * 1024);
 
-    space_switch(0x900000);
+    space_switch(0x902000);
+
+    space_map(((word*)(0xFF002000)), 0x80000000);
+
+
+    logItem("Downloading Ping");
+
+    memcpy(0x80000000, 0xFF860000, 16 * 1024);
+
+    space_switch(0x903000);
+
+    space_map(((word*)(0xFF003000)), 0x80000000);
+
+
+    logItem("Downloading Pong");
+
+    memcpy(0x80000000, 0xFF868000, 16 * 1024);
 
     /* Enable multi-tasking.                                                  */
     logItem("Enabling Multi Tasking");
