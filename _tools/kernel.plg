@@ -1,0 +1,87 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: kernel - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\RUDYKO~1\LOCALS~1\Temp\RSPF.tmp" with contents
+[
+/nologo /G6 /Zp16 /ML /W4 /O2 /I "../lib" /FAs /Fa"../_output/" /Fo"../_output/" /Fd"../_output/" /FD /TP /c 
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\kernel\ia32\cpu\configPentium.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\kernel\ia32\bootlog.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\kernel\ia32\cpu.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\kernel\ia32\debug.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\kernel\ia32\heap.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\kernel\kernel.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\kernel\ia32\mm.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\mem\memcpy.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\mem\memset.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strcmp.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strcpy.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strlen.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strncmp.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strncpy.c"
+]
+Creating command line "cl.exe @C:\DOCUME~1\RUDYKO~1\LOCALS~1\Temp\RSPF.tmp" 
+Creating temporary file "C:\DOCUME~1\RUDYKO~1\LOCALS~1\Temp\RSP10.tmp" with contents
+[
+../_output/entry.obj /nologo /base:"0x0" /entry:"entry" /subsystem:windows /pdb:none /map:"../_output/kernel.map" /machine:I386 /nodefaultlib /out:"../_output/kernel.exe" 
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\configPentium.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\bootlog.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\cpu.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\debug.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\heap.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\kernel.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\mm.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\memcpy.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\memset.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strcmp.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strcpy.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strlen.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strncmp.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strncpy.obj"
+]
+Creating command line "link.exe @C:\DOCUME~1\RUDYKO~1\LOCALS~1\Temp\RSP10.tmp"
+<h3>Output Window</h3>
+Compiling...
+configPentium.c
+bootlog.c
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\kernel\ia32\bootlog.c(46) : warning C4101: 'output' : unreferenced local variable
+cpu.c
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\kernel\ia32\cpu.c(1055) : warning C4100: 'processor' : unreferenced formal parameter
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\kernel\ia32\cpu.c(1109) : warning C4800: 'unsigned int' : forcing value to bool 'true' or 'false' (performance warning)
+debug.c
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\kernel\ia32\debug.c(6) : warning C4100: 'message' : unreferenced formal parameter
+heap.c
+kernel.c
+mm.c
+memcpy.c
+memset.c
+strcmp.c
+strcpy.c
+strlen.c
+strncmp.c
+strncpy.c
+Generating Code...
+Linking...
+LINK : warning LNK4096: /BASE value "0" is invalid for Windows 95; image may not run
+Creating temporary file "C:\DOCUME~1\RUDYKO~1\LOCALS~1\Temp\RSP11.bat" with contents
+[
+@echo off
+copy /b ..\_image\boot.bin + ..\_output\kernel.exe + ..\_image\prefix.bin ..\_image\disk.bin
+]
+Creating command line "C:\DOCUME~1\RUDYKO~1\LOCALS~1\Temp\RSP11.bat"
+Create the Disk Image
+..\_image\boot.bin
+..\_output\kernel.exe
+        1 bestand(en) gekopieerd.
+
+
+
+<h3>Results</h3>
+kernel.exe - 0 error(s), 5 warning(s)
+</pre>
+</body>
+</html>

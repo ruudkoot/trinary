@@ -1,0 +1,4 @@
+void configPentium(void)
+{
+
+}
