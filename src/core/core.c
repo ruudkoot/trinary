@@ -11,9 +11,8 @@
 void cmain(void);
 void dmain(void);
 
-#include "config.c"
-
-#include "lib.c"
+#include "../lib/config.c"
+#include "../lib/lib.c"
 
 #include "log.c"
 #include "debug.c"

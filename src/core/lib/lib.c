@@ -8,10 +8,10 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-#include "lib/char.c"
-#include "lib/convert.c"
-#include "lib/math.c"
-#include "lib/mem.c"
-#include "lib/string.c"
-#include "lib/util.c"
-#include "lib/container.c"
+#include "char.c"
+#include "convert.c"
+#include "math.c"
+#include "mem.c"
+#include "string.c"
+#include "util.c"
+#include "container.c"

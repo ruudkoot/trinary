@@ -30,8 +30,36 @@ typedef struct
 
 char* disk_errorcodes[256];
 
+unsigned disk_arch_harddrives;
+unsigned disk_arch_floppydrives;
+
+unsigned char temp_bda[256];
+
+unsigned disk_idlist[256];
+
 void disk_init(void)
 {
+    unsigned i;
+    repository_register_t regs;
+
+    log_item("Initializing BIOS Disk Access");
+
+    /* Mak e acopy of the BDA. We'd better do this somewhere else!            */
+    asm volatile
+    (
+        "xorw %%ax, %%ax;"
+        "movw %%ax, %%ds;"
+        "movw $0x0100, %%cx;"
+        "movw $0x0400, %%si;"
+        "rep movsb;"
+        "movw %%es, %%ax;"
+        "movw %%ax, %%ds;"
+        :
+        :
+        "D" (temp_bda)
+    );
+  
+    /* Initialize the list with BIOS disk errors.                             */
     disk_errorcodes[0x00] = "Successful Completion";
     disk_errorcodes[0x01] = "Invalid Function or Parameter";
     disk_errorcodes[0x02] = "Address Mark Not Found";
@@ -67,6 +95,33 @@ void disk_init(void)
     disk_errorcodes[0xCC] = "Write Fault";
     disk_errorcodes[0xE0] = "Status Register Error";
     disk_errorcodes[0xFF] = "Sense Operation Failed";
+
+    /* Figure out how many floppy and hard dirves we have.                    */
+    if ((*(unsigned*)(temp_bda + 0x10)) & 0x0001)
+    {
+        disk_arch_floppydrives =
+            (( (*(unsigned*)(temp_bda + 0x10)) >> 6) & 0x0003) + 1;
+    }
+    else
+    {
+        disk_arch_floppydrives = 0;
+    }
+    
+    disk_arch_harddrives = temp_bda[0x75];
+
+    /* Register the disk at the Repository.                                   */
+    for (i = 0; i < disk_arch_floppydrives; i++)
+    {
+
+    }
+    
+
+    log_status(log_status_success);
+
+    log_number("Floppy Drives", disk_arch_floppydrives);
+    log_number("Hard Drives", disk_arch_harddrives);
+
+
 }
 
 /******************************************************************************/

@@ -26,10 +26,12 @@ int main(int argc, char* argv[])
     super = malloc(blocksize);
 
     opendevice(argv[1]);
+    blocksize = 512;
     readblock(0, 1, boot);
     closedevice();
 
     opendevice(argv[2]);
+    blocksize = 512;
     readblock(0, 1, super);
 
     memcpy(super, boot, 32);

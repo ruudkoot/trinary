@@ -13,7 +13,7 @@
 /* clear: this module does NOT handle UNIX style signals.                     */
 /******************************************************************************/
 
-#include "arch/ia32/signal.c"
+#include "ia32/signal.c"
 
 void sig_init(void)
 {

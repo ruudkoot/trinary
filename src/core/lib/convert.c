@@ -14,8 +14,8 @@
 
 #include "convert/i16toa.c"
 #include "convert/i32toa.c"
-#include "convert/i64toa.c"
+//#include "convert/i64toa.c"
 
 #include "convert/u16toa.c"
 #include "convert/u32toa.c"
-#include "convert/u64toa.c"
+//#include "convert/u64toa.c"

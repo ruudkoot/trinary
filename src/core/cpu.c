@@ -8,7 +8,7 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-#include "arch/ia32/cpu.c"
+#include "ia32/cpu.c"
 
 void cpu_init(void)
 {

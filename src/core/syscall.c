@@ -8,7 +8,7 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-#include "arch/ia32/syscall.c"
+#include "ia32/syscall.c"
 
 void discardable syscall_init(void)
 {

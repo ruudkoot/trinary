@@ -8,7 +8,7 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-#include "arch/ia32/memory.c"
+#include "ia32/memory.c"
 
 void discardable mm_init(void)
 {
