@@ -23,6 +23,7 @@ extern unsigned ipc_threadstack[6];
 extern unsigned ipc_threadspace[6];
 extern unsigned ipc_threadedi[6];
 extern unsigned ipc_threadeip[6];
+extern unsigned ipc_threadesp0[6];
 
 void task0(void);
 void task1(void);
@@ -86,25 +87,32 @@ void sched_arch_init(void)
     ipc_currentthread = 0;
 
     ipc_threadstack[0] = ((unsigned)(task[0].stack + 4096));
-    ipc_threadstack[1] = ((unsigned)(task[1].stack + 4096));
-    ipc_threadstack[2] = ((unsigned)(task[2].stack + 4096));
-    ipc_threadstack[3] = ((unsigned)(task[3].stack + 4096));
-    ipc_threadstack[4] = ((unsigned)(task[4].stack + 4096));
-    ipc_threadstack[5] = ((unsigned)(task[5].stack + 4096));
+    ipc_threadstack[1] = ((unsigned)(task[1].stack + 4084));
+    ipc_threadstack[2] = ((unsigned)(task[2].stack + 4084));
+    ipc_threadstack[3] = ((unsigned)(task[3].stack + 4084));
+    ipc_threadstack[4] = ((unsigned)(task[4].stack + 4084));
+    ipc_threadstack[5] = ((unsigned)(task[5].stack + 4084));
 
-    ipc_threadeip[0] = ((unsigned)(task0));
-    ipc_threadeip[1] = ((unsigned)(task1));
+    ipc_threadesp0[0] = ((unsigned)(task[0].stack + 4096));
+    ipc_threadesp0[1] = ((unsigned)(task[1].stack + 4096));
+    ipc_threadesp0[2] = ((unsigned)(task[2].stack + 4096));
+    ipc_threadesp0[3] = ((unsigned)(task[3].stack + 4096));
+    ipc_threadesp0[4] = ((unsigned)(task[4].stack + 4096));
+    ipc_threadesp0[5] = ((unsigned)(task[5].stack + 4096));
+
+    ipc_threadeip[0] = ((unsigned)(0x80000000));
+    ipc_threadeip[1] = ((unsigned)(0x80000000));
     ipc_threadeip[2] = ((unsigned)(0x80000000));
     ipc_threadeip[3] = ((unsigned)(0x80000000));
     ipc_threadeip[4] = ((unsigned)(0x80000000));
     ipc_threadeip[5] = ((unsigned)(0x80000000));
 
-    ipc_threadspace[0] = 0x00000000;
-    ipc_threadspace[1] = 0x00000000;
-    ipc_threadspace[2] = 0x00900000;
-    ipc_threadspace[3] = 0x00901000;
-    ipc_threadspace[4] = 0x00902000;
-    ipc_threadspace[5] = 0x00903000;
+    ipc_threadspace[0] = 0x00900000;
+    ipc_threadspace[1] = 0x00901000;
+    ipc_threadspace[2] = 0x00902000;
+    ipc_threadspace[3] = 0x00903000;
+    ipc_threadspace[4] = 0x00904000;
+    ipc_threadspace[5] = 0x00905000;
 
     ipc_threadstate[0] = 0;
     ipc_threadstate[1] = 1;
@@ -123,17 +131,30 @@ void sched_arch_init(void)
         task[5].stack[i] = 0xFFFFFFFF;
     }
 
+    task[1].stack[4095] = 0x2B;         /* SS                                 */
+    task[1].stack[4094] = 0x80002000;   /* ESP                                */
+    task[1].stack[4093] = 0x00000202;   /* EFLAGS                             */
+    task[1].stack[4092] = 0x23;         /* CS                                 */
+    task[1].stack[4091] = 0x80000000;   /* EIP                                */
+    task[1].stack[4090] = 0xAAAAAAAA;   /* EAX                                */
+    task[1].stack[4089] = 0xCCCCCCCC;   /* ECX                                */
+    task[1].stack[4088] = 0xDDDDDDDD;   /* EDX                                */
+    task[1].stack[4087] = 0xBBBBBBBB;   /* EBX                                */
+    task[1].stack[4086] = 0x99999999;   /* EBP                                */
+    task[1].stack[4085] = 0xEEEEEEEE;   /* ESI                                */
+    task[1].stack[4084] = 0xFFFFFFFF;   /* EDI                                */
+
     logStatus(logSuccess);
+
+    logHex("Task 0 : Entry Point", ((unsigned)(ipc_threadeip[0])));
+    logHex("Task 0 : Stack : Start", ((unsigned)(task[0].stack)));
+    logHex("Task 0 : Stack : End", ((unsigned)(task[0].stack + 4096)));
+    logHex("Task 0 : Stack : Pointer", ((unsigned)(ipc_threadstack[0])));
 
     logHex("Task 1 : Entry Point", ((unsigned)(ipc_threadeip[1])));
     logHex("Task 1 : Stack : Start", ((unsigned)(task[1].stack)));
     logHex("Task 1 : Stack : End", ((unsigned)(task[1].stack + 4096)));
     logHex("Task 1 : Stack : Pointer", ((unsigned)(ipc_threadstack[1])));
-
-    logHex("Task 2 : Entry Point", ((unsigned)(ipc_threadeip[2])));
-    logHex("Task 2 : Stack : Start", ((unsigned)(task[2].stack)));
-    logHex("Task 2 : Stack : End", ((unsigned)(task[2].stack + 4096)));
-    logHex("Task 2 : Stack : Pointer", ((unsigned)(ipc_threadstack[2])));
 
 }
 

@@ -73,8 +73,8 @@ void space_map(word* d, unsigned a)
 //        logItem("Hmmm... there's no page table yet!");
 
         pt = mmPhysicalAlloc() * 4096;
-        d[a / (4096 * 1024)] = pt | 3;
-        pageholdertable[pageholder] = pt | 3;
+        d[a / (4096 * 1024)] = pt | 7;
+        pageholdertable[pageholder] = pt | 7;
         pagetab = ((unsigned*)(0xFF000000 + pageholder * 4096));
 
         pageholder++;
@@ -87,7 +87,7 @@ void space_map(word* d, unsigned a)
 //        logHex("New Page Frame Created @ Physical Address", pf);
 //        logHex("New Page Frame Created @ Virtual Address", a);
 
-        ((unsigned*)(pagetab))[(a & 0x003FFFFF) / 4096] = pf | 3;
+        ((unsigned*)(pagetab))[(a & 0x003FFFFF) / 4096] = pf | 7;
 
         a += 4096;
         pf = mmPhysicalAlloc() * 4096;
@@ -95,7 +95,7 @@ void space_map(word* d, unsigned a)
 //        logHex("New Page Frame Created @ Physical Address", pf);
 //        logHex("New Page Frame Created @ Virtual Address", a);
 
-        ((unsigned*)(pagetab))[(a & 0x003FFFFF) / 4096] = pf | 3;
+        ((unsigned*)(pagetab))[(a & 0x003FFFFF) / 4096] = pf | 7;
 
         a += 4096;
         pf = mmPhysicalAlloc() * 4096;
@@ -103,7 +103,7 @@ void space_map(word* d, unsigned a)
 //        logHex("New Page Frame Created @ Physical Address", pf);
 //        logHex("New Page Frame Created @ Virtual Address", a);
 
-        ((unsigned*)(pagetab))[(a & 0x003FFFFF) / 4096] = pf | 3;
+        ((unsigned*)(pagetab))[(a & 0x003FFFFF) / 4096] = pf | 7;
 
         a += 4096;
         pf = mmPhysicalAlloc() * 4096;
@@ -111,7 +111,7 @@ void space_map(word* d, unsigned a)
 //        logHex("New Page Frame Created @ Physical Address", pf);
 //        logHex("New Page Frame Created @ Virtual Address", a);
 
-        ((unsigned*)(pagetab))[(a & 0x003FFFFF) / 4096] = pf | 3;
+        ((unsigned*)(pagetab))[(a & 0x003FFFFF) / 4096] = pf | 7;
 
 
         return;

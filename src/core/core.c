@@ -38,6 +38,7 @@ void sys_arch_timer_setfrequency(unt8 timer, unt32 frequency);
 #include "vesa.c"
 
 #include "ia32/gdt.c"
+#include "ia32/tss.c"
 
 /******************************************************************************/
 
@@ -68,6 +69,7 @@ void cmain(void)
     //vesa_init();    /* This won't be in the real kernel. Just for testing!    */
     
     arch_gdt_init();
+    arch_tss_init();
 
     space_create(1);
     space_create(2);
@@ -85,6 +87,8 @@ void cmain(void)
 
     space_map(((word*)(0xFF001000)), 0x80000000);
 
+    logStatus(logSuccess);
+
 
     logItem("Downloading Test");
 
@@ -94,6 +98,7 @@ void cmain(void)
 
     space_map(((word*)(0xFF002000)), 0x80000000);
 
+    logStatus(logSuccess);
 
     logItem("Downloading Ping");
 
@@ -103,21 +108,41 @@ void cmain(void)
 
     space_map(((word*)(0xFF003000)), 0x80000000);
 
+    logStatus(logSuccess);
 
     logItem("Downloading Pong");
 
     memcpy(0x80000000, 0xFF868000, 16 * 1024);
 
+    logStatus(logSuccess);
+
     /* Enable multi-tasking.                                                  */
     logItem("Enabling Multi Tasking");
 
+    arch_tss->esp0 = ipc_threadesp0[0];
+
+    space_switch(0x900000);
+
     asm volatile
     (
-        "mov %%eax, %%esp;"
-        "sti"
+        "movl %%eax, %%esp;"
+        "movl $0x23, %%eax;"
+        "movl %%eax, %%ds;"
+        "movl %%eax, %%es;"
+        "movl %%eax, %%fs;"
+        "movl %%eax, %%gs;"
+            "cli;hlt;"
+        "pushl $0x2B;"
+        "pushl $0x80002000;"
+        "pushl $0x202;"
+        "pushl $0x23;"
+        "pushl $0x80000000;"
+        "iretl;"
         ::
         "a" (ipc_threadstack[0])
     );
+
+    logStatus(logSuccess);
 
     for (;;) asm volatile ("hlt");
 }
