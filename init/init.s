@@ -338,8 +338,8 @@ gdt:
 	db 0CFh			; page-granular, 32-bit
 	db 0
 
-idt48	dw	0			; idt limit=0
-	dw	0,0			; idt base=0L
+idt48	dw	0xCDEF			; idt limit=0
+	dw	0x5678,0x1234			; idt base=0L
 
 gdt48	dw	0x800		; gdt limit=2048, 256 GDT entries
 	dw	gdt,0x9		; gdt base = 0X9xxxx
@@ -368,6 +368,12 @@ empty8042:
 	ret
 
 init8259:
+
+	;;;;;;;;;;;;;;;;;;;;;;;;;
+		ret
+	;;;;;;;;;;;;;;;;;;;;;;;;
+
+
 	mov al, 0x11
 	out 0x20, al
 	jmp $+2
