@@ -9,7 +9,14 @@
 /******************************************************************************/
 
 /******************************************************************************/
+/* Rudy Koot : Clean                                                          */
+/* This is a clean implementation of the IPC set written by Rudy Koot. This   */
+/* is a template for all other implementations for that set. It has not been  */
+/* optimized and written to be easily understandable.                         */
 /*                                                                            */
+/* Rudy Koot : P6                                                             */
+/* This implementaion of Rudy's set has been tuned for the P6 architecture.   */
+/* Most branches have been eliminated by using conditional move.              */
 /******************************************************************************/
 
 .global _asm_ipc;
@@ -63,15 +70,62 @@ _asm_set_receive:
     
     /* If we are receiving go into the receive state.                         */
     cmpl $0, %edx;
-    je _asm_do_send;
+    je _asm_send_unwait;
 
     movl _ipc_currentthread, %ebp;
     movl $2, _ipc_threadstate(,%ebp,4);    
 
-_asm_do_send:
+_asm_send_unwait:
 
+    /* If we are sending let the target stop waiting.                         */
+    cmpl $0, %eax;
+    je _asm_thread_select;
 
+    movl $1, _ipc_threadstate(,%eax,4);
+
+_asm_thread_select:
     
+    /* DOESNT WORK ENTIERLY YET, JUST ENOUGH FOR ping AND pong!               */
+
+    /* If we are not sending select a thread to switch to.                    */
+    movl %eax, %ebp;
+
+    cmpl $0, %eax;
+    jne _asm_ipc_switch;
+
+    movl %edx, %ebp;
+
+_asm_ipc_switch:
+
+    /* Switch the address space.                                              */
+    movl _ipc_threadspace(,%ebp,4), %ebx;
+    movl %ebx, %cr3;
+
+    /* Switch ESP0.                                                           */
+    movl _ipc_threadesp0(,%ebp,4), %ebx;
+    movl %ebx, 0xFF490004;
+
+    /* Update _ipc_currentthread.                                             */
+    movl %ebp, _ipc_currentthread;
+
+    /* Switch Kernel Stack.                                                   */
+    movl _ipc_threadesp0(,%ebp,4), %esp;
+    subl $20, %esp;
+
+_asm_ipc_restore:
+
+    /* If we are not sending restore the registers.                           */
+    cmpl $0, %eax;
+    jne _asm_ipc_return;
+
+    movl -4(%esp), %eax;
+    movl -8(%esp), %ecx;
+    movl -12(%esp), %edx;
+    movl -16(%esp), %ebx;
+    movl -20(%esp), %ebp;
+    movl -24(%esp), %esi;
+    movl -28(%esp), %edi;
+
 _asm_ipc_return:
 
     /* Restore the user segments.                                             */
@@ -169,13 +223,13 @@ switch_1:
 
 standard_switch:
 
-    /* Switch kernel stacks.                                                  */
-    movl _ipc_currentthread, %ebp;
-    movl _ipc_threadstack(,%ebp,4), %esp;
-
     /* Change ESP0.                                                           */
     movl _ipc_threadesp0(,%ebp,4), %eax;
     movl %eax, 0xFF490004;
+
+    /* Switch Kernel Stack.                                                   */
+    movl %eax, %esp;
+    subl $20, %esp;
 
     /* Switch address space.                                                  */
     movl _ipc_threadspace(,%ebp,4), %eax;

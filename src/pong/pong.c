@@ -31,12 +31,20 @@ void cmain(void)
 {
     unsigned i, d, o;
     char s[20];
+
+    for (i = 0; i < 2000; i++)
+    {
+        u32toa(i, s, 10);
+        out(s);
+    };
+
+    out ("Pong Start");
     
-    for (i = 0;; i++)
+   /* for (i = 0;; i++)
 	{
         u32toa(i, s, 10);
 
-        out(s);
+        out(s);*/
 
 		asm volatile
         (
@@ -50,10 +58,50 @@ void cmain(void)
             "=d" (d)
             :
             "a" (0),
-            "d" (-1),
+            "d" (2),
             "S" (i)
         );
 
+    out ("Pong Stop ");
 
-	}
+    for (i = 0; i < 2000; i++)
+    {
+        u32toa(i, s, 10);
+        out(s);
+    };
+
+    out ("Pong Start 2");
+    
+   /* for (i = 0;; i++)
+	{
+        u32toa(i, s, 10);
+
+        out(s);*/
+
+		asm volatile
+        (
+            "pushl %%ebp;"
+            "int $0xC0;"
+            "popl %%ebp;"
+            :
+            "=S" (o),
+            "=D" (d),
+            "=b" (d),
+            "=d" (d)
+            :
+            "a" (0),
+            "d" (2),
+            "S" (i)
+        );
+
+    out ("Pong Stop 2 ");
+
+    for (i = 0;; i++)
+    {
+        u32toa(i, s, 10);
+        out(s);
+    };
+
+
+	/*}*/
 }
