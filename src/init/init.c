@@ -13,15 +13,21 @@
 /*                         * Defuck the source code.                          */
 /******************************************************************************/
 
+#define word unsigned int
+
 #define NOMEM
 #include "../lib/config.c"
 #include "../lib/lib.c"
+
+#include "mem.c"
+#include "heap.c"
 
 #include "repository.c"
 
 #include "ia32/ibm/log.c"
 #include "ia32/ibm/disk.c"
 #include "ia32/ibm/system.c"
+#include "ia32/ibm/memory.c"
 
 #include "ibm.c"
 #include "trifs.c"
@@ -29,14 +35,6 @@
 #include "ext2.c"
 
 extern void Aye(void);
-
-
-/***********/
-
-void memory_detect(void);
-
-
-/**************/
 
 
 struct
@@ -172,6 +170,8 @@ void entry(void)
     log_subitem("FAT12 / FAT16 / FAT32");
     log_subitem("Ext2 FS");
 
+    heap_init(0xD000, 0x1000);
+
     disk_init();
 
     trifs_list();
@@ -239,40 +239,4 @@ void entry(void)
     );
    
     return;
-}
-
-void memory_detect(void)
-{
-    unsigned char buffer[20];
-    unsigned c, d, i;
-    
-    log_item("Detecting Memory");
-
-    memset(buffer, 0, 20);
-
-    c = 0;
-
-    do
-    {
-        asm
-        (
-            "int $0x15;"
-            :
-            "=b" (d)
-            :
-            "a" (0x0000E820),   /* Function   : E820h    */
-            "b" (c),            /* Part       : 0        */
-            "c" (20),           /* Buffer Size: 20 bytes */
-            "d" (0x534D4150),   /* Key        : SMAP     */
-            "D" (buffer)
-        );
-
-        log_hex("Identifier", c);
-        log_hex("  Base", (*(unsigned*)(buffer + 0)));
-        log_hex("  Lenght", (*(unsigned*)(buffer + 8)));
-        log_hex("  Type", (*(unsigned*)(buffer + 16)));
-
-        c = d;
-
-    } while (c != 0);
 }
