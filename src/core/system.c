@@ -8,7 +8,7 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-#include "arch/ia32/ibm/system.c"
+#include "ia32/ibm/system.c"
 
 void discardable sys_init(void)
 {

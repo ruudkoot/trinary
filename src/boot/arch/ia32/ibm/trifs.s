@@ -251,11 +251,6 @@ loadsector:
 
     ret;
 
-
-
-
-
-
     . = 510;
     .byte 0x55;
     .byte 0xAA;

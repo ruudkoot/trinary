@@ -8,7 +8,7 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-#include "arch/ia32/schedule.c"
+#include "ia32/schedule.c"
 
 void sched_init(void)
 {
