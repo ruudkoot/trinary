@@ -1,5 +1,19 @@
-[BITS 16]
-[ORG 0x0000]
+;******************************************************************************;
+;* System Initialization                                                      *;
+;* Copyright (c) 2003, Rudy Koot (Trinary Technologies)                       *;
+;*                                                                            *;
+;* This program is free software; you can redistribute it and/or modify       *;
+;* it under the terms of the GNU General Public License as published by       *;
+;* the Free Software Foundation; either version 2 of the License, or          *;
+;* (at your option) any later version.                                        *;
+;******************************************************************************;
+
+;******************************************************************************;
+;* THIS MODULE IS OUTDATED AND WILL BE FADED OUT!                             *;
+;******************************************************************************;
+
+bits 16
+org 0x0000
 
 _enterPM:
 
@@ -230,7 +244,7 @@ Aye:
 	or eax, 0x80000000
 	mov cr0, eax
 
-	;Life's beautiful isn't it. Protected Mode is enabled. Paging is only. Nothing crashes. And it
+	;Life's beautiful isn't it. Protected Mode is enabled. Paging is online. Nothing crashes. And it
 	;only took me two days to get it to this point. (That's 48 hours, better get some more sleep now ;-)
 
 	xor eax, eax
@@ -239,22 +253,23 @@ Aye:
 	xor edx, edx
 	xor esi, esi
 	xor edi, edi
-	mov ebp, 0xFFFFFFFF
-	mov esp, 0xFFFFFFFF
+	xor ebp, ebp
+	xor esp, esp
 	clc
 	cld
-	
+
 	;STUPID FUCKING ORG!!!! YOU RUINED AN HOUR OF MY LIFE!!!!
-	;REMEMBER: BIN/ELF = 8:C0000000 
+	;REMEMBER: BIN/ELF = 8:C0000000 (need to strip header)
       ;          PECOFF  = 8:C0001000
 	jmp 8:0xC0000000
 
 
-	;Should we some how get here (i don't think it's possible because we f*cked up the stack) DIE.
+	;Should we somehow get here (i don't think it's possible because we f*cked up the stack) DIE.
 	;but don't use cli / hlt, because horrible things might happen. Almost as horrible as burning
 	;out the processor. (well no, but I'm hoping these lines won't)
 
 	abc:
+          hlt
 	jmp abc
 
 [bits 16]
@@ -429,4 +444,5 @@ init8259:
 
 	ret
 
-times (9216-4096)-($-$$) db 0
+	times 11776-($-$$) db 0
+
