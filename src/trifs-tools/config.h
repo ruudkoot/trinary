@@ -36,19 +36,21 @@
 
     typedef unt32                       size;
 
+#define packed
+
 #define discardable
 #endif /* __GNUC__ */
 
 /* Microsoft C / Microsoft Visual C++                                         */
 #ifdef _MSC_VER 
-    typedef signed __int8               int8;
-    typedef signed __int16              int16;
-    typedef signed __int32              int32;
+    typedef signed char                 int8;
+    typedef signed short                int16;
+    typedef signed int                  int32;
     typedef signed __int64              int64;
 
-    typedef unsigned __int8             unt8;
-    typedef unsigned __int16            unt16;
-    typedef unsigned __int32            unt32;
+    typedef unsigned char               unt8;
+    typedef unsigned short              unt16;
+    typedef unsigned int                unt32;
     typedef unsigned __int64            unt64;
 
     typedef void*                       pointer;
@@ -56,4 +58,6 @@
 
     typedef unt32                       size;
 #define discardable
+
+#define packed __declspec(align(1))
 #endif /* _MSC_VER */
