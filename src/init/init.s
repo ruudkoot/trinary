@@ -255,13 +255,13 @@ Aye:
 	xor edx, edx
 	xor esi, esi
 	xor edi, edi
-	mov ebp, 0xFFFFFFFF
-	mov esp, 0xFFFFFFFF
+	xor ebp, ebp
+	xor esp, esp
 	clc
 	cld
 
 	;STUPID FUCKING ORG!!!! YOU RUINED AN HOUR OF MY LIFE!!!!
-	;REMEMBER: BIN/ELF = 8:C0000000 
+	;REMEMBER: BIN/ELF = 8:C0000000 (need to strip header)
       ;          PECOFF  = 8:C0001000
 	jmp 8:0xC0000000
 
@@ -271,6 +271,7 @@ Aye:
 	;out the processor. (well no, but I'm hoping these lines won't)
 
 	abc:
+          hlt
 	jmp abc
 
 [bits 16]
