@@ -8,6 +8,11 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
+int bitget(void* bitmap, unt32 bit)
+{
+    return ((unt32*)(bitmap))[bit / 32] & (1 << (bit % 32));
+}
+
 void bitput(void* bitmap, unt32 bit)
 {
 

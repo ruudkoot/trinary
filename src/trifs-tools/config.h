@@ -43,6 +43,9 @@
 
 /* Microsoft C / Microsoft Visual C++                                         */
 #ifdef _MSC_VER 
+
+    typedef enum {false = 0, true = !0} bool;
+
     typedef signed char                 int8;
     typedef signed short                int16;
     typedef signed int                  int32;

@@ -394,6 +394,9 @@ PROCLIST ProcessorList[] =
 //  {"GenuineIntel",F?,4?, ?, ?, "Intel Pentium 4 'Tejas' (??)"},
 //  {"GenuineIntel",F?,4?, ?, ?, "Intel Xeon 4 'Potomac' (??)"},
 
+//GI Nehalem Pentium 5
+
+
 //  {"GenuineIntel", ?,?, ?, ?, "Intel Mobillium 'Banias' (??)"},
 //  {"GenuineIntel", ?,?, ?, ?, "Intel Mobillium 'Dothan' (??)"},
 //  {"GenuineIntel", ?,?, ?, ?, "Intel Mobillium 'Morem' (??)"}, /* Next GEN!!!! */
@@ -419,7 +422,7 @@ PROCLIST ProcessorList[] =
 //  {"GenuineIntel", 7, 7, 4, 0, "Intel Itanium 'Merced' (C2)"},                //0007000804
 //  {"GenuineIntel", 0x10, 0, ?, 0, "Intel Itanium 2 'McKinley' (B3)"},         //001F000704
 //  {"GenuineIntel",A?, ?, ?, ?,  ???, "Intel Itanium 2 'Madison' (??)"},
-//  {"GenuineIntel",A?, ?, ?, ?,  ???, "Intel Itanium 2 'Deerfield' (??)"},
+//  {"GenuineIntel",A?, ?, ?, ?,  ???, "Intel Itanium 2 'Deerfield' (??)"},XXX
 //  {"GenuineIntel",A?, ?, ?, ?,  ???, "Intel Itanium 2 'Montecito' (??)"}
 //  {"GenuineIntel",A?, ?, ?, ?,  ???, "Intel Itanium 2 'Shavano' (??)"},
 //  {"GenuineIntel",A?, ?, ?, ?,  ???, "Intel Itanium 2? 'Yosemite' (??)"},
