@@ -114,7 +114,7 @@ void sched_arch_init(void)
     ipc_threadspace[4] = 0x00904000;
     ipc_threadspace[5] = 0x00905000;
 
-    ipc_threadstate[0] = 0;
+    ipc_threadstate[0] = 1;
     ipc_threadstate[1] = 1;
     ipc_threadstate[2] = 1;
     ipc_threadstate[3] = 1;
@@ -131,18 +131,21 @@ void sched_arch_init(void)
         task[5].stack[i] = 0xFFFFFFFF;
     }
 
-    task[1].stack[4095] = 0x2B;         /* SS                                 */
-    task[1].stack[4094] = 0x80002000;   /* ESP                                */
-    task[1].stack[4093] = 0x00000202;   /* EFLAGS                             */
-    task[1].stack[4092] = 0x23;         /* CS                                 */
-    task[1].stack[4091] = 0x80000000;   /* EIP                                */
-    task[1].stack[4090] = 0xAAAAAAAA;   /* EAX                                */
-    task[1].stack[4089] = 0xCCCCCCCC;   /* ECX                                */
-    task[1].stack[4088] = 0xDDDDDDDD;   /* EDX                                */
-    task[1].stack[4087] = 0xBBBBBBBB;   /* EBX                                */
-    task[1].stack[4086] = 0x99999999;   /* EBP                                */
-    task[1].stack[4085] = 0xEEEEEEEE;   /* ESI                                */
-    task[1].stack[4084] = 0xFFFFFFFF;   /* EDI                                */
+    for (i = 1; i < 4; i++)
+    {
+        task[i].stack[4095] = 0x2B;         /* SS                             */
+        task[i].stack[4094] = 0x80002000;   /* ESP                            */
+        task[i].stack[4093] = 0x00000202;   /* EFLAGS                         */
+        task[i].stack[4092] = 0x23;         /* CS                             */
+        task[i].stack[4091] = 0x80000000;   /* EIP                            */
+        task[i].stack[4090] = 0xAAAAAAAA;   /* EAX                            */
+        task[i].stack[4089] = 0xCCCCCCCC;   /* ECX                            */
+        task[i].stack[4088] = 0xDDDDDDDD;   /* EDX                            */
+        task[i].stack[4087] = 0xBBBBBBBB;   /* EBX                            */
+        task[i].stack[4086] = 0x99999999;   /* EBP                            */
+        task[i].stack[4085] = 0xEEEEEEEE;   /* ESI                            */
+        task[i].stack[4084] = 0xFFFFFFFF;   /* EDI                            */
+    }
 
     logStatus(logSuccess);
 

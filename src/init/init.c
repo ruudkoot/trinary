@@ -200,11 +200,11 @@ void entry(void)
     gdt[0].b1 = 0; gdt[0].b2 = 0; gdt[0].w2 = 0;
     gdt[0].w1 = 0; gdt[0].t1 = 0; gdt[0].t2 = 0;
 
-    gdt[1].b1 = 0; gdt[1].b2 = 0; gdt[1].w2 = 0;
-    gdt[1].w1 = 0xFFFF; gdt[1].t1 = 0x9A; gdt[1].t2 = 0xCF;
-
     gdt[2].b1 = 0; gdt[2].b2 = 0; gdt[2].w2 = 0;
-    gdt[2].w1 = 0xFFFF; gdt[2].t1 = 0x92; gdt[2].t2 = 0xCF;
+    gdt[2].w1 = 0xFFFF; gdt[2].t1 = 0x9A; gdt[2].t2 = 0xCF;
+
+    gdt[3].b1 = 0; gdt[3].b2 = 0; gdt[3].w2 = 0;
+    gdt[3].w1 = 0xFFFF; gdt[3].t1 = 0x92; gdt[3].t2 = 0xCF;
 
     asm
     (
@@ -234,10 +234,10 @@ void entry(void)
         "jmp flush;"
         "flush:"
 
-        /* jmpi 0x0008, 0x10000 */
+        /* jmpi 0x0010, 0x10000 */
         ".byte 0x66, 0xea;"
         "code32start: .long 0x10000;"
-        ".word 0x0008;"
+        ".word 0x0010;"
 
         "cli; hlt;"
     );
