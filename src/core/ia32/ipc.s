@@ -16,6 +16,9 @@
 .global _ipc_threadspace;
 .global _ipc_threadedi;
 .global _ipc_threadeip;
+.global _ipc_threadesp0;
+
+.global _switch_switch;
 
 .text
 
@@ -90,12 +93,80 @@ spawnpoint:
 
     iretl;
 
+/******************************************************************************/
 
+_switch_switch:
+
+    /* Save user state.                                                       */
+    push %eax;
+    push %ecx;
+    push %edx;
+    push %ebx;
+    push %ebp;
+    push %esi;
+    push %edi;
+
+    movl $0x20, %eax;
+    movl $0x20, %edx;
+    outb %al, %dx;
+
+    /* Restore the kernel segments.                                           */
+    movl $0x18, %eax;
+    movl %eax, %ds;
+    movl %eax, %es;
+    movl %eax, %fs;
+    movl %eax, %gs;
+
+    /* Do we need to save the stack pointer?                                  */
+    movl _ipc_currentthread, %ebp;
+    movl %esp, _ipc_threadstack(,%ebp,4);
+
+    /* Determine the next thread.                                             */
+    incl _ipc_currentthread;
+    cmpl $2, _ipc_currentthread;
+    jb switch_1;
+    movl $0, _ipc_currentthread;
+
+switch_1:
+
+    /* Switch kernel stacks.                                                  */
+    movl _ipc_currentthread, %ebp;
+    movl _ipc_threadstack(,%ebp,4), %esp;
+
+    /* Change ESP0.                                                           */
+    movl _ipc_threadesp0(,%ebp,4), %eax;
+    movl %eax, 0xFF490004;
+
+    /* Switch address space.                                                  */
+    movl _ipc_threadspace(,%ebp,4), %eax;
+    movl %eax, %cr3;
+
+    /* Restore the user segments.                                             */
+    movl $0x2B, %eax;
+    movl %eax, %ds;
+    movl %eax, %es;
+    movl %eax, %fs;
+    movl %eax, %gs;
+
+    /* Restore user state.                                                    */
+    pop %edi;
+    pop %esi;
+    pop %ebp;
+    pop %ebx;
+    pop %edx;
+    pop %ecx;
+    pop %eax;
+
+    iretl;
 
 .data
 
 em: .asciz "IPC FAILURE: THREAD NOT WAITING!";
 abc: .asciz "EVERYTHING GOES!";
+mes: .asciz "Current Thread";
+mes2: .asciz "New Thread";
+m_esp: .asciz "ESP";
+m_stack: .asciz "Stack Data";
 
 _ipc_currentthread: .long 0x00000000;
 _ipc_threadstate:   .long 0;
@@ -128,3 +199,11 @@ _ipc_threadeip:     .long 0;
                     .long 3;
                     .long 4;
                     .long 5;
+_ipc_threadesp0:    .long 0;
+                    .long 1;
+                    .long 2;
+                    .long 3;
+                    .long 4;
+                    .long 5;
+
+

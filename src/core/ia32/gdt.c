@@ -20,6 +20,7 @@
 #define arch_gdt_big            0x00400000
 #define arch_gdt_granularity    0x00800000
 
+#define arch_gdt_tss32          0x00000900
 #define arch_gdt_data           0x00001000
 #define arch_gdt_code           0x00001800
 
@@ -37,14 +38,28 @@ void arch_gdt_init(void)
     (*(unsigned short*)(0xFF480002)) = 0x0800;
     (*(word*)(0xFF480004)) = 0xFF480000;
 
-    /*    1     Kernel Code                                                   */
-    /*    2     Kernel Data                                                   */
-    /*    3     User Code                                                     */
-    /*    4     User Data                                                     */
-
+    /*    0     Null Selector                                                 */
+    /*    1     TSS Selector                                                  */
+    /*    2     Kernel Code                                                   */
+    /*    3     Kernel Data                                                   */
+    /*    4     User Code                                                     */
+    /*    5     User Data                                                     */
+    /*    6     UTCB Segment                                                  */
+    /*    7     LDT Selector                                                  */
+    
     arch_gdt_set
     (
         1,
+        0xFF490000,
+        4096,
+        arch_gdt_tss32,
+        0,
+        arch_gdt_present
+    );
+
+    arch_gdt_set
+    (
+        2,
         0x00000000,
         0xFFFFF,
         arch_gdt_code,
@@ -57,7 +72,7 @@ void arch_gdt_init(void)
 
     arch_gdt_set
     (
-        2,
+        3,
         0x00000000,
         0xFFFFF,
         arch_gdt_data,
@@ -71,9 +86,9 @@ void arch_gdt_init(void)
 
         arch_gdt_set
     (
-        3,
+        4,
         0x00000000,
-        0x7FFFF,
+        0xFFFFF,
         arch_gdt_code,
         3,
         arch_gdt_accessed
@@ -84,9 +99,9 @@ void arch_gdt_init(void)
 
     arch_gdt_set
     (
-        4,
+        5,
         0x00000000,
-        0x7FFFF,
+        0xFFFFF,
         arch_gdt_data,
         3,
         arch_gdt_accessed
@@ -110,4 +125,6 @@ void arch_gdt_set(word entry, word base, word limit, word type, word privelege,
     arch_gdt_table[entry].b =
         ((base & 0x00FF0000) >> 16) | (base & 0xFF000000) | (limit & 0x000F0000)
         | type | (privelege << 13) | flags;
+
+    logHex("b", arch_gdt_table[entry].b);
 }

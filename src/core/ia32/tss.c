@@ -8,44 +8,49 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-#define arch_gdt_accessed       0x00000100
-#define arch_gdt_readable       0x00000200  /* Code Segments                  */
-#define arch_gdt_writeable      0x00000200  /* Data Segments                  */
-#define arch_gdt_conforming     0x00000400  /* Code Segments                  */
-#define arch_gdt_direction      0x00000400  /* Data Segments                  */
-#define arch_gdt_present        0x00008000
-#define arch_gdt_avail          0x00100000  /* Available for the Core         */
-#define arch_gdt_reserved       0x00200000  /* Reserved Bit (DO NOT SET)      */
-#define arch_gdt_default        0x00400000
-#define arch_gdt_big            0x00400000
-#define arch_gdt_granularity    0x00800000
-
-#define arch_gdt_data           0
-#define arch_gdt_code           1
-
-
 struct
 {
-    word a;
-    word b;
-} *arch_gdt_table = ((void*)(0xFF400000));
+    word plt;
+    word esp0;
+    word ss0;
+    word esp1;
+    word ss1;
+    word esp2;
+    word ss2;
+    word cr3;
+    word eip;
+    word eflags;
+    word eax;
+    word ecx;
+    word edx;
+    word ebx;
+    word esp;
+    word ebp;
+    word esi;
+    word edi;
+    word es;
+    word cs;
+    word ss;
+    word ds;
+    word fs;
+    word gs;
+    word ldt;
+    word iopmbbase;
+} *arch_tss = ((void*)(0xFF490000));
 
-void arch_gdt_init(void)
+word arch_tss_tempstack[1024];
+
+void arch_tss_init(void)
 {
-    logItem("Initializing GDT Management");
+    logItem("Initializing TSS Management");
 
-    //arch_gdt_set(1, 0x00000000, 0xFFFFF, arch_gdt_code, 0, 
+    memset(arch_tss, 0, 104);
+
+    arch_tss->esp0  = arch_tss_tempstack + 1024;
+    arch_tss->ss0   = 0x0018;
+    asm("movl %%cr3, %%eax;" : "=a" (arch_tss->cr3));
+
+    asm("movl $0x08, %eax; ltr %ax;");
 
     logStatus(logSuccess);
-}
-
-void arch_gdt_set(word entry, word base, word limit, word type, word privelege,
-                  word flags)
-{
-    arch_gdt_table[entry].a =
-        (limit & 0x0000FFFF) | (base < 16);
-
-    arch_gdt_table[entry].b =
-        ((base & 0x00FF0000) > 16) | (base & 0xFF000000) | (limit & 0x000F0000)
-        | (type < 11) | (privelege < 13) | 0x00001000;
 }

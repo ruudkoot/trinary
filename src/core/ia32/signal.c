@@ -70,6 +70,8 @@ typedef struct idt_t
 
 extern void sigWrapper(void);
 
+extern void switch_switch(void);
+
 
 idt_t sigIDT[256];
 
@@ -135,7 +137,7 @@ void discardable sig_arch_init(void)
     sig_arch_settrapgate(0x1E, sig_arch_exception_unknown1e_wrapper);
     sig_arch_settrapgate(0x1F, sig_arch_exception_unknown1f_wrapper);
     
-    sig_arch_setinterruptgate(0x20, sig_arch_irq0_wrapper);
+    sig_arch_setinterruptgate(0x20, switch_switch);
     sig_arch_setinterruptgate(0x21, sig_arch_irq1_wrapper);
     sig_arch_setinterruptgate(0x22, sig_arch_irq2_wrapper);
     sig_arch_setinterruptgate(0x23, sig_arch_irq3_wrapper);
@@ -157,13 +159,13 @@ void discardable sig_arch_init(void)
 
 void sig_arch_setinterruptgate(unsigned intr, void (*func)(void))
 {
-	sigIDT[intr].d1 = 0x00080000 + (((unsigned)(func)) & 0x0000FFFF);   //Segment 8
+	sigIDT[intr].d1 = 0x00100000 + (((unsigned)(func)) & 0x0000FFFF);   //Segment 8
 	sigIDT[intr].d2 = 0x00008E00 + (((unsigned)(func)) & 0xFFFF0000);   //Present / RPL 0 / 32 bits / Interrupt
 }
 
 void sig_arch_settrapgate(unsigned intr, void (*func)(void))
 {
-	sigIDT[intr].d1 = 0x00080000 + (((unsigned)(func)) & 0x0000FFFF);   //Segment 8
+	sigIDT[intr].d1 = 0x00100000 + (((unsigned)(func)) & 0x0000FFFF);   //Segment 8
 	sigIDT[intr].d2 = 0x00008F00 + (((unsigned)(func)) & 0xFFFF0000);   //Present / RPL 0 / 32 bits / Trap
 }
 
