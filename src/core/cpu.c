@@ -1,3 +1,13 @@
+/******************************************************************************/
+/* Processor Management                                                       */
+/* Copyright (c) 2003, Rudy Koot (Trinary Technologies)                       */
+/*                                                                            */
+/* This program is free software; you can redistribute it and/or modify       */
+/* it under the terms of the GNU General Public License as published by       */
+/* the Free Software Foundation; either version 2 of the License, or          */
+/* (at your option) any later version.                                        */
+/******************************************************************************/
+
 /**********************************************************************************************************************/
 /* Processor Identification                                                                                           */
 /**********************************************************************************************************************/
@@ -667,7 +677,7 @@ PROCLIST ProcessorList[] =
 typedef struct
 {
     bool    pCertified;
-    string  pName;
+    string* pName;
 
     unt32   vFamily;
     unt32   vModel;
@@ -675,7 +685,7 @@ typedef struct
     unt32   vType;
     unt32   vBrand;
     char    vVendor[13];
-    string  vName;
+    string* vName;
 
     bool    iFloatingPoint;
     bool    iTranscedental;
@@ -843,6 +853,7 @@ void discardable prcInit(void)
     prcIdentify(0, &information);
     logStatus(logSuccess);
     logSubItem("Processor #0", information.pName);
+    logSubItem("MMX", information.iMMX ? "Yes" : "No");
 }
 
 void discardable prcIdentify(unt64 processor, prcInformation* information)

@@ -1,3 +1,13 @@
+/******************************************************************************/
+/* Compiler Configuration (GCC 2.95 IA-32)                                    */
+/* Copyright (c) 2003, Rudy Koot (Trinary Technologies)                       */
+/*                                                                            */
+/* This program is free software; you can redistribute it and/or modify       */
+/* it under the terms of the GNU General Public License as published by       */
+/* the Free Software Foundation; either version 2 of the License, or          */
+/* (at your option) any later version.                                        */
+/******************************************************************************/
+
 /* Types */
 typedef enum {false = 0, true = !0} bool;
 
@@ -17,7 +27,9 @@ typedef unsigned int                num32;
 typedef unsigned long long int      num64;
 
 typedef void*                       pointer;
-typedef unsigned char*              string;
+typedef unsigned char               string;
+
+typedef unt32                       size;
 
 /* Attributes */
 //HTF do give this the atrribute CODE READONLY and more of that $#!+.

@@ -32,7 +32,7 @@
 *******************************************************************************/
 
 
-unsigned __cdecl rotr (
+unsigned rotr (
         unsigned val,
         int shift
         )

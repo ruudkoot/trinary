@@ -1,7 +1,12 @@
-/********************************************************************************/
-/* ATA Disk Driver                                                              */
-/* Copyright (c) 2003, Trinary Technologies                                     */
-/********************************************************************************/
+/******************************************************************************/
+/* ATA Disk Server                                                            */
+/* Copyright (c) 2003, Rudy Koot (Trinary Technologies)                       */
+/*                                                                            */
+/* This program is free software; you can redistribute it and/or modify       */
+/* it under the terms of the GNU General Public License as published by       */
+/* the Free Software Foundation; either version 2 of the License, or          */
+/* (at your option) any later version.                                        */
+/******************************************************************************/
 
 //Based on the ATA/ATAPI-7 Working Draft 1a (November 2002)
 
