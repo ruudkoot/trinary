@@ -103,4 +103,4 @@ ScrollUp:
 	Message db '[ ][Starting Init', 0
 	Right db ']', 0
 
-	times 8192-($-$$) db 0xCC
+	times 8192-($-$$) db 0

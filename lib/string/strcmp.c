@@ -1,4 +1,7 @@
-int strcmp(const char * src, const char * dst)
+int strcmp (
+        const char * src,
+        const char * dst
+        )
 {
         int ret = 0 ;
 

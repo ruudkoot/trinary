@@ -1,9 +1,11 @@
 void* memset(void* s, char i, unsigned n)
 {
-	while (n)
-	{
-		*((char*)s) = i;
-		n--;
-	}
-	return s;
+        void *start = s;
+
+        while (n--) {
+                *(char *)s = (char)i;
+                s = (char *)s + 1;
+        }
+
+        return(start);
 }

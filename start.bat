@@ -1,3 +1,3 @@
 @ECHO OFF
-cd _tools
+cd _emu
 bochs -q

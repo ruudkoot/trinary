@@ -11,3 +11,8 @@ char*		strnpst(char* s, const char* t, unsigned n);
 
 char *  strcat ( char * dst,   const char * src       );
 
+
+
+char*		strlwr(char* s);
+char*		strupr(char* s);
+

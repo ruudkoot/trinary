@@ -97,6 +97,10 @@ _enterPM:
 
 Start:
 
+	mov dx, 0x3f2
+	mov al, 0
+	out dx, al
+
 	cli
 
 	xor ax, ax
@@ -136,6 +140,10 @@ Start:
 
 	lidt [idt48]
 	lgdt [gdt48]
+
+	call A20
+	call init8259
+
 	mov eax, 0
 	mov cr3, eax
 	mov eax, cr0
@@ -341,8 +349,72 @@ gdt48	dw	0x800		; gdt limit=2048, 256 GDT entries
 	Message	db '[ ][Starting Core',0
 	Right		db ']',0
 
-	messageLoadingCore	db 'Loading Core', 0
-	messageInitializingMemory	db 'Initializing Memory Management', 0
+A20:
+	call empty8042
+	mov al, 0xD1
+	out 0x64, al
+	call empty8042
+	mov al, 0xDF
+	out 0x60, al
+	call empty8042
+	ret
 
+empty8042:
+	jmp $+2
+	jmp $+2
+	in al, 0x64
+	test al, 0x02
+	jnz empty8042
+	ret
+
+init8259:
+	mov al, 0x11
+	out 0x20, al
+	jmp $+2
+	jmp $+2
+
+	out 0xA0, al
+	jmp $+2
+	jmp $+2
+
+	mov al, 0x20
+	out 0x21, al
+	jmp $+2
+	jmp $+2
+
+	mov al, 0x28
+	out 0xA1, al
+	jmp $+2
+	jmp $+2
+
+	mov al, 0x04
+	out 0x21, al
+	jmp $+2
+	jmp $+2
+
+	mov al, 0x02
+	out 0xA1, al
+	jmp $+2
+	jmp $+2
+
+	mov al, 0x01
+	out 0x21, al
+	jmp $+2
+	jmp $+2
+
+	out 0xA1, al
+	jmp $+2
+	jmp $+2
+
+	mov al, 0xFF
+	out 0x21, al
+	jmp $+2
+	jmp $+2
+
+	out 0xA1, al
+	jmp $+2
+	jmp $+2
+
+	ret
 
 times (9216)-($-$$) db 0

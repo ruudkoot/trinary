@@ -1,5 +1,17 @@
-int strncmp(const char* s, const char* t, unsigned n)
+int __cdecl strncmp (
+        const char * first,
+        const char * last,
+        size_t count
+        )
 {
-	while ((*s++ == *t++) && n--);
-	return *s - *t;
+        if (!count)
+                return(0);
+
+        while (--count && *first && *first == *last)
+        {
+                first++;
+                last++;
+        }
+
+        return( *(unsigned char *)first - *(unsigned char *)last );
 }

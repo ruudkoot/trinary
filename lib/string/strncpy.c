@@ -1,5 +1,17 @@
-char* strcpy(char* s, const char* t, unsigned n)
+char * __cdecl strncpy (
+        char * dest,
+        const char * source,
+        size_t count
+        )
 {
-	while (*t && n--) *s++ = *t++;
-	return s;
+        char *start = dest;
+
+        while (count && (*dest++ = *source++))    /* copy string */
+                count--;
+
+        if (count)                              /* pad out with zeroes */
+                while (--count)
+                        *dest++ = '\0';
+
+        return(start);
 }

@@ -1,0 +1,378 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: core - Win32 Trinary--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\RUDYKO~1\LOCALS~1\Temp\RSPAD.tmp" with contents
+[
+/nologo /G3 /Gr /ML /W4 /O2 /X /I "../lib/" /I "../core/" /FAs /Fa"../_output/" /Fo"../_output/" /Fd"../_output/" /FD /TP /c 
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strcat.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strchr.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strcmp.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strcpy.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strcspn.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\stricmp.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strlen.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strlwr.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strncmp.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strncpy.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strnicmp.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strnpst.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strnset.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strpbrk.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strpst.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strrchr.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strrev.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strset.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strspn.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strstr.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strupr.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\mem\memccpy.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\mem\memchr.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\mem\memcmp.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\mem\memcpy.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\mem\memicmp.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\mem\memmove.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\mem\memset.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\math\abs.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\math\max.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\math\min.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\math\rotl.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\math\rotr.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\convert\atoi.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\convert\atoq.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\char\isalnum.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\char\isalpha.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\char\isascii.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\char\iscsym.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\char\iscsymf.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\char\isctrl.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\char\isdigit.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\char\isgraph.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\char\islower.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\char\isprint.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\char\ispunct.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\char\isspace.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\char\isupper.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\char\isxdigit.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\char\tolower.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\char\toupper.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\core\ia32\bootlog.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\core\core.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\core\ia32\cpu.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\core\ia32\debug.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\core\ia32\heap.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\core\ia32\mm.c"
+"C:\Documents and Settings\Rudy Koot\Bureaublad\Project\core\ia32\io.c"
+]
+Creating command line "cl.exe @C:\DOCUME~1\RUDYKO~1\LOCALS~1\Temp\RSPAD.tmp" 
+Creating temporary file "C:\DOCUME~1\RUDYKO~1\LOCALS~1\Temp\RSPAE.tmp" with contents
+[
+../_output/entry.obj /nologo /base:"0xC0000000" /entry:"entry" /subsystem:windows /pdb:none /map:"../_output/core.map" /machine:I386 /nodefaultlib /out:"../_output/core.exe" 
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strcat.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strchr.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strcmp.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strcpy.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strcspn.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\stricmp.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strlen.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strlwr.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strncmp.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strncpy.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strnicmp.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strnpst.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strnset.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strpbrk.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strpst.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strrchr.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strrev.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strset.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strspn.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strstr.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\strupr.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\memccpy.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\memchr.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\memcmp.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\memcpy.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\memicmp.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\memmove.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\memset.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\abs.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\max.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\min.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\rotl.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\rotr.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\atoi.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\atoq.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\isalnum.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\isalpha.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\isascii.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\iscsym.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\iscsymf.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\isctrl.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\isdigit.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\isgraph.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\islower.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\isprint.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\ispunct.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\isspace.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\isupper.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\isxdigit.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\tolower.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\toupper.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\bootlog.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\core.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\cpu.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\debug.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\heap.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\mm.obj"
+"\Documents and Settings\Rudy Koot\Bureaublad\Project\_output\io.obj"
+]
+Creating command line "link.exe @C:\DOCUME~1\RUDYKO~1\LOCALS~1\Temp\RSPAE.tmp"
+<h3>Output Window</h3>
+Compiling...
+strcat.c
+strchr.c
+strcmp.c
+strcpy.c
+strcspn.c
+stricmp.c
+strlen.c
+strlwr.c
+strncmp.c
+strncpy.c
+strnicmp.c
+strnpst.c
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strnpst.c(1) : warning C4100: 'n' : unreferenced formal parameter
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strnpst.c(1) : warning C4100: 't' : unreferenced formal parameter
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strnpst.c(1) : warning C4100: 's' : unreferenced formal parameter
+strnset.c
+strpbrk.c
+strpst.c
+strrchr.c
+strrev.c
+strset.c
+strspn.c
+strstr.c
+Generating Code...
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strncpy.c(9) : warning C4706: assignment within conditional expression
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strcpy.c(3) : warning C4706: assignment within conditional expression
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strcmp.c(8) : warning C4706: assignment within conditional expression
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strcat.c(5) : warning C4706: assignment within conditional expression
+Compiling...
+strupr.c
+memccpy.c
+memchr.c
+memcmp.c
+memcpy.c
+memicmp.c
+memmove.c
+memset.c
+abs.c
+max.c
+min.c
+rotl.c
+rotr.c
+atoi.c
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\convert\atoi.c(12) : warning C4244: 'argument' : conversion from 'int' to 'const char', possible loss of data
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\convert\atoi.c(22) : warning C4244: 'argument' : conversion from 'int' to 'const char', possible loss of data
+atoq.c
+isalnum.c
+isalpha.c
+isascii.c
+iscsym.c
+iscsymf.c
+Generating Code...
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\lib\string\strupr.c(5) : warning C4700: local variable 'c' used without having been initialized
+Compiling...
+isctrl.c
+isdigit.c
+isgraph.c
+islower.c
+isprint.c
+ispunct.c
+isspace.c
+isupper.c
+isxdigit.c
+tolower.c
+toupper.c
+bootlog.c
+core.c
+cpu.c
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\core\ia32\cpu.c(240) : warning C4244: '=' : conversion from 'int' to 'char', possible loss of data
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\core\ia32\cpu.c(241) : warning C4244: '=' : conversion from 'int' to 'char', possible loss of data
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\core\ia32\cpu.c(242) : warning C4244: '=' : conversion from 'int' to 'char', possible loss of data
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\core\ia32\cpu.c(1064) : warning C4100: 'processor' : unreferenced formal parameter
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\core\ia32\cpu.c(1119) : warning C4800: 'unsigned int' : forcing value to bool 'true' or 'false' (performance warning)
+debug.c
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\core\ia32\debug.c(6) : warning C4100: 'message' : unreferenced formal parameter
+heap.c
+mm.c
+io.c
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\core\ia32\io.c(3) : warning C4244: 'initializing' : conversion from 'unsigned int' to 'unsigned short', possible loss of data
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\core\ia32\io.c(15) : warning C4244: 'initializing' : conversion from 'unsigned int' to 'unsigned short', possible loss of data
+C:\Documents and Settings\Rudy Koot\Bureaublad\Project\core\ia32\io.c(27) : warning C4244: 'initializing' : conversion from 'unsigned int' to 'unsigned short', possible loss of data
+Generating Code...
+Linking...
+Creating temporary file "C:\DOCUME~1\RUDYKO~1\LOCALS~1\Temp\RSPAF.bat" with contents
+[
+@echo off
+cd ..
+build
+]
+Creating command line "C:\DOCUME~1\RUDYKO~1\LOCALS~1\Temp\RSPAF.bat"
+Finishing...
+_output\BOOTSECT.BIN
+_output\BOOTCODE.BIN
+_output\INIT.BIN
+_output\core.exe
+        1 bestand(en) gekopieerd.
+========================================================================
+                      Bochs x86 Emulator 2.0.pre3
+              Build from CVS snapshot on December 4, 2002
+========================================================================
+00000000000i[     ] reading configuration from bochsrc.txt
+00000000000i[     ] bochsrc.txt: vga_update_interval seems awfully small!
+00000000000i[     ] installing win32 module as the Bochs GUI
+00000000000i[MEM0 ] allocated memory at 00BF0020. after alignment, vector=00BF1000
+00000000000i[MEM0 ] 32.00MB
+00000000000i[MEM0 ] rom at 0xf0000/65536 ('BIOS-bochs-latest')
+00000000000i[MEM0 ] rom at 0xc0000/32769 ('VGABIOS-elpin-2.40')
+00000000000e[DEV  ] Bochs is not compiled with PCI support
+00000000000i[CMOS ] Setting initial clock to: Sat Feb 01 00:15:50 2003 (time0=1044054950)
+00000000000i[DMA  ] channel 4 used by cascade
+00000000000i[DMA  ] channel 2 used by Floppy Drive
+00000000000i[FDD  ] fd0: '..\_image\disk.bin' ro=0, h=2,t=80,spt=18
+00000000000i[VGA  ] interval=30000
+00000000000i[VGA  ] VBE Bochs Display Extension Enabled
+00000000000i[     ] init_mem of 'harddrv' plugin device by virtual method
+00000000000i[     ] init_mem of 'keyboard' plugin device by virtual method
+00000000000i[     ] init_mem of 'serial' plugin device by virtual method
+00000000000i[     ] init_mem of 'parallel' plugin device by virtual method
+00000000000i[     ] init_dev of 'harddrv' plugin device by virtual method
+00000000000i[HD   ] Boot device will be 'a'
+00000000000i[HD   ] Floppy boot signature check is enabled
+00000000000i[     ] init_dev of 'keyboard' plugin device by virtual method
+00000000000i[KBD  ] will paste characters every 1000 keyboard ticks
+00000000000i[     ] init_dev of 'serial' plugin device by virtual method
+00000000000i[SER  ] com1 at 0x3f8/8 irq 4
+00000000000i[     ] init_dev of 'parallel' plugin device by virtual method
+00000000000i[PAR  ] parallel port 1 at 0x378
+00000000000i[     ] reset of 'harddrv' plugin device by virtual method
+00000000000i[     ] reset of 'keyboard' plugin device by virtual method
+00000000000i[     ] reset of 'serial' plugin device by virtual method
+00000000000i[     ] reset of 'parallel' plugin device by virtual method
+00000003980i[BIOS ]  rombios.c,v 1.83 2002/11/26 11:04:41 cbothamy Exp $
+00000180047i[KBD  ] reset-disable command received
+00000356018e[HD   ] device set to 0 which does not exist
+00000356311e[HD   ] device set to 1 which does not exist
+00000489026i[FDD  ] read() on floppy image returns 0
+00000489538i[FDD  ] read() on floppy image returns 0
+00000490050i[FDD  ] read() on floppy image returns 0
+00000490562i[FDD  ] read() on floppy image returns 0
+00000491074i[FDD  ] read() on floppy image returns 0
+00000491586i[FDD  ] read() on floppy image returns 0
+00000492098i[FDD  ] read() on floppy image returns 0
+00000492610i[FDD  ] read() on floppy image returns 0
+00000493122i[FDD  ] read() on floppy image returns 0
+00000493634i[FDD  ] read() on floppy image returns 0
+00000494146i[FDD  ] read() on floppy image returns 0
+00000494658i[FDD  ] read() on floppy image returns 0
+00000495170i[FDD  ] read() on floppy image returns 0
+00000495682i[FDD  ] read() on floppy image returns 0
+00000496194i[FDD  ] read() on floppy image returns 0
+00000496706i[FDD  ] read() on floppy image returns 0
+00000498351i[FDD  ] read() on floppy image returns 0
+00000498864i[FDD  ] read() on floppy image returns 0
+00000499376i[FDD  ] read() on floppy image returns 0
+00000499888i[FDD  ] read() on floppy image returns 0
+00000500402i[FDD  ] read() on floppy image returns 0
+00000500914i[FDD  ] read() on floppy image returns 0
+00000501426i[FDD  ] read() on floppy image returns 0
+00000501938i[FDD  ] read() on floppy image returns 0
+00000502450i[FDD  ] read() on floppy image returns 0
+00000502962i[FDD  ] read() on floppy image returns 0
+00000503474i[FDD  ] read() on floppy image returns 0
+00000503986i[FDD  ] read() on floppy image returns 0
+00000504498i[FDD  ] read() on floppy image returns 0
+00000505010i[FDD  ] read() on floppy image returns 0
+00000505522i[FDD  ] read() on floppy image returns 0
+00000506034i[FDD  ] read() on floppy image returns 0
+00000506546i[FDD  ] read() on floppy image returns 0
+00000507058i[FDD  ] read() on floppy image returns 0
+00000508719i[FDD  ] read() on floppy image returns 0
+00000509232i[FDD  ] read() on floppy image returns 0
+00000509744i[FDD  ] read() on floppy image returns 0
+00000510256i[FDD  ] read() on floppy image returns 0
+00000510768i[FDD  ] read() on floppy image returns 0
+00000511280i[FDD  ] read() on floppy image returns 0
+00000511792i[FDD  ] read() on floppy image returns 0
+00000512304i[FDD  ] read() on floppy image returns 0
+00000512816i[FDD  ] read() on floppy image returns 0
+00000513328i[FDD  ] read() on floppy image returns 0
+00000513840i[FDD  ] read() on floppy image returns 0
+00000514352i[FDD  ] read() on floppy image returns 0
+00000514864i[FDD  ] read() on floppy image returns 0
+00000515376i[FDD  ] read() on floppy image returns 0
+00000515888i[FDD  ] read() on floppy image returns 0
+00000516400i[FDD  ] read() on floppy image returns 0
+00000516912i[FDD  ] read() on floppy image returns 0
+00000517424i[FDD  ] read() on floppy image returns 0
+00000519069i[FDD  ] read() on floppy image returns 0
+00000519582i[FDD  ] read() on floppy image returns 0
+00000520094i[FDD  ] read() on floppy image returns 0
+00000520606i[FDD  ] read() on floppy image returns 0
+00000521118i[FDD  ] read() on floppy image returns 0
+00000521630i[FDD  ] read() on floppy image returns 0
+00000522142i[FDD  ] read() on floppy image returns 0
+00000522654i[FDD  ] read() on floppy image returns 0
+00000523166i[FDD  ] read() on floppy image returns 0
+00000523678i[FDD  ] read() on floppy image returns 0
+00000524190i[FDD  ] read() on floppy image returns 0
+00000524702i[FDD  ] read() on floppy image returns 0
+00000525214i[FDD  ] read() on floppy image returns 0
+00000525726i[FDD  ] read() on floppy image returns 0
+00000526238i[FDD  ] read() on floppy image returns 0
+00000526750i[FDD  ] read() on floppy image returns 0
+00000527262i[FDD  ] read() on floppy image returns 0
+00000527776i[FDD  ] read() on floppy image returns 0
+00000996326i[CPU  ] WARNING: HLT instruction with IF=0!
+00029258500p[WGUI ] >>PANIC<< Window closed, exiting!
+00029258500i[SYS  ] Last time is 1044055008
+00029258500i[CPU  ] protected mode
+00029258500i[CPU  ] CS.d_b = 32 bit
+00029258500i[CPU  ] SS.d_b = 32 bit
+00029258500i[CPU  ] | EAX=000b8efc  EBX=00000000  ECX=fffffff1  EDX=c0003103
+00029258500i[CPU  ] | ESP=fffffffb  EBP=ffffffff  ESI=00000000  EDI=00000000
+00029258500i[CPU  ] | IOPL=0 NV UP DI NG NZ NA PO NC
+00029258500i[CPU  ] | SEG selector     base    limit G D
+00029258500i[CPU  ] | SEG sltr(index|ti|rpl)     base    limit G D
+00029258500i[CPU  ] |  DS:0010( 0002| 0|  0) 00000000 000fffff 1 1
+00029258500i[CPU  ] |  ES:0010( 0002| 0|  0) 00000000 000fffff 1 1
+00029258500i[CPU  ] |  FS:0010( 0002| 0|  0) 00000000 000fffff 1 1
+00029258500i[CPU  ] |  GS:0010( 0002| 0|  0) 00000000 000fffff 1 1
+00029258500i[CPU  ] |  SS:0010( 0002| 0|  0) 00000000 000fffff 1 1
+00029258500i[CPU  ] |  CS:0008( 0001| 0|  0) 00000000 000fffff 1 1
+00029258500i[CPU  ] | EIP=c00012d3 (c00012d3)
+00029258500i[CPU  ] | CR0=0xe0000011 CR1=0x00000000 CR2=0x00000000
+00029258500i[CPU  ] | CR3=0x00000000 CR4=0x00000000
+00029258500i[     ] restoring default signal behavior
+========================================================================
+Bochs is exiting with the following message:
+[WGUI ] Window closed, exiting!
+========================================================================
+00029258500i[CTRL ] quit_sim called
+# In bx_win32_gui_c::exit(void)!
+
+Bochs is exiting. Press ENTER when you're ready to close this window.
+
+
+
+<h3>Results</h3>
+core.exe - 0 error(s), 20 warning(s)
+</pre>
+</body>
+</html>
