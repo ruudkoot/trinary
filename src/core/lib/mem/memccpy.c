@@ -32,7 +32,7 @@
 *
 *******************************************************************************/
 
-void * __cdecl memccpy (
+void *  memccpy (
         void * dest,
         const void * src,
         int c,

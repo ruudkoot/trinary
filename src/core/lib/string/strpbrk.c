@@ -48,7 +48,7 @@
 *******************************************************************************/
 
 
-char * __cdecl strpbrk (
+char * strpbrk (
         const char * string,
         const char * control
         )

@@ -1,6 +1,6 @@
 #include <char.h>
 
-long __cdecl atoi(
+long atoi(
         const char *nptr
         )
 {

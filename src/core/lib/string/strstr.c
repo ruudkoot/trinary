@@ -38,7 +38,7 @@
 *
 *******************************************************************************/
 
-char * __cdecl strstr (
+char * strstr (
         const char * str1,
         const char * str2
         )

@@ -8,10 +8,10 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-int __cdecl strncmp (
+int strncmp (
         const char * first,
         const char * last,
-        size_t count
+        size count
         )
 {
         if (!count)

@@ -36,7 +36,7 @@
 *
 *******************************************************************************/
 
-int __cdecl _memicmp (
+int _memicmp (
         const void * first,
         const void * last,
         unsigned int count

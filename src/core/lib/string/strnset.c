@@ -8,10 +8,10 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-char * __cdecl _strnset (
+char * _strnset (
         char * string,
         int val,
-        size_t count
+        size count
         )
 {
         char *start = string;
