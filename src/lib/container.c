@@ -8,7 +8,9 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
+#ifndef NOMEM
 #include "container/list.c"
 #include "container/tree.c"
 #include "container/circ.c"
 #include "container/queue.c"
+#endif

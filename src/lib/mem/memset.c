@@ -1,4 +1,4 @@
-void* memset(void* s, char i, unsigned n)
+void* memset(void* s, int i, unsigned n)
 {
         void *start = s;
 

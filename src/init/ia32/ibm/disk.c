@@ -8,6 +8,16 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
+/******************************************************************************/
+/* This modules adds disk support to Init. It uses standard BIOS calls and    */
+/* BIOS DIsk Extensions if available. It should there fore be able to boot    */
+/* form all standard disk devices, such as floppy drives, hard drives (IDE    */
+/* and SCSI) and if supported from LS-120 / ZIP drives, Flash Cards and USB   */
+/* keys. I have to investigate CD-ROM and DVD drives. They may be available   */
+/* through INT 13h as drive number Cxh or else through the Bootable CD        */
+/* Interface.                                                                 */
+/******************************************************************************/
+
 typedef struct
 {
     unsigned biosid;

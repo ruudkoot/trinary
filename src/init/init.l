@@ -1,5 +1,5 @@
 /******************************************************************************/
-/* System Initialization                                                      */
+/* Trinary Operating System Core Link Script                                  */
 /* Copyright (c) 2003, Rudy Koot (Trinary Technologies)                       */
 /*                                                                            */
 /* This program is free software; you can redistribute it and/or modify       */
@@ -8,10 +8,29 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-/******************************************************************************/
-/* This file is inserted at the start of the assembly files outputed by GCC   */
-/* to make the assembler generate 16-bit code.                                */
-/******************************************************************************/
+ENTRY(entry_start)
+SECTIONS
+{
+    .text 0x00000000 :
+    {
+        *(.text)
+    }
 
-.code16gcc
+    .rodata :
+    {
+        . = ALIGN(4096);
+        *(.rodata)
+    }
 
+    .data :
+    {
+        . = ALIGN(4096);
+        *(.data)
+    }
+
+    .bss :
+    {
+        . = ALIGN(4096);
+        *(.bss)
+    }
+}

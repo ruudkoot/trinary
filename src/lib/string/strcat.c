@@ -55,7 +55,7 @@
 /* t    The source string.                                                    */
 /* @    The destination string.                                               */
 /******************************************************************************/
-string* strcat(string* s,const string* t)
+char* strcat(char* s, const char* t)
 {
     string* c = s;
 

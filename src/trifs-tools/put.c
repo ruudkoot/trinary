@@ -16,20 +16,24 @@
 #include "config.h"
 #include "trifs.h"
 
+typedef struct
+{
+    char name[16];
+    unt64 block;
+    unt64 size;
+} dir_entry_t;
+
 int main(int argc, char* argv[])
 {
     unsigned realsize;
     unsigned virtsize;
     FILE* put;
-    unsigned char* blah;
-    unsigned* buffer;
-    unsigned mask;
-	unsigned bit;
-    unsigned* bufferIterator;
-    int i;
+    dir_entry_t dir_entry[16];
+    unsigned char* buffer;
+    unsigned i;
+
     
     opendevice(argv[2]);
-
     put = fopen(argv[1], "rb");
 
     if (put == NULL)
@@ -50,42 +54,30 @@ int main(int argc, char* argv[])
         virtsize = realsize + blocksize - (realsize % blocksize);
     }
 
-    blah = malloc(virtsize + blocksize);
-    buffer = malloc(blocksize);
-    memset(blah, 0, virtsize + blocksize);
+    readblock(1, 1, dir_entry);
 
-    fseek(put, 0, SEEK_SET);
-    fread(blah + blocksize, realsize, 1, put);
+    for (i = 0; dir_entry[i].name[0] != '\0'; i++);
 
-    readblock(2, 1, ((unsigned char*)(buffer)));
-    memcpy(blah + 32, "FileNode", 8);
-    (*(unsigned*)(blah + 0x118)) = 4;
-    (*(unsigned*)(blah + 0x120)) = virtsize / blocksize;
- 
-    for (i = 0; i < virtsize / blocksize + 1; i++)
+    strcpy(dir_entry[i].name, argv[3]);
+
+    if (i > 0)
     {
-        bufferIterator = buffer;
-        mask = 1;
-        bit = 0;
-    
-        //Search for an entry that contains a free page
-        while (*bufferIterator == 0xFFFFFFFF) bufferIterator++;
-
-        //Search for a bit that indicates a free page
-        while (*bufferIterator & mask)
-        {
-            mask <<= 1;
-            bit++;
-        }
-
-        *bufferIterator |= mask;
-
-        writeblock(32 * (bufferIterator - buffer) + bit, 1, blah + blocksize * i);
-        printf("%i\n", 32 * (bufferIterator - buffer) + bit);
+        dir_entry[i].block = dir_entry[i-1].block + dir_entry[i-1].size;
+    }
+    else
+    {
+        dir_entry[0].block = 2;
     }
 
-    writeblock(2, 1, buffer);
+    dir_entry[i].size = virtsize / blocksize;
 
+    writeblock(1, 1, dir_entry);
 
+    buffer = malloc(virtsize);
+    fseek(put, 0, SEEK_SET);
+    fread(buffer, realsize, 1, put);
+    
+    writeblock(dir_entry[i].block, virtsize / blocksize, buffer);
 
+    closedevice();
 }

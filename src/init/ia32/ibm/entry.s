@@ -9,8 +9,9 @@
 /******************************************************************************/
 
 .arch i386, jumps;
-.code16;
+.code16gcc;
 .text;
+.globl entry_start;
 
 /******************************************************************************/
 /* entry_start -                                                              */
@@ -50,7 +51,7 @@ entry_start:
     xorl %ebp, %ebp;
 
     /* And finally enter the real System Initializer.                         */
-    data32 call _entry;
+    call _entry;
 
     /* If we somehow return from the function halt the system.                */
     1:
