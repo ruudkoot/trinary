@@ -16,7 +16,7 @@
 /*                                                                            */
 /* Rudy Koot : P6                                                             */
 /* This implementaion of Rudy's set has been tuned for the P6 architecture.   */
-/* Most branches have been eliminated by using conditional move.              */
+/* Most branches have been eliminated through the use of conditional moves.   */
 /******************************************************************************/
 
 .global _asm_ipc;
