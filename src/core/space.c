@@ -12,7 +12,10 @@
 /* This module manages address spaces.                                        */
 /******************************************************************************/
 
-#define word int
+#define word /* FUCK!!! I HATE MYSELF */ unsigned int
+
+unsigned pageholder = 0;
+unsigned* pageholdertable = ((unsigned*)(0xFFFFC000));
 
 typedef struct
 {
@@ -60,6 +63,28 @@ void space_create(word id)
     space->handle = space_arch_create();
 }
 
+void space_map(word* d, unsigned a)
+{
+    unsigned pt, pagetab;
+    
+    if (d[a / (4096 * 1024)] == 0x00000000)
+    {
+        logItem("Hmmm... there's no page table yet!");
+
+        pt = mmPhysicalAlloc() * 4096;
+        d[a / (4096 * 1024)] = pt | 3;
+        pageholdertable[pageholder] = pt | 3;
+        pagetab = ((unsigned*)(0xFF000000 + pageholder * 4096));
+
+        pageholder++;
+
+        logHex("New Page Table Created @ Physical Address", pt);
+        logHex("New Page Table Created @ Virtual Address", pagetab);
+
+
+    }
+}
+
 /******************************************************************************/
 /* space_arch_create - Create an Address Space                                */
 /*                                                                            */
@@ -69,18 +94,22 @@ void space_create(word id)
 /******************************************************************************/
 word space_arch_create(void)
 {
-    word    *pd;
+    word    pd;
+    unsigned* pagedir;
     
-    /* Allocate memory for a new page directory. I assume heap_alloc          *
-     * allocates aligned data, but I don't know if this will hold true in the *
-     * future.                                                                */
-    pd = heap_alloc(4096);
+    pd = mmPhysicalAlloc() * 4096;
+    pageholdertable[pageholder] = pd | 0x00000003;
 
-    logHex("New Page Directory Created @", pd);
+    pagedir = ((unsigned*)(0xFF000000 + pageholder * 4096));
 
-    /* The page directory will not contain any mappings in user space space,  *
-     * must map the kernel. We just copy this information from a template.    */
-    memcpy(pd, pdtemplate, 4096);
+    pageholder++;
+
+    memcpy(pagedir, ((unsigned*)(0xFFC00000)), 4096);
+
+    logHex("New Page Directory Created @ Physical Address", pd);
+    logHex("New Page Directory Created @ Virtual Address", pagedir);
+
+    return pd;
 }
 
 /******************************************************************************/
@@ -96,7 +125,7 @@ void space_switch(word id)
 /******************************************************************************/
 /* space_arch_create - Create an Address Space                                */
 /*                                                                            */
- /******************************************************************************/
+/******************************************************************************/
 word space_arch_switch(word id)
 {
     asm
