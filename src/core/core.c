@@ -11,21 +11,24 @@
 void cmain(void);
 void dmain(void);
 
+#define NOMEM
 #include "../lib/config.c"
 #include "../lib/lib.c"
 
 #include "log.c"
 #include "debug.c"
 
-#include "heap.c"
+void sys_arch_timer_setfrequency(unt8 timer, unt32 frequency);
 
+#include "heap.c"
 #include "schedule.c"
 
 #include "system.c"
-#include "cpu.c"
+//#include "cpu.c"
 #include "memory.c"
 #include "signal.c"
 #include "smp.c"
+
 
 #include "syscall.c"
 
@@ -47,7 +50,7 @@ void cmain(void)
     /* Initialize the basic core modules.                                     */
     heap_init();
     sys_init();
-    cpu_init();
+    //cpu_init();
     sig_init();
     smp_init();
     mm_init();

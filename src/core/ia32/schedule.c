@@ -33,15 +33,13 @@ void task1(void)
     unsigned i = 0;
     char s[20];
 
-    i = 33333;
+    i = 0;
 
     for (;;)
     {
         i++;
         u32toa(i, s, 10);
-        panicWrite(2, 4, s);
-
-        asm volatile ("int $0xC0");
+        panicWrite(0, 3, s);
     }
 }
 
@@ -82,11 +80,9 @@ void sched_arch_init(void)
     task[2].esp = ((unsigned)(task[2].stack + 4096));
     task[3].esp = ((unsigned)(task[3].stack + 4096));
 
-
-    
     task[0].eip = ((unsigned)(task0));
     task[1].eip = ((unsigned)(task1));
-    task[2].eip = ((unsigned)(task2));
+    task[2].eip = ((unsigned)(0xC0040000));
     task[3].eip = ((unsigned)(dmain));
 
     for (i = 0; i < 4096; i++)
