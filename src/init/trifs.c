@@ -121,4 +121,60 @@ void trifs_load(void)
     }
 
     log_status(log_status_success);
+
+    log_item("Loading Ping");
+    
+    disk_read(trifs_buffer, 1, 0);
+
+    size = (*(unsigned*)(trifs_buffer + 152));
+    block = (*(unsigned*)(trifs_buffer + 144));
+
+    for (i = 0; i < size; i++)
+    {
+        disk_read(trifs_buffer, block + i, 0);
+
+        asm
+        (
+            "movw $0x7000, %%ax;"
+            "movw %%ax, %%es;"
+            "rep movsw;"
+            "movw %%cs, %%ax;"
+            "movw %%ax, %%es;"
+            :
+            :
+            "c" (256),
+            "S" (trifs_buffer),
+            "D" (512 * i)
+        );
+    }
+
+    log_status(log_status_success);
+
+    log_item("Loading Pong");
+    
+    disk_read(trifs_buffer, 1, 0);
+
+    size = (*(unsigned*)(trifs_buffer + 184));
+    block = (*(unsigned*)(trifs_buffer + 176));
+
+    for (i = 0; i < size; i++)
+    {
+        disk_read(trifs_buffer, block + i, 0);
+
+        asm
+        (
+            "movw $0x7800, %%ax;"
+            "movw %%ax, %%es;"
+            "rep movsw;"
+            "movw %%cs, %%ax;"
+            "movw %%ax, %%es;"
+            :
+            :
+            "c" (256),
+            "S" (trifs_buffer),
+            "D" (512 * i)
+        );
+    }
+
+    log_status(log_status_success);
 }

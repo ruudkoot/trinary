@@ -70,7 +70,7 @@ void space_map(word* d, unsigned a)
     
     if (d[a / (4096 * 1024)] == 0x00000000)
     {
-        logItem("Hmmm... there's no page table yet!");
+//        logItem("Hmmm... there's no page table yet!");
 
         pt = mmPhysicalAlloc() * 4096;
         d[a / (4096 * 1024)] = pt | 3;
@@ -79,37 +79,37 @@ void space_map(word* d, unsigned a)
 
         pageholder++;
 
-        logHex("New Page Table Created @ Physical Address", pt);
-        logHex("New Page Table Created @ Virtual Address", pagetab);
+//        logHex("New Page Table Created @ Physical Address", pt);
+//        logHex("New Page Table Created @ Virtual Address", pagetab);
 
         pf = mmPhysicalAlloc() * 4096;
 
-        logHex("New Page Frame Created @ Physical Address", pf);
-        logHex("New Page Frame Created @ Virtual Address", a);
+//        logHex("New Page Frame Created @ Physical Address", pf);
+//        logHex("New Page Frame Created @ Virtual Address", a);
 
         ((unsigned*)(pagetab))[(a & 0x003FFFFF) / 4096] = pf | 3;
 
         a += 4096;
         pf = mmPhysicalAlloc() * 4096;
 
-        logHex("New Page Frame Created @ Physical Address", pf);
-        logHex("New Page Frame Created @ Virtual Address", a);
+//        logHex("New Page Frame Created @ Physical Address", pf);
+//        logHex("New Page Frame Created @ Virtual Address", a);
 
         ((unsigned*)(pagetab))[(a & 0x003FFFFF) / 4096] = pf | 3;
 
         a += 4096;
         pf = mmPhysicalAlloc() * 4096;
 
-        logHex("New Page Frame Created @ Physical Address", pf);
-        logHex("New Page Frame Created @ Virtual Address", a);
+//        logHex("New Page Frame Created @ Physical Address", pf);
+//        logHex("New Page Frame Created @ Virtual Address", a);
 
         ((unsigned*)(pagetab))[(a & 0x003FFFFF) / 4096] = pf | 3;
 
         a += 4096;
         pf = mmPhysicalAlloc() * 4096;
 
-        logHex("New Page Frame Created @ Physical Address", pf);
-        logHex("New Page Frame Created @ Virtual Address", a);
+//        logHex("New Page Frame Created @ Physical Address", pf);
+//        logHex("New Page Frame Created @ Virtual Address", a);
 
         ((unsigned*)(pagetab))[(a & 0x003FFFFF) / 4096] = pf | 3;
 
@@ -141,8 +141,8 @@ word space_arch_create(void)
 
     memcpy(pagedir, ((unsigned*)(0xFFC00000)), 4096);
 
-    logHex("New Page Directory Created @ Physical Address", pd);
-    logHex("New Page Directory Created @ Virtual Address", pagedir);
+//    logHex("New Page Directory Created @ Physical Address", pd);
+//    logHex("New Page Directory Created @ Virtual Address", pagedir);
 
     return pd;
 }

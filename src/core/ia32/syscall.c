@@ -20,17 +20,50 @@
 /******************************************************************************/
 
 extern void syscall_arch_ipc_wrapper(void);
+extern void asm_ipc(void);
 
 void discardable syscall_arch_init(void)
 {
-    sig_arch_settrapgate(0xC0, syscall_arch_ipc_wrapper);
+    sig_arch_settrapgate(0xC0, asm_ipc);
 }
 
 /******************************************************************************/
 /* syscall_arch_ipc - Inter Process Communication                             */
 /*                                                                            */
 /******************************************************************************/
-void syscall_arch_ipc(void)
+unsigned __attribute__ ((cdecl)) syscall_arch_ipc(unsigned to, unsigned val)
 {
+    logHex("IPC System Call Received to", to);
 
+#if 0
+    switch (task[to].ipcstate)
+    {
+        case 0: /* Dead                                                       */
+        {
+            panic(" [ IPC to Dead Task ] ");
+            break;
+        }
+
+        case 1: /* Running                                                    */
+        {
+            
+        }
+
+        case 2: /* Receiving                                                  */
+        {
+            
+        }
+
+        case 3: /* Sending                                                    */
+        {
+
+        }
+        
+    }
+
+    task[TEMP_current_task].ipcstate = 2;
+
+#endif
+
+    return val * 3;
 }

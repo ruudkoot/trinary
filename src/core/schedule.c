@@ -8,6 +8,8 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
+extern unsigned ipc_currentthread;
+
 #include "ia32/schedule.c"
 
 void sched_init(void)
@@ -27,7 +29,7 @@ void sched_init(void)
 /* The scheduler uses quite a compicated algorithm to select the best thread. */
 /* to save space in the source code an make reading easy I've documented it   */
 /* a separate document (doc/core/scheduler.thml). In short the scheduler must */
-/* be able to make this operating system a true real-time system, maek sure   */
+/* be able to make this operating system a true real-time system, make sure   */
 /* interrupt latencies are low, prevent starvation of processes, make sure    */
 /* threads are scheduled in such a way that caches don't become dirty,        */
 /* correct for unbalanced SMP systems, pair the best threads on Hyper         */
@@ -47,10 +49,10 @@ void sched_schedule(void)
 {
     unsigned previous;
 
-    previous = TEMP_sched_current;
+    previous = ipc_currentthread;
     
-    TEMP_sched_current++;
-    if (TEMP_sched_current > 3) TEMP_sched_current = 1;
-   
-    sched_arch_switch(&(task[previous]), (&task[TEMP_sched_current]));
+    ipc_currentthread++;
+    if (ipc_currentthread > 5) ipc_currentthread = 1;
+
+    sched_arch_switch(previous, ipc_currentthread);
 }
