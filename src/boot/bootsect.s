@@ -62,35 +62,33 @@ Start:
 	jz ContinueBoot
 	mov [bp], si
 
-	; Detect the Videocard ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-	int 0x11
-	test al, 0x30
-	mov word [bp+4], 0x0070
-	mov ax, 0x0007
-	je SetVideo
-	mov byte [bp+4], 0x1F
-	mov al, 0x03
-SetVideo:
-	int 0x10
-
-	; Draw the Screen ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-	call CursorOff
-
-	mov cx, bp
-	call Blue
-
-	mov ax, 0x0600
-	mov bh, 0x0F
-	mov cx, 0x0102
-	mov dx, 0x184F
-	int 0x10
-
-	mov dx, 0x001C
-	call SetCursorPosition
-	mov si, Title
-	call WriteString
+#	; Detect the Videocard ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;#
+#
+#	int 0x11
+#	test al, 0x30
+#	mov word [bp+4], 0x0070
+#	mov ax, 0x0007
+#	je SetVideo
+#	mov byte [bp+4], 0x1F
+#	mov al, 0x03
+#SetVideo:
+#	int 0x10
+#
+#	; Draw the Screen ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#
+#	call CursorOff
+#
+#	mov cx, bp
+#	call Blue
+#
+##	mov bh, 0x0F
+#	mov cx, 0x0102
+#	mov dx, 0x184F
+#	int 0x10
+#
+#	mov dx, 0x001C
+##	mov si, Title
+#	call WriteString
 
 ContinueBoot:
 	mov word [bp], 0x6699
@@ -211,35 +209,35 @@ WriteString:
                 jmp short LoopWriteMessage
 	DoneWriteMessage:
                 ret
-CursorOn:
-	mov cx, 0x0020
-	jmp short CursorDo
-CursorOff:
-	mov cx, 0x2000
-CursorDo:
-	mov ah, 0x01
-	jmp short int10
-SetCursorPosition:
-	mov ah, 0x02
-	mov bh, 0x00
-	jmp short int10
-WriteChar:
-	mov ah, 0x09
-	mov bh, 0x00
-	mov cx, 1
-	jmp short int10
-ScrollUp:
-	mov ax, 0x0601
-	mov bh, 0x0F
-	mov cx, 0x0202
-	mov dx, 0x184F
-	jmp short int10
-Blue:
-	mov ax, 0x0900
-	mov bx, [bp+4]
-int10:
-	int 0x10
-	ret
+#CursorOn:
+#	mov cx, 0x0020
+#	jmp short CursorDo
+#CrsorOff:
+#	mov cx, 0x2000
+#CursorDo:
+#	mov ah, 0x01
+#	jmp short int10
+#SetCursorPosition:
+#	mov ah, 0x02
+#	mov bh, 0x00
+#	jmp short int10
+#WriteChar:
+#	mov ah, 0x09
+#	mov bh, 0x00
+#	mov cx, 1
+#	jmp short int10
+#ScrollUp:
+#	mov ax, 0x0601
+#	mov bh, 0x0F
+#	mov cx, 0x0202
+#	mov dx, 0x184F
+#	jmp short int10
+#Blue:
+#	mov ax, 0x0900
+#	mov bx, [bp+4]
+#int10:
+#	int 0x10
+#	ret
 
 	MessageLoadBoot db '[ ][Starting Boot', 0
 	ImageRight db ']', 0

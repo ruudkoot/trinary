@@ -9,14 +9,17 @@
 ;******************************************************************************;
 
 ;******************************************************************************;
-;* This modules initialzes the Boot Strap Processor and some of the basic     *;
-;* system hardware.                                                           *;
+;* THIS MODULE IS OUTDATED AND WILL BE FADED OUT!                             *;
 ;******************************************************************************;
 
 bits 16
 org 0x0000
 
 _enterPM:
+
+	mov si, aha
+	call WriteString
+
 
 	mov ax, 0x9000
 	mov ds, ax
@@ -265,7 +268,7 @@ Aye:
 	jmp 8:0xC0000000
 
 
-	;Should we some how get here (i don't think it's possible because we f*cked up the stack) DIE.
+	;Should we somehow get here (i don't think it's possible because we f*cked up the stack) DIE.
 	;but don't use cli / hlt, because horrible things might happen. Almost as horrible as burning
 	;out the processor. (well no, but I'm hoping these lines won't)
 
@@ -445,4 +448,7 @@ init8259:
 
 	ret
 
-times (9216-4096)-($-$$) db 0
+	aha db "Init", 13, 10, 0;
+
+	times 11776-($-$$) db 0
+
