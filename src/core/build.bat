@@ -1,6 +1,6 @@
 @ECHO OFF
 SET PATH=.\bin;.\bin\gcc;.\bin\nasm;.\bin\bochs;.\bin\trifs-tools
-SET CC=gcc -c --save-temps -o
+SET CC=gcc -c -o
 REM CC=gcc -fomit-frame-pointer -m386 -malign-double -mwide-multiply -O3 -c -mcpu=pentiumpro -o
 SET LD=ld -s
 
@@ -71,10 +71,12 @@ ECHO cp: init.s
 copy .\src\init\ia32\ibm\entry.s + .\tmp\init.s .\tmp\init.t
 ECHO as: init.s
 .\bin\gcc\as -o ./tmp/init.o ./tmp/init.t
-ECHO as: init.s
-.\bin\nasm\nasm .\src\init\init.s -o .\tmp\initxxx.o -f elf
+ECHO cp: pm32.c
+%CC% ./tmp/pm32c.o ./src/init/pm32.c
+ECHO as: pm32.s
+.\bin\gcc\as -o ./tmp/pm32s.o ./src/init/pm32.s
 ECHO ld: init
-.\bin\gcc\ld -s -T./src/init/init.l -o ./tmp/init ./tmp/init.o ./tmp/initxxx.o
+.\bin\gcc\ld -s -T./src/init/init.l -o ./tmp/init ./tmp/init.o ./tmp/pm32s.o ./tmp/pm32c.o
 
 ECHO oc: init
 .\bin\gcc\objcopy -S -O binary ./tmp/init

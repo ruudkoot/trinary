@@ -99,5 +99,7 @@ entry_write:
     1:
                 ret;
 
+.data
+
 entry_error: .ascii "This Operating System requires a 32-bit processor!\n\r\x7";
              .asciz "Press any key to reboot...\n\r";
