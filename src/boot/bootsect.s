@@ -17,7 +17,7 @@
 ;* REDESING ERROR QUESTION
 ;  Redisign Previous Boot
 ;  BPB Compatibility
-;  Imporve BIOS Call Stability
+;  Improve BIOS Call Stability
 ;  Add nice things like a clock
 ;  CRC Check
 ;  Prevouis Boot Parameters
@@ -39,7 +39,7 @@ Start:
 	mov ds, ax
 	mov es, ax
 	mov ss, ax
-	mov sp, 0x8000
+	mov sp, 0x7FFF
 	mov bp, 0x0800
 	sti
 
@@ -55,16 +55,12 @@ Start:
 	; Detect the Videocard ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 	int 0x11
-	and ax, 0x30
-	cmp ax, 0x30
-	je Mono
-
-	mov word [bp+4], 0x001F
-	mov ax, 0x0003
-	jmp SetVideo
-Mono:
+	test al, 0x30
 	mov word [bp+4], 0x0070
 	mov ax, 0x0007
+	je SetVideo
+	mov byte [bp+4], 0x1F
+	mov al, 0x03
 SetVideo:
 	int 0x10
 
@@ -72,7 +68,7 @@ SetVideo:
 
 	call CursorOff
 
-	mov cx, 2000	; CursorOff does it, or else ch = 0x20!
+	mov cx, bp
 	call Blue
 
 	mov ax, 0x0600
@@ -159,25 +155,24 @@ Failure:
 		call CursorOff		; Move it for better FXs
 		pop ax
 
+	mov bl, 0x04
 	and al, 0xDF		;capitalize
 	cmp al, 'A'
 	jnz TestRetry
 JustAbort:
-	mov bl, 0x04
 	call WriteChar
-	mov word [bp], 0x0000
-	mov word [0x0472], 0x0000
+	xor si, si
+	mov word [bp], si
+	mov word [0x0472], si
 	jmp 0xF000:0xFFF0
 TestRetry:
 	cmp al, 'R'
 	jnz TestIgnore
-	mov bl, 0x04
 	call WriteChar
 	jmp ContinueBoot
 TestIgnore:
 	cmp al, 'I'
 	jnz IllegalKey
-	mov bl, 0x04
 	call WriteChar
 	jmp StartBooting		;FUCK!
 IllegalKey:

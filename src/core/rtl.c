@@ -127,7 +127,7 @@ char *  ultoa (
 
 /****************************/
 
-
+/*
 bool inline isalnum(const num8 c)
 {
     return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'));
@@ -208,7 +208,7 @@ int inline toupper (const num8 c)
 {
         if (c >= 'a' && c <= 'z') c += ('A' - 'a');
         return c;
-}
+}*/
 
 char*  strcat(char* dst, const char* src)
 {

@@ -1,6 +1,8 @@
+extern void cmain(void);
+
 void entry(void)
 {
-	main();
+    cmain();
     asm ("cli");
     asm ("hlt");
 }

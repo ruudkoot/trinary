@@ -103,27 +103,27 @@ Start:
 
 	cli
 
-	xor ax, ax
-	mov es, ax
-	mov ds, ax
-	xor si, si
-	xor di, di
-	mov cx, 0xFFFF
-	rep stosw
-
-	mov word [0x0000], 0x00E3
-	mov word [0x0002], 0x0000
-	mov word [0x0C00], 0x2003
-	
-	mov cx, 0x0400
-	Loop1:
-		mov bx, cx
-		shl bx, 2
-		sub bx, 4
-		add bx, 0x1000
-		
-		
-
+;	xor ax, ax
+;	mov es, ax
+;	mov ds, ax
+;	xor si, si
+;	xor di, di
+;	mov cx, 0xFFFF
+;	rep stosw
+;
+;	mov word [0x0000], 0x00E3
+;	mov word [0x0002], 0x0000
+;	mov word [0x0C00], 0x2003
+;	
+;	mov cx, 0x0400
+;	Loop1:
+;		mov bx, cx
+;		shl bx, 2
+;		sub bx, 4
+;		add bx, 0x1000
+;		
+;		
+;
 ;	mov ax, 0x0000
 ;	mov es, ax
 ;	mov ax, 0x1000
@@ -161,6 +161,15 @@ Aye:
 	mov es, ax
 	mov fs, ax
 	mov gs, ax
+
+	;Rescue the BDA before the page dirctory tramples it.
+	mov esi, 0
+	mov edi, 0x80000
+	mov ecx, 0x4000
+	rep movsd
+
+	;Create the Page Directory
+
 
 	mov esi, 0
 	mov edi, 0
@@ -221,7 +230,7 @@ Aye:
 	or eax, 0x80000000
 	mov cr0, eax
 
-	;Life's beutiful isn't it. Protected Mode is enabled. Paging is only. Nothing crashes. And it
+	;Life's beautiful isn't it. Protected Mode is enabled. Paging is only. Nothing crashes. And it
 	;only took me two days to get it to this point. (That's 48 hours, better get some more sleep now ;-)
 
 	xor eax, eax

@@ -6,6 +6,11 @@ typedef signed short int            int16;
 typedef signed int                  int32;
 typedef signed long long int        int64;
 
+typedef unsigned char               unt8;
+typedef unsigned short int          unt16;
+typedef unsigned int                unt32;
+typedef unsigned long long int      unt64;
+
 typedef unsigned char               num8;
 typedef unsigned short int          num16;
 typedef unsigned int                num32;

@@ -8,10 +8,16 @@ unsigned* buffer;
 unsigned* bufferIterator;
 const unsigned PAGESIZE = 4096;
 
+char ts[4096*3];
+char td[4096*3];
+
 void discardable mmInit(void)
 {
+
+    
     mmPhysicalInit();
     //mmVirtualInit();
+
 }
 
 //mmPhysicalInit() initializes the buffer used to keep track of free physical
@@ -99,4 +105,45 @@ void discardable mmVirtualInit(void)
     tempTable[0x000]            = physDirectory + 0x00000003;
 
     //virtDirectory[0x000]        = ;
+
+}
+
+unt32 mmCreateGalaxy(void)
+{
+
+}
+
+/*******************************************************************/
+
+void mmPageCopyByte(unt32 destination, unt32 source)
+{
+	asm volatile
+    (   "cld;"
+		"rep; movsb;"
+		: 
+		: "c" (1024*1024), "D" (destination), "S" (source)
+		: "memory"
+    );
+}
+
+void mmPageCopyWord(unt32 destination, unt32 source)
+{
+	asm volatile
+    (   "cld;"
+		"rep; movsw;"
+		: 
+		: "c" (512*1024), "D" (destination), "S" (source)
+		: "memory"
+    );
+}
+
+void mmPageCopyDword(unt32 destination, unt32 source)
+{
+	asm volatile
+    (   "cld;"
+		"rep; movsl;"
+		: 
+		: "c" (256*1024), "D" (destination), "S" (source)
+		: "memory"
+    );
 }

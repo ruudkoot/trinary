@@ -4,38 +4,24 @@ SECTIONS
 {
     .text 0xC0000000 :
     {
-        code = .; _code = .; __code = .;
         *(.text)
-        . = ALIGN(4096);
     }
 
     .data :
     {
-        data = .; _data = .; __data = .;
-        *(.data)
         . = ALIGN(4096);
+        *(.data)
     }
 
     .rodata :
     {
-        rodata = .; _rodata = .; __rodata = .;
+        . = ALIGN(4096);
         *(.rodata)
-        . = ALIGN(4096);
-    }
-
-    .text.init :
-    {
-        discard = .; _discard = .; __discard = .;
-        *(.text.init)
-        . = ALIGN(4096);
     }
 
     .bss :
     {
-        bss = .; _bss = .; __bss = .;
-        *(.bss)
         . = ALIGN(4096);
+        *(.bss)
     }
-
-    end = .; _end = .; __end = .;
 }

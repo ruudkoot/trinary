@@ -10,7 +10,7 @@ void logScroll(void)
     int i;
     unsigned source, destination;
     
-    for (i = 12 /* !!! */; i < 22; i++)
+    for (i = 2; i < 22; i++)
     {
         source        = 0xB8000 + 160 * i + 488;
         destination    = 0xB8000 + 160 * i + 328;
@@ -31,6 +31,48 @@ void logItem(string description)
 void logSubItem(string property, string value)
 {
     char output[75];
+    strcpy(output, "   [.....................................................................]");
+    strnpst(output + 4, property, 66);
+    strnpst(output + max(73 - strlen(value), 4), value, 66);
+    logScroll();
+    displayString(output, 0x07);
+}
+
+void logHex(string property, unsigned number)
+{
+    char value[20];    
+    char output[75];
+
+    u32toa(number, value, 16);
+
+    strcpy(output, "   [.....................................................................]");
+    strnpst(output + 4, property, 66);
+    strnpst(output + max(73 - strlen(value), 4), value, 66);
+    logScroll();
+    displayString(output, 0x07);
+}
+
+void logDec(string property, unsigned number)
+{
+    char value[20];    
+    char output[75];
+
+    u32toa(number, value, 10);
+
+    strcpy(output, "   [.....................................................................]");
+    strnpst(output + 4, property, 66);
+    strnpst(output + max(73 - strlen(value), 4), value, 66);
+    logScroll();
+    displayString(output, 0x07);
+}
+
+void logBin(string property, unsigned number)
+{
+    char value[20];    
+    char output[75];
+
+    u32toa(number, value, 2);
+
     strcpy(output, "   [.....................................................................]");
     strnpst(output + 4, property, 66);
     strnpst(output + max(73 - strlen(value), 4), value, 66);

@@ -1,13 +1,22 @@
 #include "compiler.c"
 
+#include "lib/lib.c"
+
 #include "rtl.c"
+#include "heap.c"
+
+#include "lib/container.c"
+
 #include "log.c"
 #include "debug.c"
 
 #include "system.c"
-#include "processor.c"
+#include "cpu.c"
 #include "memory.c"
 #include "signal.c"
+#include "smp.c"
+
+#include "pci/pci.c"
 
 void sigSwitch(void);
 
@@ -53,14 +62,19 @@ void sigSwitch(void);
     unsigned volatile currentTask;
 /* :: TEMOPRARY ::  END  :: */
 
-int main(void)
+int cmain(void)
 {
-    //char buffer[20];
+    char s[20];
     unsigned stop, time, i;
     
     /* :: TEMPORARY :: BEGIN :: */
         logStatus(logSuccess);
     /* :: TEMOPRARY ::  END  :: */
+
+    /* Initialize Heap Management */
+        logItem("Initializing Heap Management");
+        heap_init(0xC0100000);
+        logStatus(logSuccess);
 
     /* Initialize System Management */
         logItem("Initializing System Management");
@@ -70,12 +84,16 @@ int main(void)
     /* Initialize Processor Management */
         logItem("Initializing Processor Management");
         prcInit();
-        logStatus(logSuccess);
 
     /* Initialize Signal Management */
         logItem("Initializing Signal Management");
         sigInit();
         logStatus(logSuccess);
+
+    /* Initialize SMP Management */
+        logItem("Initializing SMP Management");
+        logStatus(logSuccess);
+        smp_init();
         
     /* Initialize Memory Management */
         logItem("Initializing Memory Management");
@@ -87,6 +105,8 @@ int main(void)
         logSubItem("Physical Memory", "16378 kB");
         logSubItem("Reserved Memory", "1024 kB");
 
+        pci_probe();
+        
         for (i = 1; i < 11; i++)
         {   task[i].eax = i+1;
             task[i].ebx = i+1;
@@ -112,19 +132,82 @@ int main(void)
                 
         for (i = 0; i < 256; i ++)
         {
-            task[1].stack[i] = '1111';
-            task[2].stack[i] = '2222';
-            task[3].stack[i] = '3333';
-            task[4].stack[i] = '4444';
-            task[5].stack[i] = '5555';
-            task[6].stack[i] = '6666';
-            task[7].stack[i] = '7777';
-            task[8].stack[i] = '8888';
-            task[9].stack[i] = '9999';
-            task[10].stack[i] = 'AAAA';
+            task[1].stack[i] = 0x11111111;
+            task[2].stack[i] = 0x22222222;
+            task[3].stack[i] = 0x33333333;
+            task[4].stack[i] = 0x44444444;
+            task[5].stack[i] = 0x55555555;
+            task[6].stack[i] = 0x66666666;
+            task[7].stack[i] = 0x77777777;
+            task[8].stack[i] = 0x88888888;
+            task[9].stack[i] = 0x99999999;
+            task[10].stack[i] = 0xAAAAAAAA;
         }
         
         currentTask = 0;
+
+        /*asm volatile ("wbinvd");
+        asm volatile ("rdtsc" : "=a" (time));
+        mmPageCopyByte(2024*1024, 1024*1024);
+        asm volatile ("rdtsc" : "=a" (stop));
+        itoa(stop-time, s, 10);
+        logSubItem("Block (Byte)", s);
+
+        asm volatile ("wbinvd");
+        asm volatile ("rdtsc" : "=a" (time));
+        mmPageCopyByte(2024*1024, 1024*1024);
+        asm volatile ("rdtsc" : "=a" (stop));
+        itoa(stop-time, s, 10);
+        logSubItem("Block (Byte)", s);
+
+        asm volatile ("wbinvd");
+        asm volatile ("rdtsc" : "=a" (time));
+        mmPageCopyByte(2024*1024, 1024*1024);
+        asm volatile ("rdtsc" : "=a" (stop));
+        itoa(stop-time, s, 10);
+        logSubItem("Block (Byte)", s);
+
+        asm volatile ("wbinvd");
+        asm volatile ("rdtsc" : "=a" (time));
+        mmPageCopyWord(2024*1024, 1024*1024);
+        asm volatile ("rdtsc" : "=a" (stop));
+        itoa(stop-time, s, 10);
+        logSubItem("Block (Word)", s);
+
+                asm volatile ("wbinvd");
+        asm volatile ("rdtsc" : "=a" (time));
+        mmPageCopyWord(2024*1024, 1024*1024);
+        asm volatile ("rdtsc" : "=a" (stop));
+        itoa(stop-time, s, 10);
+        logSubItem("Block (Word)", s);
+
+                asm volatile ("wbinvd");
+        asm volatile ("rdtsc" : "=a" (time));
+        mmPageCopyWord(2024*1024, 1024*1024);
+        asm volatile ("rdtsc" : "=a" (stop));
+        itoa(stop-time, s, 10);
+        logSubItem("Block (Word)", s);
+
+        asm volatile ("wbinvd");
+        asm volatile ("rdtsc" : "=a" (time));
+        mmPageCopyDword(2024*1024, 1024*1024);
+        asm volatile ("rdtsc" : "=a" (stop));
+        itoa(stop-time, s, 10);
+        logSubItem("Block (Dword)", s);
+
+                asm volatile ("wbinvd");
+        asm volatile ("rdtsc" : "=a" (time));
+        mmPageCopyDword(2024*1024, 1024*1024);
+        asm volatile ("rdtsc" : "=a" (stop));
+        itoa(stop-time, s, 10);
+        logSubItem("Block (Dword)", s);
+
+                asm volatile ("wbinvd");
+        asm volatile ("rdtsc" : "=a" (time));
+        mmPageCopyDword(2024*1024, 1024*1024);
+        asm volatile ("rdtsc" : "=a" (stop));
+        itoa(stop-time, s, 10);
+        logSubItem("Block (Dword)", s);*/
 
         asm ("sti");
         for (;;) asm volatile ("hlt");
@@ -301,3 +384,4 @@ void task10(void)
     }
 }
 /* :: TEMOPRARY ::  END  :: */
+
