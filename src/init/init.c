@@ -23,6 +23,8 @@
 
 void entry(void)
 {
+    /**/
+
     log_item("Initializing Repository");
     log_status(log_status_success);
     log_subitem("Trinary File System");
