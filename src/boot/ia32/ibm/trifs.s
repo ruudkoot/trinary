@@ -11,6 +11,7 @@
 .arch i8086, jumps;
 .code16;
 .text;
+.globl boot_entry;
 
 /******************************************************************************/
 /* This function is the entry point of the boot sector. The first thing we do */
@@ -80,6 +81,10 @@ y:              .quad 0;
 z:              .quad 0;
 
 boot_title:     .asciz "Trinary Operating System"
+boot_step1:     .asciz "1"
+boot_step2:     .asciz "2"
+boot_step3:     .asciz "3"
+boot_step4:     .asciz "4"
 
 boot_writestring:
 	cld;
@@ -142,7 +147,7 @@ start:
     /* Draw the caption.                                                      */
     movw $0x001C, %dx;
 	call boot_setcursorposition;
-	mov $boot_title, %si;
+	movw $boot_title, %si;
 	call boot_writestring;
 
     /* Load the file node of Init into memory. The block of the node is       *
@@ -159,14 +164,14 @@ start:
      * extended to 64 kB or even more.                                        *
      *                                                                        */
 
-    movw initfilenode, %si;
-    movw initfilenode+2, %di;
+    movw $1, %si;
+    movw $0, %di;
     movw $0x8000, %bx;
     call loadblock;
 
-    movw 0x8118, %si;
-    movw 0x811A, %di;
-    movw 0x8120, %cx;
+    movw 0x8010, %si;
+    movw 0x8012, %di;
+    movw 0x8018, %cx;
     movw $0x9000, %ax;
     movw %ax, %es;
     xorw %bx, %bx;
@@ -206,8 +211,8 @@ loadblock:
     /* Calculate the number of sectors per block. If DX doesn't equal 0 eiter *
      * the sector size or the block size was invalid. We do not check for     *
      * this condition at the moment.                                          */
-    movw blocksize, %ax;
-    divw sectorsize;
+   /* movw blocksize, %ax;*/
+   /* divw sectorsize;*/
 
     call loadsector;
 
