@@ -45,7 +45,6 @@ _Aye:
 	rep stosd
 
 	mov dword [0x00000000], 0x00001007	;Page Table @ 0x00001000 (R/W, Supervisor, Present) [Direct Mapped]
-	mov dword [0x00000C00], 0x00006007  ;Page Table @ 0x00006000 (R/W, Supervisor, Present) [Thread Control Blocks]
     mov dword [0x00000FF0], 0x00005007  ;Page Table @ 0x00005000 (R/W, Supervisor, Present) [User Page Tables]
     mov dword [0x00000FF4], 0x00002007	;Page Table @ 0x00002000 (R/W, Supervisor, Present) [Kernel Heap]
     mov dword [0x00000FF8], 0x00003007	;Page Table @ 0x00003000 (R/W, Supervisor, Present) [Kernel CDS]
@@ -94,24 +93,10 @@ _Aye:
 		mov [ebx], eax
 	loop PageTable3
 
-    mov ecx, 0x0400
-	PageTable3:
-		mov ebx, ecx
-		dec ebx
-		shl ebx, 2
-		add ebx, 0x3000
-		xor eax, eax
-		mov eax, ecx
-		dec eax
-		shl eax, 12
-        add eax, 0x00900007
-		mov [ebx], eax
-	loop PageTable3
 
     ;Create the Page Table 4
     mov dword [0x00004000], 0x00000007  ;Page Direc @ 0x00000000 (R/W, Supervisor, Present)
     mov dword [0x00004004], 0x00001007	;Page Table @ 0x00001000 (R/W, Supervisor, Present) [Direct Mapped]
-	mov dword [0x00004C00], 0x00006007	;Page Table @ 0x00006000 (R/W, Supervisor, Present) [Thread Control Blocks]
     mov dword [0x00004FF0], 0x00005007	;Page Table @ 0x00002000 (R/W, Supervisor, Present) [User Page Tabels]
     mov dword [0x00004FF4], 0x00002007	;Page Table @ 0x00002000 (R/W, Supervisor, Present) [Kernel Heap]
     mov dword [0x00004FF8], 0x00003007	;Page Table @ 0x00003000 (R/W, Supervisor, Present) [Kernel CDS]

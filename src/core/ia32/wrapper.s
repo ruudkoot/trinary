@@ -150,26 +150,3 @@ sig_arch_irqx_wrapper 12
 sig_arch_irqx_wrapper 13
 sig_arch_irqx_wrapper 14
 sig_arch_irqx_wrapper 15
-
-
-;******************************************************************************;
-;* _syscall_arch_#_wrapper - Syscall Wrappers                                 *;
-;******************************************************************************;
-
-%macro syscall_arch_x_wrapper 1
-
-    global _syscall_arch_%1_wrapper
-    extern _syscall_arch_%1
-
-    _syscall_arch_%1_wrapper:
-        push ebx
-        push eax
-        call _syscall_arch_%1
-        pop ecx
-        pop ecx
-        mov ebx, eax
-        iretd
-
-%endmacro
-
-syscall_arch_x_wrapper ipc
