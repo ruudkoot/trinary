@@ -50,7 +50,7 @@ void cmain(void)
             "S" (i)
         );
 
-        if (o != 1234) u32toa(o, s, 10);
+        u32toa(o, s, 10);
 
         out(s);
 	}
