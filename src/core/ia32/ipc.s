@@ -8,9 +8,16 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
+/******************************************************************************/
+/*                                                                            */
+/******************************************************************************/
 
 .global _asm_ipc;
+.global _switch_switch;
+
 .global _ipc_currentthread;
+.global _ipc_schedulethread;
+
 .global _ipc_threadstate;
 .global _ipc_threadstack;
 .global _ipc_threadspace;
@@ -18,10 +25,7 @@
 .global _ipc_threadeip;
 .global _ipc_threadesp0;
 
-.global _switch_switch;
-
 .text
-
 
 /******************************************************************************/
 /* eax: send to                         from                                  */
@@ -48,10 +52,41 @@ _asm_ipc:
     movl %ebx, %fs;
     movl %ebx, %gs;
 
+    /* If we are sending make sure the receiver can receive.                  */
+    cmpl $0, %eax;
+    je _asm_set_receive;
+    movl _ipc_threadstate(,%eax,4), %ebx;
+    cmpl $2, %ebx;
+    jne _asm_send_error;
+
+_asm_set_receive:
+    
+    /* If we are receiving go into the receive state.                         */
+    cmpl $0, %edx;
+    je _asm_do_send;
+
+    movl _ipc_currentthread, %ebp;
+    movl $2, _ipc_threadstate(,%ebp,4);    
+
+_asm_do_send:
+
+   /****//**//**//**//**//**/
     
 _asm_ipc_return:
 
     /* Restore the user segments.                                             */
+    movl $0x2B, %ebx;
+    movl %ebx, %ds;
+    movl %ebx, %es;
+    movl %ebx, %fs;
+    movl %ebx, %gs;
+
+    iretl;
+
+_asm_send_error:
+
+    movl $1234, %esi;
+
     movl $0x2B, %ebx;
     movl %ebx, %ds;
     movl %ebx, %es;
@@ -166,14 +201,8 @@ standard_switch:
 
 .data
 
-em: .asciz "IPC FAILURE: THREAD NOT WAITING!";
-abc: .asciz "EVERYTHING GOES!";
-mes: .asciz "Current Thread";
-mes2: .asciz "New Thread";
-m_esp: .asciz "ESP";
-m_stack: .asciz "Stack Data";
-
 _ipc_currentthread: .long 0x00000000;
+_ipc_schedulethread:.long 0x00000000;
 _ipc_threadstate:   .long 0;
                     .long 1;
                     .long 2;
