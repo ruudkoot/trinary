@@ -40,11 +40,11 @@ void sched_arch_init(void)
     ipc_currentthread = 0;
 
     ipc_threadstack[0] = ((unsigned)(task[0].stack + 4096));
-    ipc_threadstack[1] = ((unsigned)(task[1].stack + 4084));
-    ipc_threadstack[2] = ((unsigned)(task[2].stack + 4084));
-    ipc_threadstack[3] = ((unsigned)(task[3].stack + 4084));
-    ipc_threadstack[4] = ((unsigned)(task[4].stack + 4084));
-    ipc_threadstack[5] = ((unsigned)(task[5].stack + 4084));
+    ipc_threadstack[1] = ((unsigned)(task[1].stack + 4091));
+    ipc_threadstack[2] = ((unsigned)(task[2].stack + 4091));
+    ipc_threadstack[3] = ((unsigned)(task[3].stack + 4091));
+    ipc_threadstack[4] = ((unsigned)(task[4].stack + 4091));
+    ipc_threadstack[5] = ((unsigned)(task[5].stack + 4091));
 
     ipc_threadesp0[0] = ((unsigned)(task[0].stack + 4096));
     ipc_threadesp0[1] = ((unsigned)(task[1].stack + 4096));
