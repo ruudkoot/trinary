@@ -1,3 +1,18 @@
+;******************************************************************************;
+;* Temporary Interrupt Wrapper                                                *;
+;* Copyright (c) 2003, Rudy Koot (Trinary Technologies)                       *;
+;*                                                                            *;
+;* This program is free software; you can redistribute it and/or modify       *;
+;* it under the terms of the GNU General Public License as published by       *;
+;* the Free Software Foundation; either version 2 of the License, or          *;
+;* (at your option) any later version.                                        *;
+;******************************************************************************;
+
+;******************************************************************************;
+;* This module is only temporary and will be replaced by a more stable        *;
+;* version in the future.                                                     *;
+;******************************************************************************;
+
 [BITS 32]
 [EXTERN _sigSwitch]
 [EXTERN _eax]

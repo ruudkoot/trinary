@@ -29,7 +29,7 @@
 *
 *******************************************************************************/
 
-unsigned __cdecl _rotl (
+unsigned rotl (
         unsigned val,
         int shift
         )

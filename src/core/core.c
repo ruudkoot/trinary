@@ -1,3 +1,13 @@
+/******************************************************************************/
+/* Trinary Operating System Core                                              */
+/* Copyright (c) 2003, Rudy Koot (Trinary Technologies)                       */
+/*                                                                            */
+/* This program is free software; you can redistribute it and/or modify       */
+/* it under the terms of the GNU General Public License as published by       */
+/* the Free Software Foundation; either version 2 of the License, or          */
+/* (at your option) any later version.                                        */
+/******************************************************************************/
+
 #include "compiler.c"
 
 #include "lib/lib.c"
@@ -146,7 +156,7 @@ int cmain(void)
         
         currentTask = 0;
 
-        /*asm volatile ("wbinvd");
+        asm volatile ("wbinvd");
         asm volatile ("rdtsc" : "=a" (time));
         mmPageCopyByte(2024*1024, 1024*1024);
         asm volatile ("rdtsc" : "=a" (stop));
@@ -207,7 +217,7 @@ int cmain(void)
         mmPageCopyDword(2024*1024, 1024*1024);
         asm volatile ("rdtsc" : "=a" (stop));
         itoa(stop-time, s, 10);
-        logSubItem("Block (Dword)", s);*/
+        logSubItem("Block (Dword)", s);
 
         asm ("sti");
         for (;;) asm volatile ("hlt");

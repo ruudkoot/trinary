@@ -9,6 +9,15 @@
 /******************************************************************************/
 
 /******************************************************************************/
+/* This module handles SMP Management for the IA-32 Architecure. It's main    */
+/* jobs are:                                                                  */
+/*     - Parsing the MP Structures                                            */
+/*     - Configuring the core                                                 */
+/*     - Booting the processors                                               */
+/*     - Controlling the I/O and Local APICs                                  */
+/******************************************************************************/
+
+/******************************************************************************/
 /* THE smp_arch_* CODE CONTAINS SOME SERIOUS BUGS, ALTHOUGH MOST SYSTEMS ARE  */
 /* NOT AFFECTED:                                                              */
 /*     - POINTERS IN THE MPFPS COULD POINT TO MEMORY ABOVE THE FIRST (FOUR)   */
@@ -19,42 +28,110 @@
 /* REMEMBER THE BSB (IN smp_arch_bspapicid OR cpu_list)                       */
 /******************************************************************************/
 
-void smp_init(void);
-
-void smp_arch_init(void);
-void* smp_arch_findmpfps(void);
+enum
+{
+    smp_cpu_status_unknown,
+    smp_cpu_status_unavailable,
+    smp_cpu_status_offline,
+    smp_cpu_status_booting,
+    smp_cpu_status_initializing,
+    smp_cpu_status_idle,
+    smp_cpu_status_busy
+} smp_cpu_status;
 
 typedef struct
 {
-    char        signature[4];
-    void*       configuration;
-    unt8        lenght;
-    unt8        revision;
-    unt8        checksum;
-    unt8        feature1;
-    unt8        feature2;
-    unt8        feature3;
-    unt8        feature4;
-    unt8        feature5;
+    unt8            hid;
+    smp_cpu_status  status;
+} smp_cpu;
+
+typedef struct
+{
+    char    signature[4];
+    void*   configuration;
+    unt8    lenght;
+    unt8    revision;
+    unt8    checksum;
+    unt8    feature1;
+    unt8    feature2;
+    unt8    feature3;
+    unt8    feature4;
+    unt8    feature5;
 } smp_arch_mpfps __attribute__ ((packed));
 
 typedef struct
 {
-    char        signature[4];
-    unt16       lenght;
-    unt8        revision;
-    unt8        checksum;
-    char        oemid[8];
-    char        productid[12];
-    void*       oemtable;
-    unt16       oemtablesize;
-    unt16       entrycount;
-    void*       localapicaddress;
-    unt16       extendedtablelenght;
-    unt8        extendedtablechecksum;
-    unt8        reserved;
-    unt8        configuration[0];
+    char    signature[4];
+    unt16   lenght;
+    unt8    revision;
+    unt8    checksum;
+    char    oemid[8];
+    char    productid[12];
+    void*   oemtable;
+    unt16   oemtablesize;
+    unt16   entrycount;
+    void*   localapicaddress;
+    unt16   extendedtablelenght;
+    unt8    extendedtablechecksum;
+    unt8    reserved;
+    unt8    configuration[0];
 } smp_arch_mpct __attribute__ ((packed));
+
+typedef struct
+{
+    unt8    entrytype;
+    unt8    localapicid;
+    unt8    localapicversion;
+    unt8    cpuflags;
+    unt32   cpusignature;
+    unt32   cpufeatures;
+    unt32   reserved1;
+    unt32   reserved2;
+} smp_arch_processor __attribute__ ((packed));
+
+typedef struct
+{
+    unt8    entrytype;
+    unt8    busid;
+    char    busname[6];
+} smp_arch_bus __attribute__ ((packed));
+
+typedef struct
+{
+    unt8    entrytype;
+    unt8    ioapicid;
+    unt8    ioapicversion;
+    unt8    ioapicflags;
+    unt32   address;
+} smp_arch_ioapic __attribute__ ((packed));
+
+typedef struct
+{
+    unt8    entrytype;
+    unt8    interrupttype;
+    unt16   interruptflag;
+    unt8    sourcebusid;
+    unt8    sourcebusirq;
+    unt8    destinationioapicid;
+    unt8    destinationioapicintin;
+} smp_arch_iointerrupt __attribute__ ((packed));
+
+typedef struct
+{
+    unt8    entrytype;
+    unt8    interrupttype;
+    unt16   localinterruptflag;
+    unt8    sourcebusid;
+    unt8    sourcebusirq;
+    unt8    destinationioapicid;
+    unt8    destinationioapicintin;
+} smp_arch_localinterrupt __attribute__ ((packed));
+
+void smp_init(void);
+
+void smp_arch_init(void);
+void* smp_arch_findmpfps(void);
+void smp_arch_parsempct(smp_arch_mpct* mpct);
 
 /******************************************************************************/
 /* smp_int - Initialize SMP Management                                        */
@@ -111,9 +188,9 @@ void smp_arch_init(void)
 
                         if (checksum == 0)
                         {
-                            /* This is a valid structure. We can now copy it to       *
-                             * kernel memory, so we can use it, when boot memory is   *
-                             * longer available.                                      */
+                            /* This is a valid structure. We can now copy it  *
+                             * to kernel memory, so we can use it, when boot  *
+                             * memory is longer available.                    */
 
                             logHex("MP Configuration Table Address", ((unt32)(mpfps->configuration)) );
                             logDec("MP Configuration Table Size", (*(unt16*)(mpfps->configuration+4)));
@@ -124,11 +201,7 @@ void smp_arch_init(void)
                             logDec("MP Configuration Table Extended Entry Count", mpct->entrycount);
                             logHex("Address of Local APIC", ((unt32)(mpct->localapicaddress)));
 
-                            /* WE HAVE TO ADD CHECKS HERE, TO MAKE SURE WE    */
-                            /* DON'T PASS THE BOUNDARY OF THE STRUCTURE!      */
-
-                            
-
+                            smp_arch_parsempct(mpct);
                         }
                     }
                 }
@@ -207,4 +280,104 @@ void* smp_arch_findmpfps(void)
     }
 
     logNote("SMP is not supported on this machine!");
+}
+
+/******************************************************************************/
+/* smp_arch_parsempct - Pase the MP Configuration Table                       */
+/*                                                                            */
+/* This function parse the MP Configuration Table, which includes the header, */
+/* the base entries and the extended entries. The information is used the     */
+/* create the kernel structures.                                              */
+/******************************************************************************/
+void smp_arch_parsempct(smp_arch_mpct* mpct)
+{
+    unsigned i;
+    unsigned n;
+
+    smp_arch_processor*     processor;
+    smp_arch_bus*           bus;
+    smp_arch_ioapic*        ioapic;
+    smp_arch_iointerrupt*   iointerrupt;
+    smp_arch_localinterrupt* localinterrupt;
+
+    //TEMP
+        char busname[7];
+    //TEMP
+
+    /* Parse the base (fixed-size) entries.                                   */
+    n = 0;
+
+    /* WE HAVE TO ADD CHECKS HERE, TO MAKE SURE WE DON'T PASS THE BOUNDARY OF *
+     * THE STRUCTURE!                                                         */
+
+    for (i = mpct->entrycount; i > 0; i--)
+    {
+        switch (mpct->configuration[n])
+        {
+            /* Processor                                                      */
+            case 0:
+            {
+                processor = mpct->configuration + n;
+                n += 20;
+
+                logHex("Processor", processor->localapicid);
+
+                break;
+            }
+
+            /* Bus                                                            */
+            case 1:
+            {
+                bus = mpct->configuration + n;
+                n += 8;
+
+                memcpy(busname, bus->busname, 6);
+                busname[6] = '\0';
+                logSubItem("Bus", busname);
+
+                break;
+            }
+
+            /* I/O APIC                                                       */
+            case 2:
+            {
+                ioapic = mpct->configuration + n;
+                n += 8;
+
+                logHex("I/O APIC", ioapic->address);
+
+                break;
+            }
+
+            /* I/O Interrupt                                                  */
+            case 3:
+            {
+                iointerrupt = mpct->configuration + n;
+                n += 8;
+
+                logHex("I/O Interrupt", iointerrupt->destinationioapicintin);
+
+                break;
+            }
+
+            /* Local Interrupt                                                */
+            case 4:
+            {
+                localinterrupt = mpct->configuration + n;
+                n += 8;
+
+                logHex("Local Interrupt", localinterrupt->destinationioapicintin);
+
+                break;
+            }
+
+
+            default:
+            {
+                logHex("Unknown", mpct->configuration[n]);
+                
+                break;
+            }
+        }
+    }
 }

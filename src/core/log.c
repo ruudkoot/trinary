@@ -1,7 +1,17 @@
+/******************************************************************************/
+/* Boot Log                                                                   */
+/* Copyright (c) 2003, Rudy Koot (Trinary Technologies)                       */
+/*                                                                            */
+/* This program is free software; you can redistribute it and/or modify       */
+/* it under the terms of the GNU General Public License as published by       */
+/* the Free Software Foundation; either version 2 of the License, or          */
+/* (at your option) any later version.                                        */
+/******************************************************************************/
+
 void logScroll(void);
-void logItem(string description);
+void logItem(string* description);
 void logStatus(unsigned);
-void displayString(char* output, unsigned char color);
+void displayString(string* output, unsigned char color);
 
 const unsigned logSuccess = 0;
 
@@ -19,7 +29,7 @@ void logScroll(void)
     }
 }
 
-void logItem(string description)
+void logItem(string* description)
 {
     char output[75];
     strcpy(output, "[ ][.....................................................................]");
@@ -28,7 +38,7 @@ void logItem(string description)
     displayString(output, 0x0F);
 }
 
-void logSubItem(string property, string value)
+void logSubItem(string* property, string* value)
 {
     char output[75];
     strcpy(output, "   [.....................................................................]");
@@ -38,7 +48,7 @@ void logSubItem(string property, string value)
     displayString(output, 0x07);
 }
 
-void logHex(string property, unsigned number)
+void logHex(string* property, unsigned number)
 {
     char value[20];    
     char output[75];
@@ -52,7 +62,7 @@ void logHex(string property, unsigned number)
     displayString(output, 0x07);
 }
 
-void logDec(string property, unsigned number)
+void logDec(string* property, unsigned number)
 {
     char value[20];    
     char output[75];
@@ -66,7 +76,7 @@ void logDec(string property, unsigned number)
     displayString(output, 0x07);
 }
 
-void logBin(string property, unsigned number)
+void logBin(string* property, unsigned number)
 {
     char value[20];    
     char output[75];
@@ -80,7 +90,7 @@ void logBin(string property, unsigned number)
     displayString(output, 0x07);
 }
 
-void logMessage(string message)
+void logMessage(string* message)
 {
     char output[75];
     strcpy(output, "[........................................................................]");
@@ -89,7 +99,7 @@ void logMessage(string message)
     displayString(output, 0x02);
 }
 
-void logNote(string note)
+void logNote(string* note)
 {
     char output[75];
     strcpy(output, "   [.....................................................................]");
@@ -104,7 +114,7 @@ void logStatus(unsigned status)
     *tmpVideo = 0x0AFB;
 }
 
-void displayString(char* output, unsigned char color)
+void displayString(string* output, unsigned char color)
 {
     char* m = (char*)0xB8E68;
 
