@@ -1,4 +1,4 @@
-void* memcpy(void* s, void* t, unsigned n)
+void* memcpy(void* s, const void* t, unsigned n)
 {
         void * ret = s;
 

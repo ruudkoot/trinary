@@ -8,6 +8,6 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-void ext2_init(void)
+void fat_init(void)
 {
 }
