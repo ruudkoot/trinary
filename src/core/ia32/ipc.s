@@ -274,8 +274,8 @@ _int_entry:
     movl %edi, -28(%esp);
 
     /* Clear the interrupt controllers.                                       */
-    movl $0xA0, %eax;
-    movl $0x20, %edx;
+    movl $0x20, %eax;
+    movl $0xA0, %edx;
     outb %al, %dx;
 
     movl $0x20, %edx;
