@@ -121,9 +121,29 @@ void cmain(void)
     disk.controller.portCommand = 0x1f7;
     disk.controller.portAlternate = 0x3f6;
 
-    for (;;)
+    for (i = 0;; i+=1024)
     {
-        ata_readSector(disk, rand() * 16 , 1);
+        ata_readSector(disk, i , 1);
+
+        asm
+        (
+            "pushl %%ebp;"
+            "int $0xC0;"
+            "popl %%ebp;"
+            :
+            :
+            "a" (0),
+            "d" (5)
+        );
+
+        ata_inputPio(disk.controller, buffer, 256);
+        ata_clearInterrupt(disk.controller);
+
+        buffer[60] = '\0';
+        out(buffer);
+
+
+        ata_readSector(disk, 1048576 - i , 1);
 
         asm
         (
