@@ -17,8 +17,8 @@ core : entry.o core.o wrapper.o ipc.o kdb.o
 	ld -s -Tcore.l -o core entry.o core.o ipc.o kdb.o wrapper.o ../../bin/gcc/libgcc.a
 	objcopy core -S -O binary
 
-entry.o : entry.c
-	$(cc) entry.o entry.c
+entry.o : ia32/entry.s
+	as -o entry.o ia32/entry.s
 
 core.o : $(sources)
 	$(cc) core.o core.c
