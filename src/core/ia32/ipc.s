@@ -49,7 +49,6 @@ _asm_ipc:
     movl %ebx, %gs;
 
     
-
 _asm_ipc_return:
 
     /* Restore the user segments.                                             */
