@@ -1,5 +1,5 @@
 /******************************************************************************/
-/*                                                                            */
+/* Core Library :                                                             */
 /* Copyright (c) 2003, Rudy Koot (Trinary Technologies)                       */
 /*                                                                            */
 /* This program is free software; you can redistribute it and/or modify       */
