@@ -1,4 +1,0 @@
-void configPentium(void)
-{
-
-}

@@ -1,0 +1,4 @@
+void discardable prcInit(void)
+{
+
+}

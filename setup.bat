@@ -2,6 +2,6 @@
 @ECHO (All data on that disk will be earased!)
 @PAUSE > NUL
 @ECHO Writing Boot Disk...
-@_setup\rawrite -f _image\disk.bin -d a -n
+@\bin\rawrite -f \tmp\disk -d a -n
 @ECHO Done!
 @PAUSE > NUL
