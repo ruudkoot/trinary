@@ -17,7 +17,7 @@
 /* operating system features like process, file and network management which, */
 /* unlike most popular operating systems, do not resides inside the kernel.   */
 /*                                                                            */
-/* At the moment it is used to test the core and it quire a mess for that     */
+/* At the moment it is used to test the core and it quite a mess for that     */
 /* reason. It is highly unlikely that any of this code will make it into the  */
 /* real root server.                                                          */
 /******************************************************************************/
@@ -48,10 +48,20 @@ void out(char* output)
 
 void cmain(void)
 {
+	unsigned i;
+	char s[30];
 
     out("");
-    out("Root Server Running!");
+	out("");
+	out("************************************************************");
+    out("");
+	out("Root Server Running!");
+	out("");
 
   
-    for (;;);
+    for (i = 0;; i++)
+	{
+		i32toa(i, s, 16);
+		out(s);
+	}
 }

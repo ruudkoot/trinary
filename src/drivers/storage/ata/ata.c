@@ -24,7 +24,7 @@
 //                          marketing departments of hard disk manufactures.
 //                          Forget them. They are just fancy words for some of
 //                          the (unfinished) ATA standards.
-//    PIO Mode 5          : While this is not an official ATA mode, many hard
+//    PIO Mode 5          : While this is not an official ATA mode, some hard
 //                          disks support this mode to increase speed on
 //                          computers that do not support DMA.
 //    Either DMA or PIO   : Windows and some BIOSes let you think hard disks
@@ -96,6 +96,7 @@
 //    Ultra DMA uses a dedicated DMA chip integrated in the southbridge.
 //
 //The following IDE chipsets contain bugs and will corrupt your data!
+//Suprisinly this were VERY poupular chipsets on Pentium motherboards.
 //
 //    CMD640x
 //    PC-Tech RZ-1000 (http://www.intel.com/procs/support/rz1000/index.htm)

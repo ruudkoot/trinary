@@ -40,6 +40,7 @@ void task1(void)
         i++;
         u32toa(i, s, 10);
         panicWrite(0, 3, s);
+        panicWrite(0, 0, "K1:");
     }
 }
 
@@ -48,13 +49,14 @@ void task2(void)
     unsigned i = 0;
     char s[20];
 
-    i = 33333;
-    
+    i = 1000;
+
     for (;;)
     {
-        i+=2;
+        i++;
         u32toa(i, s, 10);
-        panicWrite(3, 4, s);
+        panicWrite(1, 3, s);
+        panicWrite(1, 0, "K2:");
     }
 }
 
@@ -82,8 +84,8 @@ void sched_arch_init(void)
 
     task[0].eip = ((unsigned)(task0));
     task[1].eip = ((unsigned)(task1));
-    task[2].eip = ((unsigned)(0xC0040000));
-    task[3].eip = ((unsigned)(dmain));
+    task[2].eip = ((unsigned)(0xFF840000));
+    task[3].eip = ((unsigned)(0xFF850000));
 
     for (i = 0; i < 4096; i++)
     {
@@ -99,6 +101,11 @@ void sched_arch_init(void)
     logHex("Task 1 : Stack : Start", ((unsigned)(task[1].stack)));
     logHex("Task 1 : Stack : End", ((unsigned)(task[1].stack + 4096)));
     logHex("Task 1 : Stack : Pointer", ((unsigned)(task[1].esp)));
+
+    logHex("Task 2 : Entry Point", ((unsigned)(task[2].eip)));
+    logHex("Task 2 : Stack : Start", ((unsigned)(task[2].stack)));
+    logHex("Task 2 : Stack : End", ((unsigned)(task[2].stack + 4096)));
+    logHex("Task 2 : Stack : Pointer", ((unsigned)(task[2].esp)));
 
 }
 

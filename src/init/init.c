@@ -30,6 +30,15 @@
 
 extern void Aye(void);
 
+
+/***********/
+
+void memory_detect(void);
+
+
+/**************/
+
+
 struct
 {
     unt16 limit __attribute__ ((packed));
@@ -168,6 +177,8 @@ void entry(void)
     trifs_list();
     trifs_load();
 
+    /**/ memory_detect(); /**/
+
     asm
     (
         "movw $0x03F2, %dx;"
@@ -228,8 +239,44 @@ void entry(void)
         "code32start: .long 0x10000;"
         ".word 0x0008;"
 
-        "cli;hlt;"
+        "cli; hlt;"
     );
    
     return;
+}
+
+void memory_detect(void)
+{
+    unsigned char buffer[20];
+    unsigned c, d, i;
+    
+    log_item("Detecting Memory");
+
+    memset(buffer, 0, 20);
+
+    c = 0;
+
+    do
+    {
+        asm
+        (
+            "int $0x15;"
+            :
+            "=b" (d)
+            :
+            "a" (0x0000E820),   /* Function   : E820h    */
+            "b" (c),            /* Part       : 0        */
+            "c" (20),           /* Buffer Size: 20 bytes */
+            "d" (0x534D4150),   /* Key        : SMAP     */
+            "D" (buffer)
+        );
+
+        log_hex("Identifier", c);
+        log_hex("  Base", (*(unsigned*)(buffer + 0)));
+        log_hex("  Lenght", (*(unsigned*)(buffer + 8)));
+        log_hex("  Type", (*(unsigned*)(buffer + 16)));
+
+        c = d;
+
+    } while (c != 0);
 }

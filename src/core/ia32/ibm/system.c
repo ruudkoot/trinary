@@ -129,7 +129,7 @@ void sys_arch_timer_setfrequency(unt8 timer, unt32 frequency)
      * works say the freqeuncy is 1.19318 MHz, this is a rounding error. The  *
      * true frequency is 1.193181666... Mhz. I've rounded it down instead of  *
      * up, because a higher frequency causes less noticable error that a      *
-     * lower frequency.                                                       */
+     * lower frequency in real-time systems.                                  */
     divider = 1193181 / frequency;
 
     sys_arch_iowrite8(0x43, 0x34);

@@ -46,6 +46,20 @@ void log_number(string* property, unsigned number)
     log_writestring(output);
 }
 
+void log_hex(string* property, unsigned number)
+{
+    char value[20];    
+    char output[75];
+
+    u32toa(number, value, 16);
+
+    strcpy(output, "   [.............................................................0000000h]");
+    strnpst(output + 4, property, 66);
+    strnpst(output + max(72 - strlen(value), 4), value, 66);
+    
+    log_writestring(output);
+}
+
 void log_status(unsigned s)
 {
     asm volatile
