@@ -106,3 +106,21 @@ int writeblock(unsigned block, unsigned count, unsigned char* buffer)
     fflush(device);
     return 0;
 }
+
+/******************************************************************************/
+
+typedef struct
+{
+	FILE* file;
+	unt32 blocksize;
+} disk_t;
+
+FILE* disk_open(string* name)
+{
+	return 0;
+}
+
+void disk_close(FILE* disk)
+{
+	fclose(disk);
+}
