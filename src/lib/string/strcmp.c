@@ -1,5 +1,5 @@
 /******************************************************************************/
-/* System Initialization                                                      */
+/*                                                                            */
 /* Copyright (c) 2003, Rudy Koot (Trinary Technologies)                       */
 /*                                                                            */
 /* This program is free software; you can redistribute it and/or modify       */
@@ -8,28 +8,20 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-#include "../lib/config.c"
-#include "../lib/lib.c"
-
-#include "repository.c"
-
-#include "ia32/ibm/log.c"
-#include "ia32/ibm/disk.c"
-
-#include "ibm.c"
-#include "trifs.c"
-#include "fat.c"
-#include "ext2.c"
-
-void entry(void)
+int strcmp (
+        const char * src,
+        const char * dst
+        )
 {
-    log_item("Initializing Repository");
-    log_status(log_status_success);
-    log_subitem("Trinary File System");
-    log_subitem("FAT12 / FAT16 / FAT32");
-    log_subitem("Ext2 FS");
+        int ret = 0 ;
 
-    disk_init();
-    
-    return;
+        while( ! (ret = *(unsigned char *)src - *(unsigned char *)dst) && *dst)
+                ++src, ++dst;
+
+        if ( ret < 0 )
+                ret = -1 ;
+        else if ( ret > 0 )
+                ret = 1 ;
+
+        return( ret );
 }

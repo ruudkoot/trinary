@@ -1,5 +1,5 @@
 /******************************************************************************/
-/* System Initialization                                                      */
+/*                                                                            */
 /* Copyright (c) 2003, Rudy Koot (Trinary Technologies)                       */
 /*                                                                            */
 /* This program is free software; you can redistribute it and/or modify       */
@@ -8,28 +8,19 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-#include "../lib/config.c"
-#include "../lib/lib.c"
-
-#include "repository.c"
-
-#include "ia32/ibm/log.c"
-#include "ia32/ibm/disk.c"
-
-#include "ibm.c"
-#include "trifs.c"
-#include "fat.c"
-#include "ext2.c"
-
-void entry(void)
-{
-    log_item("Initializing Repository");
-    log_status(log_status_success);
-    log_subitem("Trinary File System");
-    log_subitem("FAT12 / FAT16 / FAT32");
-    log_subitem("Ext2 FS");
-
-    disk_init();
-    
-    return;
-}
+#include "char/isalnum.c"
+#include "char/isalpha.c"
+//#include "char/isascii.c"
+#include "char/iscsym.c"
+#include "char/iscsymf.c"
+#include "char/isctrl.c"
+#include "char/isdigit.c"
+//#include "char/isgraph.c"
+#include "char/islower.c"
+#include "char/isprint.c"
+#include "char/ispunct.c"
+#include "char/isspace.c"
+#include "char/isupper.c"
+#include "char/isxdigit.c"
+#include "char/tolower.c"
+#include "char/toupper.c"
