@@ -20,11 +20,15 @@
 #include "log.c"
 #include "debug.c"
 
+#include "schedule.c"
+
 #include "system.c"
 #include "cpu.c"
 #include "memory.c"
 #include "signal.c"
 #include "smp.c"
+
+
 
 #include "pci/pci.c"
 
@@ -41,35 +45,6 @@ void sigSwitch(void);
     void task8(void);
     void task9(void);
     void task10(void);
-
-
-    struct
-    {
-        unsigned volatile eax;
-        unsigned volatile ebx;
-        unsigned volatile ecx;
-        unsigned volatile edx;
-        unsigned volatile esi;
-        unsigned volatile edi;
-        unsigned volatile ebp;
-        unsigned volatile esp;
-        unsigned volatile efl;
-        unsigned volatile eip;
-        unsigned volatile stack[256];
-    } task[11];
-
-        unsigned volatile eax;
-        unsigned volatile ebx;
-        unsigned volatile ecx;
-        unsigned volatile edx;
-        unsigned volatile esi;
-        unsigned volatile edi;
-        unsigned volatile ebp;
-        unsigned volatile esp;
-        unsigned volatile efl;
-        unsigned volatile eip;
-
-    unsigned volatile currentTask;
 /* :: TEMOPRARY ::  END  :: */
 
 int cmain(void)
@@ -97,7 +72,7 @@ int cmain(void)
 
     /* Initialize Signal Management */
         logItem("Initializing Signal Management");
-        sigInit();
+        sig_init();
         logStatus(logSuccess);
 
     /* Initialize SMP Management */
@@ -115,7 +90,7 @@ int cmain(void)
         logSubItem("Physical Memory", "16378 kB");
         logSubItem("Reserved Memory", "1024 kB");
 
-        pci_probe();
+        //pci_probe();
         
         for (i = 1; i < 11; i++)
         {   task[i].eax = i+1;
@@ -129,145 +104,48 @@ int cmain(void)
             task[i].efl = 0x00000200;       //IOPL = 0 / IF = 1
         }
 
-        task[1].eip = (unsigned)(task1);
-        task[2].eip = (unsigned)(task2);
-        task[3].eip = (unsigned)(task3);
-        task[4].eip = (unsigned)(task4);
-        task[5].eip = (unsigned)(task5);
-        task[6].eip = (unsigned)(task6);
-        task[7].eip = (unsigned)(task7);
-        task[8].eip = (unsigned)(task8);
-        task[9].eip = (unsigned)(task9);
-        task[10].eip = (unsigned)(task10);
-                
-        for (i = 0; i < 256; i ++)
-        {
-            task[1].stack[i] = 0x11111111;
-            task[2].stack[i] = 0x22222222;
-            task[3].stack[i] = 0x33333333;
-            task[4].stack[i] = 0x44444444;
-            task[5].stack[i] = 0x55555555;
-            task[6].stack[i] = 0x66666666;
-            task[7].stack[i] = 0x77777777;
-            task[8].stack[i] = 0x88888888;
-            task[9].stack[i] = 0x99999999;
-            task[10].stack[i] = 0xAAAAAAAA;
-        }
+        task[1].stack[255] = 0x00000200;
+        task[1].stack[254] = 0x0008;
+        task[1].stack[253] = ((unsigned)(task1));
+        task[1].stack[252] = 0xAAAAAAAA;
+        task[1].stack[251] = 0xBBBBBBBB;
+        task[1].stack[250] = 0xCCCCCCCC;
+        task[1].stack[249] = 0xDDDDDDDD;
+        task[1].stack[248] = 0xEEEEEEEE;
+        task[1].stack[247] = 0xFFFFFFFF;
+        task[1].stack[246] = 0x99999999;
+        task[1].esp = ((unsigned)(task[1].stack + 246));
+
+        task[2].stack[255] = 0x00000200;
+        task[2].stack[254] = 0x0008;
+        task[2].stack[253] = ((unsigned)(task2));
+        task[2].stack[252] = 0xAAAAAAAA;
+        task[2].stack[251] = 0xBBBBBBBB;
+        task[2].stack[250] = 0xCCCCCCCC;
+        task[2].stack[249] = 0xDDDDDDDD;
+        task[2].stack[248] = 0xEEEEEEEE;
+        task[2].stack[247] = 0xFFFFFFFF;
+        task[2].stack[246] = 0x99999999;
+        task[2].esp = ((unsigned)(task[2].stack + 246));
+
+        XXX = task[2].esp;
         
-        currentTask = 0;
+        sched_arch_init();
 
-        asm volatile ("wbinvd");
-        asm volatile ("rdtsc" : "=a" (time));
-        mmPageCopyByte(2024*1024, 1024*1024);
-        asm volatile ("rdtsc" : "=a" (stop));
-        itoa(stop-time, s, 10);
-        logSubItem("Block (Byte)", s);
+        asm volatile ("mov %%eax, %%esp; jmp _task1" :: "a" (task[1].esp));
 
-        asm volatile ("wbinvd");
-        asm volatile ("rdtsc" : "=a" (time));
-        mmPageCopyByte(2024*1024, 1024*1024);
-        asm volatile ("rdtsc" : "=a" (stop));
-        itoa(stop-time, s, 10);
-        logSubItem("Block (Byte)", s);
-
-        asm volatile ("wbinvd");
-        asm volatile ("rdtsc" : "=a" (time));
-        mmPageCopyByte(2024*1024, 1024*1024);
-        asm volatile ("rdtsc" : "=a" (stop));
-        itoa(stop-time, s, 10);
-        logSubItem("Block (Byte)", s);
-
-        asm volatile ("wbinvd");
-        asm volatile ("rdtsc" : "=a" (time));
-        mmPageCopyWord(2024*1024, 1024*1024);
-        asm volatile ("rdtsc" : "=a" (stop));
-        itoa(stop-time, s, 10);
-        logSubItem("Block (Word)", s);
-
-                asm volatile ("wbinvd");
-        asm volatile ("rdtsc" : "=a" (time));
-        mmPageCopyWord(2024*1024, 1024*1024);
-        asm volatile ("rdtsc" : "=a" (stop));
-        itoa(stop-time, s, 10);
-        logSubItem("Block (Word)", s);
-
-                asm volatile ("wbinvd");
-        asm volatile ("rdtsc" : "=a" (time));
-        mmPageCopyWord(2024*1024, 1024*1024);
-        asm volatile ("rdtsc" : "=a" (stop));
-        itoa(stop-time, s, 10);
-        logSubItem("Block (Word)", s);
-
-        asm volatile ("wbinvd");
-        asm volatile ("rdtsc" : "=a" (time));
-        mmPageCopyDword(2024*1024, 1024*1024);
-        asm volatile ("rdtsc" : "=a" (stop));
-        itoa(stop-time, s, 10);
-        logSubItem("Block (Dword)", s);
-
-                asm volatile ("wbinvd");
-        asm volatile ("rdtsc" : "=a" (time));
-        mmPageCopyDword(2024*1024, 1024*1024);
-        asm volatile ("rdtsc" : "=a" (stop));
-        itoa(stop-time, s, 10);
-        logSubItem("Block (Dword)", s);
-
-                asm volatile ("wbinvd");
-        asm volatile ("rdtsc" : "=a" (time));
-        mmPageCopyDword(2024*1024, 1024*1024);
-        asm volatile ("rdtsc" : "=a" (stop));
-        itoa(stop-time, s, 10);
-        logSubItem("Block (Dword)", s);
-
-        asm ("sti");
         for (;;) asm volatile ("hlt");
     /* :: TEMOPRARY ::  END  :: */
 
 }
 
 /* :: TEMPORARY :: BEGIN :: */
-void sigSwitch(void)
-{
-    char s[20];
-
- //   itoa(task[currentTask].eip, s, 16);
- //   logSubItem("FROM", s);
-    
-    task[currentTask].eax = eax;
-    task[currentTask].ebx = ebx;
-    task[currentTask].ecx = ecx;
-    task[currentTask].edx = edx;
-    task[currentTask].edi = edi;
-    task[currentTask].esi = esi;
-    task[currentTask].ebp = ebp;
-    task[currentTask].esp = esp;
-    task[currentTask].eip = eip;
-    task[currentTask].efl = efl;
-
-    currentTask++;
-    if (currentTask > 10) currentTask = 1;
-
-//    itoa(task[currentTask].eip, s, 16);
-//    logSubItem("TO", s);
-
-    eax = task[currentTask].eax;
-    ebx = task[currentTask].ebx;
-    ecx = task[currentTask].ecx;
-    edx = task[currentTask].edx;
-    edi = task[currentTask].edi;
-    esi = task[currentTask].esi;
-    ebp = task[currentTask].ebp;
-    esp = task[currentTask].esp;
-    eip = task[currentTask].eip;
-    efl = task[currentTask].efl;
-
-    asm ("outb %%al,%%dx"::"a" (0x20),"d" (0x20));
-}
-
 void task1(void)
 {
     static unsigned i = 0;
     char s[20];
+
+    asm volatile ("sti");
     
     for (;;)
     {

@@ -28,7 +28,7 @@
 /* REMEMBER THE BSB (IN smp_arch_bspapicid OR cpu_list)                       */
 /******************************************************************************/
 
-enum
+enum smp_cpu_status
 {
     smp_cpu_status_unknown,
     smp_cpu_status_unavailable,
@@ -37,12 +37,12 @@ enum
     smp_cpu_status_initializing,
     smp_cpu_status_idle,
     smp_cpu_status_busy
-} smp_cpu_status;
+};
 
 typedef struct
 {
     unt8            hid;
-    smp_cpu_status  status;
+    enum smp_cpu_status  status;
 } smp_cpu;
 
 typedef struct
@@ -133,6 +133,9 @@ void smp_arch_init(void);
 void* smp_arch_findmpfps(void);
 void smp_arch_parsempct(smp_arch_mpct* mpct);
 
+unt64   cpu_count;
+smp_cpu* cpu_list;
+
 /******************************************************************************/
 /* smp_int - Initialize SMP Management                                        */
 /*                                                                            */
@@ -144,7 +147,19 @@ void smp_arch_parsempct(smp_arch_mpct* mpct);
 /******************************************************************************/
 void smp_init(void)
 {
-    smp_arch_init();
+    /* Until we get real SMP, just fake the core into thinking that there is  *
+     * only one CPU.                                                          */
+
+    cpu_count = 1;
+    cpu_list = heap_alloc(sizeof(smp_cpu));
+
+    cpu_list[0].hid = 0;
+    cpu_list[0].status = smp_cpu_status_idle;
+
+    logNote("SMP support has been disabled for this release!");
+    logSubItem("Processor Count", "1");
+
+    //  smp_arch_init();
 }
 
 void smp_arch_init(void)
