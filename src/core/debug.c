@@ -17,11 +17,6 @@ void panic(char* title)
     unsigned char* v;
     unsigned i;
 
-    //for (i = 1; i <= 24; i++)
-    //{
-        //v = (unsigned char*)(0xB8000 + 160 * i + 4);
-        //memsetw(v, 0x0F00, 78);
-    //}
 
     panicWrite(2, 41 - strlen(title) / 2, title);
     //panicWrite(23, 15, "SYSTEM HALTED! PRESS [RESET] TO REBOOT YOUR COMUTER.");
