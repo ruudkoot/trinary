@@ -29,22 +29,28 @@ void out(char* output)
 
 void cmain(void)
 {
-    unsigned i, o;
+    unsigned i, o, d;
     char s[20];
     
     for (i = 0;; i++)
 	{
-		asm
+		asm volatile
         (
+            "pushl %%ebp;"
             "int $0xC0;"
+            "popl %%ebp;"
             :
-            "=b" (o)
+            "=S" (o),
+            "=D" (d),
+            "=b" (d),
+            "=d" (d)
             :
             "a" (5),
-            "b" (i)
+            "d" (-1),
+            "S" (i)
         );
 
-        u32toa(o, s, 10);
+        u32toa(i, s, 10);
 
         out(s);
 	}

@@ -29,10 +29,31 @@ void out(char* output)
 
 void cmain(void)
 {
-    unsigned i;
+    unsigned i, d, o;
+    char s[20];
     
     for (i = 0;; i++)
 	{
-		out("Pong");
+        u32toa(i, s, 10);
+
+        out(s);
+
+		asm volatile
+        (
+            "pushl %%ebp;"
+            "int $0xC0;"
+            "popl %%ebp;"
+            :
+            "=S" (o),
+            "=D" (d),
+            "=b" (d),
+            "=d" (d)
+            :
+            "a" (0),
+            "d" (-1),
+            "S" (i)
+        );
+
+
 	}
 }

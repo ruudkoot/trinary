@@ -37,6 +37,8 @@ void sys_arch_timer_setfrequency(unt8 timer, unt32 frequency);
 
 #include "vesa.c"
 
+#include "ia32/gdt.c"
+
 /******************************************************************************/
 
 /******************************************************************************/
@@ -63,7 +65,9 @@ void cmain(void)
     syscall_init();
 	space_init();
 
-    vesa_init();    /* This won't be in the real kernel. Just for testing!    */
+    //vesa_init();    /* This won't be in the real kernel. Just for testing!    */
+    
+    arch_gdt_init();
 
     space_create(1);
     space_create(2);
@@ -72,7 +76,6 @@ void cmain(void)
     space_switch(0x900000);
 
     space_map(((word*)(0xFF000000)), 0x80000000);
-
 
     logItem("Downloading Root");
 
@@ -113,7 +116,7 @@ void cmain(void)
         "mov %%eax, %%esp;"
         "sti"
         ::
-        "a" (task[0].esp)
+        "a" (ipc_threadstack[0])
     );
 
     for (;;) asm volatile ("hlt");

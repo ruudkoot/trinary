@@ -1,5 +1,5 @@
 /******************************************************************************/
-/* Inter Process Communication                                                */
+/* Mithrill Core : Inter Process Communication                                */
 /* Copyright (c) 2003, Rudy Koot (Mithrill Foundation)                        */
 /*                                                                            */
 /* This program is free software; you can redistribute it and/or modify       */
@@ -37,53 +37,65 @@
 /******************************************************************************/
 
 _asm_ipc:
-    
-    /* Retreive the state of the receiving thread.                            */
-    movl _ipc_threadstate(,%eax,4), %ebx;
-    
-    /* Make sure it is waiting to receive.                                    */
-    cmpl $2, %ebx;
-    jne _asm_nwait;
 
-    /* Let the current thread wait.                                           */
+    /* Check if we are a receive IPC.                                         */
+    cmp $0, %eax;
+    je c1;
+
+    /* Retrieve the state of the receiving thread.                            */
+    movl _ipc_threadstate(,%eax,4), %ebx;
+    cmp $2, %ebx;
+    je c1;
+
+    mov $1234, %esi;
+    iretl;
+
+c1:
+
+    /* Check if we are a receive IPC.                                         */
+    cmp $0, %eax;
+    jne c2;
+
+    /* WE SHOULD SWITCH TO THE SCHEDULER THREAD OR SELECT A GOOD THREAD
+       JUST SWITCHING TO THREAD 4 WILL DO FOR NOW. THIS WILL EMULATE A CLOSED
+       RECEIVE TO THREAD 4.                                                   */
+    movl $4, %eax;
+    
+    /* Hmmm... We're waiting!                                                 */
     movl _ipc_currentthread, %ebp;
     movl $2, _ipc_threadstate(,%ebp,4);
 
-    /* Save ESP and EDI of the current thread.                                */
-    movl %esp, _ipc_threadstack(,%ebp,4);
+c2:
+
+    /* Save the state of the current thread.                                  */    
+    movl _ipc_currentthread, %ebp;
     movl %edi, _ipc_threadedi(,%ebp,4);
-
-    /* Restore ESP and EDI of the receiver thread.                            */
-    movl _ipc_threadstack(,%eax,4), %esp;
-    movl _ipc_threadedi(,%eax,4), %edi;
-
-    /* Store EIP of the current thread.                                       */
+    movl %esp, _ipc_threadstack(,%ebp,4);
     movl $spawnpoint, _ipc_threadeip(,%ebp,4);
 
-    /* Switch Addres Space.                                                   */
-    movl _ipc_threadspace(,%eax,4), %ebp;
-    movl %ebp, %cr3;
-
-    /* Restore EIP of the receiver thread.                                    */
+    /* Restore the state of the next thread.                                  */
+    movl _ipc_threadspace(,%eax,4), %ebx;
+    movl %ebx, %cr3;
+    movl _ipc_threadedi(,%eax,4), %edi;
+    movl _ipc_threadstack(,%eax,4), %esp;
     movl _ipc_threadeip(,%eax,4), %ebx;
+    movl $1, _ipc_threadstate(,%eax,4);
+    
+    movl %eax, _ipc_currentthread;
+    
     pushl %ebx;
     ret;
 
-    /* We shouldn't spawn here!                                               */
-    cli;
-    hlt;
-    
 spawnpoint:
 
     iretl;
 
-_asm_nwait:
-    push $em;
-    call _panic;
+
 
 .data
 
 em: .asciz "IPC FAILURE: THREAD NOT WAITING!";
+abc: .asciz "EVERYTHING GOES!";
 
 _ipc_currentthread: .long 0x00000000;
 _ipc_threadstate:   .long 0;

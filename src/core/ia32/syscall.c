@@ -24,7 +24,7 @@ extern void asm_ipc(void);
 
 void discardable syscall_arch_init(void)
 {
-    sig_arch_settrapgate(0xC0, asm_ipc);
+    sig_arch_setinterruptgate(0xC0, asm_ipc);
 }
 
 /******************************************************************************/
