@@ -40,6 +40,8 @@ void task1(void)
         i++;
         u32toa(i, s, 10);
         panicWrite(2, 4, s);
+
+        asm volatile ("int $0xC0");
     }
 }
 

@@ -1,5 +1,5 @@
 /******************************************************************************/
-/* Compiler Configuration (GCC 2.95 IA-32)                                    */
+/* Compiler Configuration (GCC 2 & 3)                                         */
 /* Copyright (c) 2003, Rudy Koot (Trinary Technologies)                       */
 /*                                                                            */
 /* This program is free software; you can redistribute it and/or modify       */

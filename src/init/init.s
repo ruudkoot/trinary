@@ -245,7 +245,7 @@ Aye:
 	or eax, 0x80000000
 	mov cr0, eax
 
-	;Life's beautiful isn't it. Protected Mode is enabled. Paging is only. Nothing crashes. And it
+	;Life's beautiful isn't it. Protected Mode is enabled. Paging is online. Nothing crashes. And it
 	;only took me two days to get it to this point. (That's 48 hours, better get some more sleep now ;-)
 
 	xor eax, eax
