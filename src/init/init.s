@@ -2,6 +2,7 @@
 [ORG 0x0000]
 
 _enterPM:
+;testing 123
 
 	mov ax, 0x9000
 	mov ds, ax
