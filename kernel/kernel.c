@@ -13,18 +13,14 @@
 void main(void)
 {
 	unsigned char* a;
-	a = (unsigned char*)0xB8000;
-	*a = '$';
+	a = (unsigned char*)0xB8E6A;
+	*a = 0xFB;
 	a++;
-	*a = 0x1F;
+	*a = 0x0A;
 
 	heapInit(2*1024*1024, 0);
 
-	logScroll();
-	displayString("Trinary Operating System", 0x0F);
 	cpuInit();
-
-	panic("KAEARANAEALA AHAAALATAEADA!A");
 
 	//Shutdown the CPU
 	_asm

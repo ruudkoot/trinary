@@ -184,9 +184,9 @@ IllegalKey:
 	int 0x10
 	jmp Failure
 Succes:
-	mov al, 0xFB
-	mov bl, 0x0A	;MONO???
-	call WriteChar
+;	mov al, 0xFB
+;	mov bl, 0x0A	;MONO???
+;	call WriteChar
 StartBooting:
 	jmp 0x1000
 
@@ -234,7 +234,7 @@ int10:
 	int 0x10
 	ret
 
-	MessageLoadBoot db '[ ][Boot Code', 0
+	MessageLoadBoot db '[ ][Starting Boot', 0
 	ImageRight db ']', 0
 
 

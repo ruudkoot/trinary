@@ -1,49 +1,52 @@
-/**************************************************************************************************/
-/* Processor Identification                                                                       */
-/**************************************************************************************************/
+/**********************************************************************************************************************/
+/* Processor Identification                                                                                           */
+/**********************************************************************************************************************/
 
-//Name		Title																Revision
+//Name		Title																				Revision
 
 /*
-AMD		AMD-K6 Processor Model 6 Revision Guide									   G 1998 August
-AMD		AMD-K6 Processor Model 7 Revision Guide									   H 1999 June
-AMD		AMD-K6-2 Processor Model 8 Revision Guide								   F 1999 June
-AMD		AMD-K6-III Processor Model 9 Revision Guide								   C 1999 July
-AMD		AMD Athlon Processor Model 1 & Model 2 Revision Guide					   D 2000 August
-AMD		AMD Athlon Processor Model 3 Revision Guide								   H 2002 July
-AMD		AMD Athlon Processor Model 4 Revision Guide								   H 2002 July
-AMD		AMD Athlon Processor Model 6 Revision Guide								   D 2002 July
-AMD		AMD Athlon Processor Model 7 Revision Guide								   B 2002 July
-AMD		AMD Athlon Processor Model 8 Revision Guide								   B 2002 June
+AMD			AMD-K6 Processor Model 6 Revision Guide												G		1998 August
+AMD			AMD-K6 Processor Model 7 Revision Guide												H		1999 June
+AMD			AMD-K6-2 Processor Model 8 Revision Guide											F		1999 June
+AMD			AMD-K6-III Processor Model 9 Revision Guide											C		1999 July
+AMD			AMD Athlon Processor Model 1 & Model 2 Revision Guide								D		2000 August
+AMD			AMD Athlon Processor Model 3 Revision Guide											H		2002 July
+AMD			AMD Athlon Processor Model 4 Revision Guide											H		2002 July
+AMD			AMD Athlon Processor Model 6 Revision Guide											D		2002 July
+AMD			AMD Athlon Processor Model 7 Revision Guide											B		2002 July
+AMD			AMD Athlon Processor Model 8 Revision Guide											B		2002 June
 
-Intel	Intel386 CX/SXSA Microprocessor Specification Update					 002 1997 January
-Intel	Intel386 DX Processor Specification Update								 002 1997 January
-Intel	Intel386 EX Embedded Processor Specification Update						 010 1998 October
-Intel	60- and 66-MHz Pentium Processor Specification Update					 001 1997 February
-Intel	Pentium Processor Specification Update									 041 1999 January
-Intel	Pentium Pro Processor Specification Update								 039 1999 January
-Intel	Mobile Intel Celeron Processor at 466 MHz, ... Specification Update		 038 2002 November
-Intel	Mobile Intel Pentium II Processor Specification Update					 046 2002 November
-Intel	Intel Pentium II Xeon Processor Specification Update					 032 2002 January
-Intel	Intel Pentium II Processor Specification Update							 049 2002 July
-Intel	Intel Celeron Processor Specification Update							 047 2002 October
-Intel	Intel Pentium III Processor Specification Update						 045 2002 November
-Intel	Mobile Intel Celeron Processor (0.18µ and 0.13µ) Specification Update	 030 2002 August
-Intel	Mobile Intel Pentium III Processor and ... Specification Update			 036 2002 November
-Intel	Intel Pentium III Xeon Processor Specification Update					 037 2002 July
-Intel	Intel Pentium 4 Processor Specification Update							 029 2002 November
-Intel	Mobile Intel Pentium 4 Processor-M Specification Update					 008 2002 November
-Intel	Intel Celeron Processor in the 478-Pin Package Specification Update		 005 2002 November
-Intel	Mobile Intel Celeron Processor on .13 Micron ... Specification Update	 002 2002 August
-Intel	Intel Xeon Processor Specification Update								 020 2002 November
-Intel	Intel Xeon Processor MP Specification Updata							 009 2002 November
+AMD			AMD Processor Recognition															V		2002 August
 
-Intel	Intel Itanium Processor Specification Update							 008 2003 January
-Intel	Intel Itanium 2 Processor Specification Update							 007 2003 January
+Intel		Intel386 CX/SXSA Microprocessor Specification Update								002		1997 January
+Intel		Intel386 DX Processor Specification Update											002		1997 January
+Intel		Intel386 EX Embedded Processor Specification Update									010		1998 October
+Intel		60- and 66-MHz Pentium Processor Specification Update								001		1997 February
+Intel		Pentium Processor Specification Update												041		1999 January
+Intel		Pentium Pro Processor Specification Update											039		1999 January
+Intel		Mobile Intel Celeron Processor at 466 MHz, ... Specification Update					038		2002 November
+Intel		Mobile Intel Pentium II Processor Specification Update								046		2002 November
+Intel		Intel Pentium II Xeon Processor Specification Update								032		2002 January
+Intel		Intel Pentium II Processor Specification Update										049		2002 July
+Intel		Intel Celeron Processor Specification Update										047		2002 October
+Intel		Intel Pentium III Processor Specification Update									045		2002 November
+Intel		Mobile Intel Celeron Processor (0.18µ and 0.13µ) Specification Update				030		2002 August
+Intel		Mobile Intel Pentium III Processor and ... Specification Update						036		2002 November
+Intel		Intel Pentium III Xeon Processor Specification Update								037		2002 July
+Intel		Intel Pentium 4 Processor Specification Update										029		2002 November
+Intel		Mobile Intel Pentium 4 Processor-M Specification Update								008		2002 November
+Intel		Intel Celeron Processor in the 478-Pin Package Specification Update					005		2002 November
+Intel		Mobile Intel Celeron Processor on .13 Micron ... Specification Update				002		2002 August
+Intel		Intel Xeon Processor Specification Update											020		2002 November
+Intel		Intel Xeon Processor MP Specification Updata										009		2002 November
 
-Intel	Intel Processor Identification and the CPUID Instruction				 022 2002 November
+Intel		Intel Itanium Processor Specification Update										008		2003 January
+Intel		Intel Itanium 2 Processor Specification Update										007		2003 January
 
-IDT		IDT WinChip C6 Data Sheet												1.10  1998 March
+Intel		Intel Processor Identification and the CPUID Instruction							022		2002 November
+Intel		Intel Processor Serial Number														001		1999 March
+
+IDT			IDT WinChip C6 Data Sheet															1.10	1998 March
 */
 
 #include <mem.h>
@@ -240,7 +243,6 @@ void cpuInit(void)
 	logSubItem("iSSE2", x.Instructions.SSE2 ? "True" : "False");
 	logSubItem("3DNow!", x.Instructions.ThreeDNow ? "True" : "False");
 	logSubItem("Extended 3DNow!", x.Instructions.ThreeDNowExtensions ? "True" : "False");
-	logSubItem("tPAX", "False");
 }
 
 struct PROCLIST {
@@ -520,6 +522,7 @@ PROCLIST ProcessorList[] =
 
 	{"GenuineIntel", 4, 4, 0, 0, "Intel i486SL (A)"},
 	{"GenuineIntel", 4, 4, 1, 0, "Intel i486SL (?)"},
+	{"GenuineIntel", 4, 4, 3, 0, "Intel i486SL (?)"},	//In Intel Docs, saupoosed to support CPUID
 //	{"GenuineIntel", 4, 4, ?, 0, "Intel i486SL"},
 
 //	{"GenuineIntel", 4, 5, ?, 0, "Intel i486SX2"},
@@ -539,104 +542,104 @@ PROCLIST ProcessorList[] =
 
 	/** Intel Pentium *******************************************************************************/
 	
-//	{"GenuineIntel", 0x05, 0x00, 0x0?,    0, false, "Intel Pentium Classic (A)"},
+//	{"GenuineIntel", 0x05, 0x00, 0x0?,    0, /*false,*/ "Intel Pentium Classic (A)"},
 	
-//	{"GenuineIntel", 0x05, 0x01, 0x02,    0, false, "Intel Pentium Classic (Engineering Sample)"},
-	{"GenuineIntel", 0x05, 0x01, 0x03,    0, false, "Intel Pentium Classic (B1)"},
-//	{"GenuineIntel", 0x05, 0x01, 0x04,    0, false, "Intel Pentium Classic (B2)"},
-	{"GenuineIntel", 0x05, 0x01, 0x05,    0, false, "Intel Pentium Classic (C1)"},
-	{"GenuineIntel", 0x05, 0x01, 0x07,    0, false, "Intel Pentium Classic (D1)"},
+//	{"GenuineIntel", 0x05, 0x01, 0x02,    0, /*false,*/ "Intel Pentium Classic (Engineering Sample)"},
+	{"GenuineIntel", 0x05, 0x01, 0x03,    0, /*false,*/ "Intel Pentium Classic (B1)"},
+//	{"GenuineIntel", 0x05, 0x01, 0x04,    0, /*false,*/ "Intel Pentium Classic (B2)"},
+	{"GenuineIntel", 0x05, 0x01, 0x05,    0, /*false,*/ "Intel Pentium Classic (C1)"},
+	{"GenuineIntel", 0x05, 0x01, 0x07,    0, /*false,*/ "Intel Pentium Classic (D1)"},
 
-	{"GenuineIntel", 0x05, 0x01, 0x0A,    0, false, "Intel Pentium OverDrive (tA0 1.0)"},
+	{"GenuineIntel", 0x05, 0x01, 0x0A,    0, /*false,*/ "Intel Pentium OverDrive (tA0 1.0)"},
 	
-	{"GenuineIntel", 0x05, 0x02, 0x01,    0, false, "Intel Pentium+ (B1)"},
-	{"GenuineIntel", 0x05, 0x02, 0x02,    0, false, "Intel Pentium+ (B3)"},
-	{"GenuineIntel", 0x05, 0x02, 0x04,    0, false, "Intel Pentium+ (B5)"},
-	{"GenuineIntel", 0x05, 0x02, 0x05,    0, false, "Intel Pentium+ (C2) / Mobile Intel Pentium+ (mA1)"},
-	{"GenuineIntel", 0x05, 0x02, 0x06,    0, false, "Intel Pentium+ (E0)"},
-	{"GenuineIntel", 0x05, 0x02, 0x0B,    0, false, "Intel Pentium+ (cB1)"},
-	{"GenuineIntel", 0x05, 0x02, 0x0C,    0, false, "Intel Pentium+ (cC0) / Mobile Intel Pentium+ (mcC0) / Intel Pentium OverDrive (aC0)"},
+	{"GenuineIntel", 0x05, 0x02, 0x01,    0, /*false,*/ "Intel Pentium+ (B1)"},
+	{"GenuineIntel", 0x05, 0x02, 0x02,    0, /*false,*/ "Intel Pentium+ (B3)"},
+	{"GenuineIntel", 0x05, 0x02, 0x04,    0, /*false,*/ "Intel Pentium+ (B5)"},
+	{"GenuineIntel", 0x05, 0x02, 0x05,    0, /*false,*/ "Intel Pentium+ (C2) / Mobile Intel Pentium+ (mA1)"},
+	{"GenuineIntel", 0x05, 0x02, 0x06,    0, /*false,*/ "Intel Pentium+ (E0)"},
+	{"GenuineIntel", 0x05, 0x02, 0x0B,    0, /*false,*/ "Intel Pentium+ (cB1)"},
+	{"GenuineIntel", 0x05, 0x02, 0x0C,    0, /*false,*/ "Intel Pentium+ (cC0) / Mobile Intel Pentium+ (mcC0) / Intel Pentium OverDrive (aC0)"},
 
-	{"GenuineIntel", 0x05, 0x03, 0x01,    1, false, "Intel Pentium OverDrive (B1 / B2 / C0)"},
-	{"GenuineIntel", 0x05, 0x03, 0x02,    1, false, "Intel Pentium OverDrive (C0)"},
+	{"GenuineIntel", 0x05, 0x03, 0x01,    1, /*false,*/ "Intel Pentium OverDrive (B1 / B2 / C0)"},
+	{"GenuineIntel", 0x05, 0x03, 0x02,    1, /*false,*/ "Intel Pentium OverDrive (C0)"},
 
-//	{"GenuineIntel", 0x05, 0x04, 0x01,    0, false, "Intel Pentium MMX (A1)"},
-//	{"GenuineIntel", 0x05, 0x04, 0x02,    0, false, "Intel Pentium MMX (A2)"},
-	{"GenuineIntel", 0x05, 0x04, 0x03,    0, false, "Intel Pentium MMX (xB1) / Mobile Intel Pentium MMX 'Tillamook' (mxB1)"},
-	{"GenuineIntel", 0x05, 0x04, 0x03,    1, false, "Intel Pentium MMX OverDrive (oxB1)"},
-	{"GenuineIntel", 0x05, 0x04, 0x04,    0, false, "Intel Pentium MMX (xA3) / Mobile Intel Pentium MMX 'Tillamook' (mxA3)"},
-	{"GenuineIntel", 0x05, 0x04, 0x04,    1, false, "Intel Pentium MMX OverDrive (oxA3)"},
+//	{"GenuineIntel", 0x05, 0x04, 0x01,    0, /*false,*/ "Intel Pentium MMX (A1)"},
+//	{"GenuineIntel", 0x05, 0x04, 0x02,    0, /*false,*/ "Intel Pentium MMX (A2)"},
+	{"GenuineIntel", 0x05, 0x04, 0x03,    0, /*false,*/ "Intel Pentium MMX (xB1) / Mobile Intel Pentium MMX 'Tillamook' (mxB1)"},
+	{"GenuineIntel", 0x05, 0x04, 0x03,    1, /*false,*/ "Intel Pentium MMX OverDrive (oxB1)"},
+	{"GenuineIntel", 0x05, 0x04, 0x04,    0, /*false,*/ "Intel Pentium MMX (xA3) / Mobile Intel Pentium MMX 'Tillamook' (mxA3)"},
+	{"GenuineIntel", 0x05, 0x04, 0x04,    1, /*false,*/ "Intel Pentium MMX OverDrive (oxA3)"},
 
-//	{"GenuineIntel", 0x05, 0x05, 0x0?,    0, false, "Intel Pentium ???"},	//Grzegroz DX4 OD
-//	{"GenuineIntel", 0x05, 0x06, 0x0?,    0, false, "Intel Pentium ???"},	//Grzegroz P5 OD
+//	{"GenuineIntel", 0x05, 0x05, 0x0?,    0, /*false,*/ "Intel Pentium ???"},	//Grzegroz DX4 OD
+//	{"GenuineIntel", 0x05, 0x06, 0x0?,    0, /*false,*/ "Intel Pentium ???"},	//Grzegroz P5 OD
 	
-	{"GenuineIntel", 0x05, 0x07, 0x00,    0, false, "Mobile Intel Pentium (mA4)"},
+	{"GenuineIntel", 0x05, 0x07, 0x00,    0, /*false,*/ "Mobile Intel Pentium (mA4)"},
 
-	{"GenuineIntel", 0x05, 0x08, 0x01,    0, false, "Mobile Intel Pentium MMX 'Tillamook' (myA0)"},
-	{"GenuineIntel", 0x05, 0x08, 0x02,    0, false, "Mobile Intel Pentium MMX 'Tillamook' (myB1)"},
+	{"GenuineIntel", 0x05, 0x08, 0x01,    0, /*false,*/ "Mobile Intel Pentium MMX 'Tillamook' (myA0)"},
+	{"GenuineIntel", 0x05, 0x08, 0x02,    0, /*false,*/ "Mobile Intel Pentium MMX 'Tillamook' (myB1)"},
 
 	/** Intel P6 ************************************************************************************/
 
-//	{"GenuineIntel", 0x06, 0x00, 0x0?,    0, false, "Intel Pentium Pro (A0 Engeneering Sample)"},
+	//	{"GenuineIntel", 0x06, 0x00, 0x0?,    0, /*false,*/ "Intel Pentium Pro (A0 Engeneering Sample)"},
 
-	{"GenuineIntel", 0x06, 0x01, 0x01,    0, false, "Intel Pentium Pro (B0)"},
-	{"GenuineIntel", 0x06, 0x01, 0x02,    0, false, "Intel Pentium Pro (C0)"},
-	{"GenuineIntel", 0x06, 0x01, 0x06,    0, false, "Intel Pentium Pro (sA0)"},
-	{"GenuineIntel", 0x06, 0x01, 0x07,    0, false, "Intel Pentium Pro (sA1)"},
-	{"GenuineIntel", 0x06, 0x01, 0x09,    0, false, "Intel Pentium Pro (sB1)"},
+	{"GenuineIntel", 0x06, 0x01, 0x01,    0, /*false,*/ "Intel Pentium Pro (B0)"},
+	{"GenuineIntel", 0x06, 0x01, 0x02,    0, /*false,*/ "Intel Pentium Pro (C0)"},
+	{"GenuineIntel", 0x06, 0x01, 0x06,    0, /*false,*/ "Intel Pentium Pro (sA0)"},
+	{"GenuineIntel", 0x06, 0x01, 0x07,    0, /*false,*/ "Intel Pentium Pro (sA1)"},
+	{"GenuineIntel", 0x06, 0x01, 0x09,    0, /*false,*/ "Intel Pentium Pro (sB1)"},
 
-	{"GenuineIntel", 0x06, 0x03, 0x02,    1, false, "Intel Pentium II OverDrive (TdB0)"},
-	{"GenuineIntel", 0x06, 0x03, 0x03,  512, false, "Intel Pentium II 'Klamath' (C0)"},
-	{"GenuineIntel", 0x06, 0x03, 0x04,  512, false, "Intel Pentium II 'Klamath' (C1)"},
+	{"GenuineIntel", 0x06, 0x03, 0x02,    1, /*false,*/ "Intel Pentium II OverDrive (TdB0)"},
+	{"GenuineIntel", 0x06, 0x03, 0x03,  512, /*false,*/ "Intel Pentium II 'Klamath' (C0)"},
+	{"GenuineIntel", 0x06, 0x03, 0x04,  512, /*false,*/ "Intel Pentium II 'Klamath' (C1)"},
 
-//	{"GenuineIntel", 0x06, 0x04, 0x0?,    0, false, "Intel Pentium II OverDrive (?)"},
+//	{"GenuineIntel", 0x06, 0x04, 0x0?,    0, /*false,*/ "Intel Pentium II OverDrive (?)"},
 
-	{"GenuineIntel", 0x06, 0x05, 0x00,    0, false, "Intel Celeron II 'Covington' (A0)"},
-	{"GenuineIntel", 0x06, 0x05, 0x00,  512, false, "Intel Pentium II 'Deschutes' (dA0) / Intel Pentium II Mobile 'Tonga' (mdA0)"},
-	{"GenuineIntel", 0x06, 0x05, 0x01,    0, false, "Intel Celeron II 'Covington' (A1)"},
-	{"GenuineIntel", 0x06, 0x05, 0x01,  512, false, "Intel Pentium II 'Deschutes' (dA1)"},
-	{"GenuineIntel", 0x06, 0x05, 0x02,    0, false, "Intel Celeron II 'Covington' (B0)"},
-	{"GenuineIntel", 0x06, 0x05, 0x02,  512, false, "Intel Pentium II 'Deschutes' (dB0) / Intel Xeon II 'Drake' (B0) / Intel Pentium II Mobile 'Tonga' (mdB0)"},
-	{"GenuineIntel", 0x06, 0x05, 0x02, 1024, false, "Intel Xeon II 'Drake' (B0)"},
-	{"GenuineIntel", 0x06, 0x05, 0x03,  512, false, "Intel Pentium II 'Deschutes' (B1) / Intel Xeon II 'Drake' (B1)"},
-	{"GenuineIntel", 0x06, 0x05, 0x03, 1024, false, "Intel Xeon II 'Drake' (B1)"},
-	{"GenuineIntel", 0x06, 0x05, 0x03, 2048, false, "Intel Xeon II 'Drake' (B1)"},
+	{"GenuineIntel", 0x06, 0x05, 0x00,    0, /*false,*/ "Intel Celeron II 'Covington' (A0)"},
+	{"GenuineIntel", 0x06, 0x05, 0x00,  512, /*false,*/ "Intel Pentium II 'Deschutes' (dA0) / Intel Pentium II Mobile 'Tonga' (mdA0)"},
+	{"GenuineIntel", 0x06, 0x05, 0x01,    0, /*false,*/ "Intel Celeron II 'Covington' (A1)"},
+	{"GenuineIntel", 0x06, 0x05, 0x01,  512, /*false,*/ "Intel Pentium II 'Deschutes' (dA1)"},
+	{"GenuineIntel", 0x06, 0x05, 0x02,    0, /*false,*/ "Intel Celeron II 'Covington' (B0)"},
+	{"GenuineIntel", 0x06, 0x05, 0x02,  512, /*false,*/ "Intel Pentium II 'Deschutes' (dB0) / Intel Xeon II 'Drake' (B0) / Intel Pentium II Mobile 'Tonga' (mdB0)"},
+	{"GenuineIntel", 0x06, 0x05, 0x02, 1024, /*false,*/ "Intel Xeon II 'Drake' (B0)"},
+	{"GenuineIntel", 0x06, 0x05, 0x03,  512, /*false,*/ "Intel Pentium II 'Deschutes' (B1) / Intel Xeon II 'Drake' (B1)"},
+	{"GenuineIntel", 0x06, 0x05, 0x03, 1024, /*false,*/ "Intel Xeon II 'Drake' (B1)"},
+	{"GenuineIntel", 0x06, 0x05, 0x03, 2048, /*false,*/ "Intel Xeon II 'Drake' (B1)"},
 
-	{"GenuineIntel", 0x06, 0x06, 0x00,  128, false, "Intel Celeron II 'Mendocino' (A0)"},
-	{"GenuineIntel", 0x06, 0x06, 0x05,  128,  true, "Intel Celeron II 'Mendocino' (B0)"},
-	{"GenuineIntel", 0x06, 0x06, 0x0A,  128, false, "Intel Celeron II Mobile (A0)"},
-	{"GenuineIntel", 0x06, 0x06, 0x0A,  256, false, "Intel Pentium II Mobile 'Dixon' (mdbA0 / mqbA1 / dmmA0)"},
+	{"GenuineIntel", 0x06, 0x06, 0x00,  128, /*false,*/ "Intel Celeron II 'Mendocino' (A0)"},
+	{"GenuineIntel", 0x06, 0x06, 0x05,  128,  /*true,*/ "Intel Celeron II 'Mendocino' (B0)"},
+	{"GenuineIntel", 0x06, 0x06, 0x0A,  128, /*false,*/ "Intel Celeron II Mobile (A0)"},
+	{"GenuineIntel", 0x06, 0x06, 0x0A,  256, /*false,*/ "Intel Pentium II Mobile 'Dixon' (mdbA0 / mqbA1 / dmmA0)"},
 
-	{"GenuineIntel", 0x06, 0x07, 0x02,  512, false, "Intel Pentium III 'Katmai' (B0) / Intel Xeon III 'Tanner' (B0)"},
-	{"GenuineIntel", 0x06, 0x07, 0x02, 1024, false, "Intel Xeon III 'Tanner' (B0)"},
-	{"GenuineIntel", 0x06, 0x07, 0x02, 2096, false, "Intel Xeon III 'Tanner' (B0)"},
-	{"GenuineIntel", 0x06, 0x07, 0x03,  512, false, "Intel Pentium III 'Katmai' (C0) / Intel Xeon III 'Tanner' (C0)"},
-	{"GenuineIntel", 0x06, 0x07, 0x03, 1024, false, "Intel Xeon III 'Tanner' (C0)"},
-	{"GenuineIntel", 0x06, 0x07, 0x03, 2096, false, "Intel Xeon III 'Tanner' (C0)"},
+	{"GenuineIntel", 0x06, 0x07, 0x02,  512, /*false,*/ "Intel Pentium III 'Katmai' (B0) / Intel Xeon III 'Tanner' (B0)"},
+	{"GenuineIntel", 0x06, 0x07, 0x02, 1024, /*false,*/ "Intel Xeon III 'Tanner' (B0)"},
+	{"GenuineIntel", 0x06, 0x07, 0x02, 2096, /*false,*/ "Intel Xeon III 'Tanner' (B0)"},
+	{"GenuineIntel", 0x06, 0x07, 0x03,  512, /*false,*/ "Intel Pentium III 'Katmai' (C0) / Intel Xeon III 'Tanner' (C0)"},
+	{"GenuineIntel", 0x06, 0x07, 0x03, 1024, /*false,*/ "Intel Xeon III 'Tanner' (C0)"},
+	{"GenuineIntel", 0x06, 0x07, 0x03, 2096, /*false,*/ "Intel Xeon III 'Tanner' (C0)"},
 	
-	{"GenuineIntel", 0x06, 0x08, 0x01, 0x01, false, "Intel Celeron III 'Coppermine' (A0)"},
-	{"GenuineIntel", 0x06, 0x08, 0x01, 0x02, false, "Intel Pentium III (Mobile) 'Coppermine' (cA2)"},
-	{"GenuineIntel", 0x06, 0x08, 0x01, 0x03, false, "Intel Xeon III 'Cascades' (A0)"},
-	{"GenuineIntel", 0x06, 0x08, 0x03, 0x01, false, "Intel Celeron III 'Coppermine' (B0)"},
-	{"GenuineIntel", 0x06, 0x08, 0x03, 0x02,  true, "Intel Pentium III (Mobile) 'Coppermine' (cB0)"},
-	{"GenuineIntel", 0x06, 0x08, 0x03, 0x03, false, "Intel Xeon III 'Cascades' (B0)"},
-	{"GenuineIntel", 0x06, 0x08, 0x06, 0x01, false, "Intel Celeron III 'Coppermine' (C0)"},
-	{"GenuineIntel", 0x06, 0x08, 0x06, 0x02, false, "Intel Pentium III (Mobile) 'Coppermine' (cC0)"},
-	{"GenuineIntel", 0x06, 0x08, 0x06, 0x03, false, "Intel Xeon III 'Cascades' (C0)"},
-	{"GenuineIntel", 0x06, 0x08, 0x0A, 0x01, false, "Intel Celeron III 'Coppermine' (D0)"},
-	{"GenuineIntel", 0x06, 0x08, 0x0A, 0x02, false, "Intel Pentium III (Mobile) 'Coppermine' (cD0)"},
+	{"GenuineIntel", 0x06, 0x08, 0x01, 0x01, /*false,*/ "Intel Celeron III 'Coppermine' (A0)"},
+	{"GenuineIntel", 0x06, 0x08, 0x01, 0x02, /*false,*/ "Intel Pentium III (Mobile) 'Coppermine' (cA2)"},
+	{"GenuineIntel", 0x06, 0x08, 0x01, 0x03, /*false,*/ "Intel Xeon III 'Cascades' (A0)"},
+	{"GenuineIntel", 0x06, 0x08, 0x03, 0x01, /*false,*/ "Intel Celeron III 'Coppermine' (B0)"},
+	{"GenuineIntel", 0x06, 0x08, 0x03, 0x02,  /*true,*/ "Intel Pentium III (Mobile) 'Coppermine' (cB0)"},
+	{"GenuineIntel", 0x06, 0x08, 0x03, 0x03, /*false,*/ "Intel Xeon III 'Cascades' (B0)"},
+	{"GenuineIntel", 0x06, 0x08, 0x06, 0x01, /*false,*/ "Intel Celeron III 'Coppermine' (C0)"},
+	{"GenuineIntel", 0x06, 0x08, 0x06, 0x02, /*false,*/ "Intel Pentium III (Mobile) 'Coppermine' (cC0)"},
+	{"GenuineIntel", 0x06, 0x08, 0x06, 0x03, /*false,*/ "Intel Xeon III 'Cascades' (C0)"},
+	{"GenuineIntel", 0x06, 0x08, 0x0A, 0x01, /*false,*/ "Intel Celeron III 'Coppermine' (D0)"},
+	{"GenuineIntel", 0x06, 0x08, 0x0A, 0x02, /*false,*/ "Intel Pentium III (Mobile) 'Coppermine' (cD0)"},
 
-	{"GenuineIntel", 0x06, 0x0A, 0x00, 0x03, false, "Intel Xeon III 'Cascades' (A0)"},
-	{"GenuineIntel", 0x06, 0x0A, 0x01, 0x03, false, "Intel Xeon III 'Cascades' (A1)"},
-	{"GenuineIntel", 0x06, 0x0A, 0x04, 0x03, false, "Intel Xeon III 'Cascades' (B0)"},
+	{"GenuineIntel", 0x06, 0x0A, 0x00, 0x03, /*false,*/ "Intel Xeon III 'Cascades' (A0)"},
+	{"GenuineIntel", 0x06, 0x0A, 0x01, 0x03, /*false,*/ "Intel Xeon III 'Cascades' (A1)"},
+	{"GenuineIntel", 0x06, 0x0A, 0x04, 0x03, /*false,*/ "Intel Xeon III 'Cascades' (B0)"},
 
-	{"GenuineIntel", 0x06, 0x0B, 0x01, 0x03, false, "Intel Celeron III 'Tualatin' (A1)"},
-	{"GenuineIntel", 0x06, 0x0B, 0x01, 0x04, false, "Intel Pentium III 'Tualatin' (cA1)"},
-	{"GenuineIntel", 0x06, 0x0B, 0x01, 0x06, false, "Intel Pentium III Mobile 'Geyserville' (A1)"},
-	{"GenuineIntel", 0x06, 0x0B, 0x01, 0x07, false, "Intel Celeron III Mobile 'Tualatin' (A1)"},
-	{"GenuineIntel", 0x06, 0x0B, 0x04, 0x03, false, "Intel Celeron III 'Tualatin' (B1)"},
-	{"GenuineIntel", 0x06, 0x0B, 0x04, 0x04, false, "Intel Pentium III 'Tualatin' (cB1)"},
-	{"GenuineIntel", 0x06, 0x0B, 0x04, 0x06, false, "Intel Pentium III Mobile 'Geyserville' (B1)"},
+	{"GenuineIntel", 0x06, 0x0B, 0x01, 0x03, /*false,*/ "Intel Celeron III 'Tualatin' (A1)"},
+	{"GenuineIntel", 0x06, 0x0B, 0x01, 0x04, /*false,*/ "Intel Pentium III 'Tualatin' (cA1)"},
+	{"GenuineIntel", 0x06, 0x0B, 0x01, 0x06, /*false,*/ "Intel Pentium III Mobile 'Geyserville' (A1)"},
+	{"GenuineIntel", 0x06, 0x0B, 0x01, 0x07, /*false,*/ "Intel Celeron III Mobile 'Tualatin' (A1)"},
+	{"GenuineIntel", 0x06, 0x0B, 0x04, 0x03, /*false,*/ "Intel Celeron III 'Tualatin' (B1)"},
+	{"GenuineIntel", 0x06, 0x0B, 0x04, 0x04, /*false,*/ "Intel Pentium III 'Tualatin' (cB1)"},
+	{"GenuineIntel", 0x06, 0x0B, 0x04, 0x06, /*false,*/ "Intel Pentium III Mobile 'Geyserville' (B1)"},
 
 //	A finalty note: I'm looking for some information on the Intel Timna (Intel's MediaGX). The project
 //	was abandonned so Intel never published any useful material on this. It was based on the P-III.
@@ -648,12 +651,12 @@ PROCLIST ProcessorList[] =
 	{"UnknownVendr", 0xFF, 0xFF, 0xFF, 0xFF, "Unknown Processor"},
 	{"GenuineIntel", 0xFF, 0xFF, 0xFF, 0xFF, "Unknown Intel Processor"},
 	{"AuthenticAMD", 0xFF, 0xFF, 0xFF, 0xFF, "Unknown AMD Processor"},
-	{"CyrixInstead", 0xFF, 0xFF, 0xFF, 0xFF, "Unknown Cyrix Processor"},
 	{"CentaurHauls", 0xFF, 0xFF, 0xFF, 0xFF, "Unknown Centaur Processor"},
-	{"UMC UMC UMC ", 0xFF, 0xFF, 0xFF, 0xFF, "Unknown UMC Processor"},
-	{"RiseRiseRise", 0xFF, 0xFF, 0xFF, 0xFF, "Unknown Rise Processor"},
+	{"CyrixInstead", 0xFF, 0xFF, 0xFF, 0xFF, "Unknown Cyrix Processor"},
 	{"GenuineTMx86", 0xFF, 0xFF, 0xFF, 0xFF, "Unknown Transmeta Processor"},
 	{"NexGenDriven", 0xFF, 0xFF, 0xFF, 0xFF, "Unknown NexGen Processor"},
+	{"RiseRiseRise", 0xFF, 0xFF, 0xFF, 0xFF, "Unknown Rise Processor"},
+	{"UMC UMC UMC ", 0xFF, 0xFF, 0xFF, 0xFF, "Unknown UMC Processor"},
 	{"AMD ISBETTER", 0xFF, 0xFF, 0xFF, 0xFF, "Unknown AMD Pre-Procuction Processor"},
 	{"ThinkTrinary", 0xFF, 0xFF, 0xFF, 0xFF, "Unknown Trinary Processor"},
 
@@ -671,31 +674,33 @@ PROCLIST ProcessorList[] =
 
 	/** Intel NetBurst ****************************************************************************/
 
-	{"GenuineIntel", 0x0F, 0x00, 0x07, 0x08, false, "Intel Pentium 4 'Willamette' (B2)"},
-//	{"GenuineIntel", 0x0F, 0x00, 0x09, 0x0B?,false, "Intel Xeon 4 'Foster?' (??)"},	// In Intel docs as Xeon < F09
-	{"GenuineIntel", 0x0F, 0x00, 0x0A, 0x08, false, "Intel Pentium 4 'Willamette' (C1)"},
-	{"GenuineIntel", 0x0F, 0x00, 0x0A, 0x0E, false, "Intel Xeon 4 'Foster' (C1)"},
+	{"GenuineIntel", 0x0F, 0x00, 0x07, 0x08, /*false,*/ "Intel Pentium 4 'Willamette' (B2)"},
+//	{"GenuineIntel", 0x0F, 0x00, 0x09, 0x0B?,/*false,*/ "Intel Xeon 4 'Foster?' (??)"},	// In Intel docs as Xeon < F09
+	{"GenuineIntel", 0x0F, 0x00, 0x0A, 0x08, /*false,*/ "Intel Pentium 4 'Willamette' (C1)"},
+	{"GenuineIntel", 0x0F, 0x00, 0x0A, 0x0E, /*false,*/ "Intel Xeon 4 'Foster' (C1)"},
 
-	{"GenuineIntel", 0x0F, 0x01, 0x01, 0x0B, false, "Intel Xeon 4 MP 'Foster' (C0)"},
-	{"GenuineIntel", 0x0F, 0x01, 0x02, 0x08, false, "Intel Pentium 4 'Willamette' (D0)"},
-	{"GenuineIntel", 0x0F, 0x01, 0x02, 0x0E, false, "Intel Xeon 4 'Foster' (D0)"},
-	{"GenuineIntel", 0x0F, 0x01, 0x03, 0x09, false, "Intel Pentium 4 'Willamette' (E0)"},
-	{"GenuineIntel", 0x0F, 0x01, 0x03, 0x0A, false, "Intel Celeron 4 'Willamette' (E0)"},
+	{"GenuineIntel", 0x0F, 0x01, 0x01, 0x0B, /*false,*/ "Intel Xeon 4 MP 'Foster' (C0)"},
+	{"GenuineIntel", 0x0F, 0x01, 0x02, 0x08, /*false,*/ "Intel Pentium 4 'Willamette' (D0)"},
+	{"GenuineIntel", 0x0F, 0x01, 0x02, 0x0E, /*false,*/ "Intel Xeon 4 'Foster' (D0)"},
+	{"GenuineIntel", 0x0F, 0x01, 0x03, 0x09, /*false,*/ "Intel Pentium 4 'Willamette' (E0)"},
+	{"GenuineIntel", 0x0F, 0x01, 0x03, 0x0A, /*false,*/ "Intel Celeron 4 'Willamette' (E0)"},
 
-	{"GenuineIntel", 0x0F, 0x02, 0x02, 0x0C, false, "Intel Xeon 4 MP 'Gallatin' (A0)"},
-	{"GenuineIntel", 0x0F, 0x02, 0x04, 0x08, false, "Intel Celeron 4 Mobile (B0)"},
-	{"GenuineIntel", 0x0F, 0x02, 0x04, 0x09, false, "Intel Pentium 4 'Northwood' (B0)"},
-	{"GenuineIntel", 0x0F, 0x02, 0x04, 0x0B, false, "Intel Xeon 4 'Prestonia' (B0)"},
-	{"GenuineIntel", 0x0F, 0x02, 0x04, 0x0E, false, "Intel Pentium 4 Mobile (B0)"},
-	{"GenuineIntel", 0x0F, 0x02, 0x04, 0x0F, false, "Intel Pentium 4 Mobile (B0 Sample)"},
-	{"GenuineIntel", 0x0F, 0x02, 0x07, 0x09, false, "Intel Pentium 4 'Northwood' (C1)"},
-	{"GenuineIntel", 0x0F, 0x02, 0x07, 0x0A, false, "Intel Celeron 4 'Northwood' (C1)"},
-	{"GenuineIntel", 0x0F, 0x02, 0x07, 0x0B, false, "Intel Xeon 4 'Prestonia' (C1)"},
-//	{"GenuineIntel", 0x0F, 0x02, 0x07, 0x0E, false, "Intel Pentium 4 Mobile (C1)"},
-	{"GenuineIntel", 0x0F, 0x02, 0x07, 0x0F, false, "Intel Celeron 4 Mobile (C1)"},
+	{"GenuineIntel", 0x0F, 0x02, 0x02, 0x0C, /*false,*/ "Intel Xeon 4 MP 'Gallatin' (A0)"},
+	{"GenuineIntel", 0x0F, 0x02, 0x04, 0x08, /*false,*/ "Intel Celeron 4 Mobile (B0)"},
+	{"GenuineIntel", 0x0F, 0x02, 0x04, 0x09, /*false,*/ "Intel Pentium 4 'Northwood' (B0)"},
+	{"GenuineIntel", 0x0F, 0x02, 0x04, 0x0B, /*false,*/ "Intel Xeon 4 'Prestonia' (B0)"},
+	{"GenuineIntel", 0x0F, 0x02, 0x04, 0x0E, /*false,*/ "Intel Pentium 4 Mobile (B0)"},
+	{"GenuineIntel", 0x0F, 0x02, 0x04, 0x0F, /*false,*/ "Intel Pentium 4 Mobile (B0 Sample)"},
+	{"GenuineIntel", 0x0F, 0x02, 0x07, 0x09, /*false,*/ "Intel Pentium 4 'Northwood' (C1)"},
+	{"GenuineIntel", 0x0F, 0x02, 0x07, 0x0A, /*false,*/ "Intel Celeron 4 'Northwood' (C1)"},
+	{"GenuineIntel", 0x0F, 0x02, 0x07, 0x0B, /*false,*/ "Intel Xeon 4 'Prestonia' (C1)"},
+//	{"GenuineIntel", 0x0F, 0x02, 0x07, 0x0E, /*false,*/ "Intel Pentium 4 Mobile (C1)"},
+	{"GenuineIntel", 0x0F, 0x02, 0x07, 0x0F, /*false,*/ "Intel Celeron 4 Mobile (C1)"},
 
-//	{"GenuineIntel",F?,3?, ?, ?, "Intel Pentium 4 'Prescott' (??)"},
-//	{"GenuineIntel",F?,3?, ?, ?, "Intel Xeon 4 'Nocona' (??)"},
+//	{"GenuineIntel",F?,3?, ?, ?, "Intel Pentium 4 'Prescott' (??)"},	//.09
+//	{"GenuineIntel",F?,3?, ?, ?, "Intel Xeon 4 'Nocona' (??)"},			//.09
+
+//	{"GenuineIntel",F?,4?, ?, ?, "Intel Pentium 4 'Tyler' (??)"},
 
 
 
@@ -781,15 +786,14 @@ PROCLIST ProcessorList[] =
 	{"AuthenticAMD", 0x06, 4, 4, 0, "AMD Athlon 'Thunderbird' Model 4 (A9)"},
 //	{"AuthenticAMD", 0x06, 4, 4, 0, "AMD Athlon 'Thunderbird' Model 4 (B0)"},	//??Grzegorz
 //	{"AuthenticAMD", 0x06,5?, ?, 0, "AMD Athlon Ultra 'Mustang' Model 5? (??)"},			/* CANCELED */
-	{"AuthenticAMD", 0x06, 6, 0, 0, "AMD Athlon XP 'Palomino' Model 6 (A0)"},
-	{"AuthenticAMD", 0x06, 6, 0, 1, "AMD Athlon MP 'Palomino' Model 6 (A0)"},
-	{"AuthenticAMD", 0x06, 6, 0, 2, "AMD Athlon 4 'Palomino' Model 6 (A0)"},
-	{"AuthenticAMD", 0x06, 6, 1, 0, "AMD Athlon XP 'Palomino' Model 6 (A2)"},
-	{"AuthenticAMD", 0x06, 6, 1, 1, "AMD Athlon MP 'Palomino' Model 6 (A2)"},
-	{"AuthenticAMD", 0x06, 6, 1, 2, "AMD Athlon 4 'Palomino' Model 6 (A2)"},
+	{"AuthenticAMD", 0x06, 6, 0, 0, "AMD Athlon XP/MP 'Palomino' Model 6 (A0)"},
+	{"AuthenticAMD", 0x06, 6, 0, 2, "AMD Athlon 4 Mobile 'Palomino' Model 6 (A0)"},
+	{"AuthenticAMD", 0x06, 6, 1, 0, "AMD Athlon XP/MP 'Palomino' Model 6 (A2)"},
+	{"AuthenticAMD", 0x06, 6, 1, 2, "AMD Athlon 4 Mobile 'Palomino' Model 6 (A2)"},
 	{"AuthenticAMD", 0x06, 6, 2, 0, "AMD Athlon XP 'Palomino' Model 6 (A5)"},
 	{"AuthenticAMD", 0x06, 6, 2, 1, "AMD Athlon MP 'Palomino' Model 6 (A5)"},
-	{"AuthenticAMD", 0x06, 6, 2, 2, "AMD Athlon 4 'Palomino' Model 6 (A5)"},
+	{"AuthenticAMD", 0x06, 6, 2, 2, "AMD Athlon 4 Mobile 'Palomino' Model 6 (A5)"},
+	//DURON and Mobile DUREN????? (IN AMD AP-NOTE)
 	{"AuthenticAMD", 0x06, 7, 0, 0, "AMD Duron 'Morgan' Model 7 (A0)"},
 	{"AuthenticAMD", 0x06, 7, 0, 2, "AMD Duron Mobile 'Morgan' Model 7 (A0)"},
 	{"AuthenticAMD", 0x06, 7, 1, 0, "AMD Duron 'Morgan' Model 7 (A1)"},
@@ -1021,7 +1025,7 @@ struct {
 //When this identification code is executed, we are already in 32-bit Protected Mode. So the basic
 //80x86 test are not necessary (and imposible), beacuse the OS did that for us before switching into
 //Protected Mode. Doing these test in Protected Mode will hurt system integrity. It includes changing
-//some PM Flags and even reseting the processor. Not a good idea.
+//some PM Flags and even reseting the processor. Not a good idea!
 
 bool SupportsCPUID(void)
 {
@@ -1089,15 +1093,15 @@ void Identify(IdentificationStructure &IdentificationData)
 	memset(IdentificationData.Processor.VendorID+12, 0, 4);
 
 	//According to an old CPU identification application, the pre-production models of the Pentium
-	//Classis returned the worn numbers of supported CPUID levels ( > 500h ) and no vendor string.
+	//Classic returned the wrong number of supported CPUID levels ( > 500h ) and no vendor string.
 	if (HighestStandardFunction >= 0x500)
 	{
 		HighestStandardFunction = 1;
 		strcpy(IdentificationData.Processor.VendorID, "GenuineIntel");
 	}
 
-	//CPUID level 1 returns the stepping and feature information. Because different vendors have
-	//
+	//CPUID level 1 returns the stepping and feature information. Because different vendors assign
+	//different meanings to the same flags. Therefore we need to do a lot of correcting afterwards.
 	if (HighestStandardFunction >= 1)
 	{
 		CPUID(0, 1, A, B, C, D);
@@ -1106,7 +1110,7 @@ void Identify(IdentificationStructure &IdentificationData)
 		IdentificationData.Processor.Model				= (A.d & 0x000000F0) >> 4;
 		IdentificationData.Processor.Family				= (A.d & 0x00000F00) >> 8;
 		IdentificationData.Processor.Type				= (A.d & 0x00003000) >> 12;
-		IdentificationData.Signature.HasSerialNumber	= A.d & 0x80000000;
+		IdentificationData.Signature.HasSerialNumber	= (A.d & 0x80000000) >> 31;
 
 		if (IdentificationData.Processor.Model >= 0xF)
 			IdentificationData.Processor.Model += (A.d & 0x000F0000) >> 16;
@@ -1247,17 +1251,7 @@ void Identify(IdentificationStructure &IdentificationData)
 			
 			for (int CacheIterator = 0; CacheIterator < CacheDescriptorTables; CacheIterator++)
 			{
-				__asm
-				{	mov eax, 0x00000002
-					mov ecx, 0x00000000
-					mov edx, 0x00000000
-					mov ebx, 0x00000000
-					cpuid
-					mov A.d, eax
-					mov C.d, ecx
-					mov D.d, edx
-					mov B.d, ebx
-				}
+				CPUID(0, 2, A, B, C, D);
 
 				CacheDescriptorTables = A.b[0];
 
@@ -1292,17 +1286,7 @@ void Identify(IdentificationStructure &IdentificationData)
 
 	if (HighestStandardFunction >= 3)
 	{
-		__asm
-		{	mov eax, 0x00000003
-			mov ecx, 0x00000000
-			mov edx, 0x00000000
-			mov ebx, 0x00000000
-			cpuid
-			mov A.d, eax
-			mov C.d, ecx
-			mov D.d, edx
-			mov B.d, ebx
-		}
+		CPUID(0, 3, A, B, C, D);
 
 		if (!strcmp(IdentificationData.Processor.VendorID, "GenuineIntel"))
 		{
@@ -1319,17 +1303,7 @@ void Identify(IdentificationStructure &IdentificationData)
 		}
 	}
 
-	__asm
-	{	mov eax, 0x80000000
-		mov ecx, 0x00000000
-		mov edx, 0x00000000
-		mov ebx, 0x00000000
-		cpuid
-		mov A.d, eax
-		mov C.d, ecx
-		mov D.d, edx
-		mov B.d, ebx
-	}
+	CPUID(0, 0x80000000, A, B, C, D);
 
 	if (A.d >= 0x80000001)
 	{
@@ -1343,17 +1317,7 @@ void Identify(IdentificationStructure &IdentificationData)
 
 	if (HighestExtendedFunction >= 1)
 	{
-		__asm
-		{	mov eax, 0x80000001
-			mov ecx, 0x00000000
-			mov edx, 0x00000000
-			mov ebx, 0x00000000
-			cpuid
-			mov A.d, eax
-			mov C.d, ecx
-			mov D.d, edx
-			mov B.d, ebx
-		}
+		CPUID(0, 0x80000001, A, B, C, D);
 
 		IdentificationData.Processor.ExtendedStepping	= (A.d & 0x0000000F) >> 0;
 		IdentificationData.Processor.ExtendedModel		= (A.d & 0x000000F0) >> 4;
@@ -1382,23 +1346,14 @@ void Identify(IdentificationStructure &IdentificationData)
 		IdentificationData.Instructions.ThreeDNow				= (C.d >> 31) & 1;
 
 
+		/* WE OVERWITEFLAGS! */
 		/* Transmeta CPUs / AMD pre K7 CPUs and the FCMOV Feature ! */
 		/* K6 SYSCALL Replacement */
 	}
 
 	if (HighestExtendedFunction >= 2)
 	{
-		__asm
-		{	mov eax, 0x80000002
-			mov ecx, 0x00000000
-			mov edx, 0x00000000
-			mov ebx, 0x00000000
-			cpuid
-			mov A.d, eax
-			mov C.d, ecx
-			mov D.d, edx
-			mov B.d, ebx
-		}
+		CPUID(0, 0x80000002, A, B, C, D);
 
 		memcpy(IdentificationData.Processor.BrandString+0, A.b, 4);
 		memcpy(IdentificationData.Processor.BrandString+4, B.b, 4);
@@ -1408,17 +1363,7 @@ void Identify(IdentificationStructure &IdentificationData)
 	
 	if (HighestExtendedFunction >= 3)
 	{
-		__asm
-		{	mov eax, 0x80000003
-			mov ecx, 0x00000000
-			mov edx, 0x00000000
-			mov ebx, 0x00000000
-			cpuid
-			mov A.d, eax
-			mov C.d, ecx
-			mov D.d, edx
-			mov B.d, ebx
-		}
+		CPUID(0, 0x80000003, A, B, C, D);
 
 		memcpy(IdentificationData.Processor.BrandString+16, A.b, 4);
 		memcpy(IdentificationData.Processor.BrandString+20, B.b, 4);
@@ -1428,17 +1373,7 @@ void Identify(IdentificationStructure &IdentificationData)
 
 	if (HighestExtendedFunction >= 4)
 	{
-		__asm
-		{	mov eax, 0x80000004
-			mov ecx, 0x00000000
-			mov edx, 0x00000000
-			mov ebx, 0x00000000
-			cpuid
-			mov A.d, eax
-			mov C.d, ecx
-			mov D.d, edx
-			mov B.d, ebx
-		}
+		CPUID(0, 0x80000004, A, B, C, D);
 
 		memcpy(IdentificationData.Processor.BrandString+32, A.b, 4);
 		memcpy(IdentificationData.Processor.BrandString+36, B.b, 4);
@@ -1449,17 +1384,7 @@ void Identify(IdentificationStructure &IdentificationData)
 
 	if (HighestExtendedFunction >= 5)
 	{
-		__asm
-		{	mov eax, 0x80000005
-			mov ecx, 0x00000000
-			mov edx, 0x00000000
-			mov ebx, 0x00000000
-			cpuid
-			mov A.d, eax
-			mov C.d, ecx
-			mov D.d, edx
-			mov B.d, ebx
-		}
+		CPUID(0, 0x80000005, A, B, C, D);
 	
 		if (!strcmp(IdentificationData.Processor.VendorID, "AuthenticAMD"))
 		{
@@ -1504,17 +1429,7 @@ void Identify(IdentificationStructure &IdentificationData)
 
 	if (HighestExtendedFunction >= 6)
 	{
-		__asm
-		{	mov eax, 0x80000006
-			mov ecx, 0x00000000
-			mov edx, 0x00000000
-			mov ebx, 0x00000000
-			cpuid
-			mov A.d, eax
-			mov C.d, ecx
-			mov D.d, edx
-			mov B.d, ebx
-		}
+		CPUID(0, 0x80000006, A, B, C, D);
 		
 		if (!strcmp(IdentificationData.Processor.VendorID, "AuthenticAMD"))
 		{
@@ -1576,17 +1491,7 @@ void Identify(IdentificationStructure &IdentificationData)
 
 	if (HighestExtendedFunction >= 7)
 	{
-		__asm
-		{	mov eax, 0x80000007
-			mov ecx, 0x00000000
-			mov edx, 0x00000000
-			mov ebx, 0x00000000
-			cpuid
-			mov A.d, eax
-			mov C.d, ecx
-			mov D.d, edx
-			mov B.d, ebx
-		}
+		CPUID(0, 0x80000007, A, B, C, D);
 		
 		if (!strcmp(IdentificationData.Processor.VendorID, "AuthenticAMD"))
 		{
@@ -1598,17 +1503,7 @@ void Identify(IdentificationStructure &IdentificationData)
 
 	if (HighestExtendedFunction >= 8)
 	{
-		__asm
-		{	mov eax, 0x80000008
-			mov ecx, 0x00000000
-			mov edx, 0x00000000
-			mov ebx, 0x00000000
-			cpuid
-			mov A.d, eax
-			mov C.d, ecx
-			mov D.d, edx
-			mov B.d, ebx
-		}
+		CPUID(0, 0x80000008, A, B, C, D);
 		
 		if (!strcmp(IdentificationData.Processor.VendorID, "AuthenticAMD"))
 		{
@@ -1699,23 +1594,23 @@ void IdentifyIntelCache(IdentificationStructure &IdentificationData, int CacheDe
 					IdentificationData.Cache.L1CodeCache.LinesPerTag = -1;
 					return;
 				   }
-		case 0x0A: {IdentificationData.Cache.L1CodeCache.Present = true;
-					IdentificationData.Cache.L1CodeCache.Size = 8;
-					IdentificationData.Cache.L1CodeCache.Associativity = 2;
-					IdentificationData.Cache.L1CodeCache.LineSize = 32;
-					IdentificationData.Cache.L1CodeCache.LinesPerTag = -1;
+		case 0x0A: {IdentificationData.Cache.L1DataCache.Present = true;
+					IdentificationData.Cache.L1DataCache.Size = 8;
+					IdentificationData.Cache.L1DataCache.Associativity = 2;
+					IdentificationData.Cache.L1DataCache.LineSize = 32;
+					IdentificationData.Cache.L1DataCache.LinesPerTag = -1;
 					return;
 				   }
-		case 0x0C: {IdentificationData.Cache.L1CodeCache.Present = true;
-					IdentificationData.Cache.L1CodeCache.Size = 16;
-					IdentificationData.Cache.L1CodeCache.Associativity = 4;	//2???
-					IdentificationData.Cache.L1CodeCache.LineSize = 32;
-					IdentificationData.Cache.L1CodeCache.LinesPerTag = -1;
+		case 0x0C: {IdentificationData.Cache.L1DataCache.Present = true;
+					IdentificationData.Cache.L1DataCache.Size = 16;
+					IdentificationData.Cache.L1DataCache.Associativity = 4;
+					IdentificationData.Cache.L1DataCache.LineSize = 32;
+					IdentificationData.Cache.L1DataCache.LinesPerTag = -1;
 					return;
 				   }
 		case 0x22: {IdentificationData.Cache.L3UnifiedCache.Present = true;
 					IdentificationData.Cache.L3UnifiedCache.Size = 512;
-					IdentificationData.Cache.L3UnifiedCache.Associativity = 4;	//8 very??????????
+					IdentificationData.Cache.L3UnifiedCache.Associativity = 4;
 					IdentificationData.Cache.L3UnifiedCache.LineSize = 64;
 					IdentificationData.Cache.L3UnifiedCache.LinesPerTag = -1;
 					return;
@@ -1757,42 +1652,42 @@ void IdentifyIntelCache(IdentificationStructure &IdentificationData, int CacheDe
 				   }
 		case 0x3C: {IdentificationData.Cache.L2UnifiedCache.Present = true;
 					IdentificationData.Cache.L2UnifiedCache.Size = 256;
-					IdentificationData.Cache.L2UnifiedCache.Associativity = 2;
+					IdentificationData.Cache.L2UnifiedCache.Associativity = 4;
 					IdentificationData.Cache.L2UnifiedCache.LineSize = 64;
 					IdentificationData.Cache.L2UnifiedCache.LinesPerTag = -1;
 					return;
 				   }
 		case 0x41: {IdentificationData.Cache.L2UnifiedCache.Present = true;
 					IdentificationData.Cache.L2UnifiedCache.Size = 128;
-					IdentificationData.Cache.L2UnifiedCache.Associativity = 2;
+					IdentificationData.Cache.L2UnifiedCache.Associativity = 4;
 					IdentificationData.Cache.L2UnifiedCache.LineSize = 32;
 					IdentificationData.Cache.L2UnifiedCache.LinesPerTag = -1;
 					return;
 				   }
 		case 0x42: {IdentificationData.Cache.L2UnifiedCache.Present = true;
 					IdentificationData.Cache.L2UnifiedCache.Size = 256;
-					IdentificationData.Cache.L2UnifiedCache.Associativity = 2;
+					IdentificationData.Cache.L2UnifiedCache.Associativity = 4;
 					IdentificationData.Cache.L2UnifiedCache.LineSize = 32;
 					IdentificationData.Cache.L2UnifiedCache.LinesPerTag = -1;
 					return;
 				   }
 		case 0x43: {IdentificationData.Cache.L2UnifiedCache.Present = true;
 					IdentificationData.Cache.L2UnifiedCache.Size = 512;
-					IdentificationData.Cache.L2UnifiedCache.Associativity = 2;
+					IdentificationData.Cache.L2UnifiedCache.Associativity = 4;
 					IdentificationData.Cache.L2UnifiedCache.LineSize = 32;
 					IdentificationData.Cache.L2UnifiedCache.LinesPerTag = -1;
 					return;
 				   }
 		case 0x44: {IdentificationData.Cache.L2UnifiedCache.Present = true;
 					IdentificationData.Cache.L2UnifiedCache.Size = 1024;
-					IdentificationData.Cache.L2UnifiedCache.Associativity = 2;
+					IdentificationData.Cache.L2UnifiedCache.Associativity = 4;
 					IdentificationData.Cache.L2UnifiedCache.LineSize = 32;
 					IdentificationData.Cache.L2UnifiedCache.LinesPerTag = -1;
 					return;
 				   }
 		case 0x45: {IdentificationData.Cache.L2UnifiedCache.Present = true;
 					IdentificationData.Cache.L2UnifiedCache.Size = 2048;
-					IdentificationData.Cache.L2UnifiedCache.Associativity = 2;
+					IdentificationData.Cache.L2UnifiedCache.Associativity = 4;
 					IdentificationData.Cache.L2UnifiedCache.LineSize = 32;
 					IdentificationData.Cache.L2UnifiedCache.LinesPerTag = -1;
 					return;

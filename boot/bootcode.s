@@ -6,7 +6,8 @@ LoadBootCode:
 	mov dx, 0x1705
 	call SetCursorPosition
 
-	mov al, '*'
+	mov al, 0xFB
+	mov bl, 0x0A
 	call WriteChar
 
 	call ScrollUp
@@ -36,7 +37,7 @@ LoadBootCode:
 		mov ah, 0x02
 		mov al, [BootCodeSize]
 
-		mov dx, 0x1000
+		mov dx, 0x9000
 		mov es, dx
 
 		mov bx, 0x0000
@@ -55,13 +56,7 @@ Succes:
 	mov ss, ax
 	mov ds, ax
 
-	mov dx, 0x1705
-	call SetCursorPosition
-
-	mov al, '*'
-	call WriteChar
-
-	jmp 0x1000:0x0000
+	jmp 0x9000:0x0000
 
 	BootCodeSize db 18
 
@@ -105,7 +100,7 @@ ScrollUp:
 	int 0x10
 	ret
 
-	Message db '[ ][Loading SysInit', 0
+	Message db '[ ][Starting Init', 0
 	Right db ']', 0
 
-	times 8192-($-$$)-512 db 0
+	times 8192-($-$$) db 0xCC

@@ -3,4 +3,5 @@
 @PAUSE > NUL
 @ECHO Writing Boot Disk...
 @_setup\rawrite -f _image\disk.bin -d a -n
+@ECHO Done!
 @PAUSE > NUL
