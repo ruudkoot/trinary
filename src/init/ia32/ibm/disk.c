@@ -54,7 +54,7 @@ void disk_init(void)
 
     log_item("Initializing BIOS Disk Access");
 
-    /* Mak e acopy of the BDA. We'd better do this somewhere else!            */
+    /* Make a copy of the BDA. We'd better do this somewhere else!            */
     asm volatile
     (
         "xorw %%ax, %%ax;"

@@ -22,9 +22,6 @@
 .global _asm_ipc;
 .global _switch_switch;
 .global _int_entry;
-.global _api_spacecontrol;
-.global _api_threadcontrol;
-.global _api_threadstart;
 
 .global _ipc_currentthread;
 .global _ipc_schedulethread;
@@ -242,8 +239,8 @@ switch_1:
 
     /* Make sure it is runnable.                                              */
     movl _ipc_threadstate(,%ebp,4), %eax;
-    cmpl $1, %eax; 
-    jne next_thread;
+    cmpl $2, %eax; 
+    je next_thread;
 
     /* Display the selected thread.                                           */
     xorl %eax, %eax;
@@ -266,7 +263,6 @@ standard_switch:
     /* Switch address space.                                                  */
     movl _ipc_threadspace(,%ebp,4), %eax;
     movl %eax, %cr3;
-
 
     /* Restore the user segments.                                             */
     movl $0x2B, %eax;
@@ -375,29 +371,6 @@ _int_panic:
     movl -24(%esp), %esi;
     movl -28(%esp), %edi;
 
-    iretl;
-
-/******************************************************************************/
-
-_api_spacecontrol:
-    call _arch_api_spacecontrol;
-    iretl;
-
-/******************************************************************************/
-
-_api_threadcontrol:
-    pushl %ebx;
-    pushl %eax;
-    call _arch_api_threadcontrol;
-    addl $8, %esp;
-    iretl;
-
-/******************************************************************************/
-
-_api_threadstart:
-    pushl %eax;
-    call _arch_api_threadstart;
-    addl $4, %esp;
     iretl;
 
 .data

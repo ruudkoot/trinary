@@ -56,11 +56,15 @@ void space_init(void)
 /******************************************************************************/
 void space_create(word id)
 {
+    logHex("Creating Address Space", id);
+    
     space_t *space;
 
     space = heap_alloc(sizeof(space_t));
 
     space->handle = space_arch_create();
+
+    logHex("Created Address Space", id);
 }
 
 void space_map(word* d, unsigned a)
@@ -133,16 +137,18 @@ word space_arch_create(void)
     unsigned* pagedir;
     
     pd = mmPhysicalAlloc() * 4096;
+    logHex("New Page Directory Created @ Physical Address", pd);
     pageholdertable[pageholder] = pd | 0x00000003;
 
     pagedir = ((unsigned*)(0xFF000000 + pageholder * 4096));
+    logHex("New Page Directory Created @ Virtual Address", pagedir);
 
     pageholder++;
 
     memcpy(pagedir, ((unsigned*)(0xFFC00000)), 4096);
 
-//    logHex("New Page Directory Created @ Physical Address", pd);
-//    logHex("New Page Directory Created @ Virtual Address", pagedir);
+    
+    
 
     return pd;
 }
@@ -155,6 +161,20 @@ word space_arch_create(void)
 void space_switch(word id)
 {
     space_arch_switch(id);
+}
+
+word space_getid(void)
+{
+    word id;
+    
+    asm
+    (
+        "movl %%cr3, %%eax"
+        :
+        "=a" (id)
+    );
+
+    return id;
 }
 
 /******************************************************************************/

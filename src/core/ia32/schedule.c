@@ -53,36 +53,26 @@ void sched_arch_init(void)
     ipc_threadesp0[4] = ((unsigned)(task[4].stack + 4096));
     ipc_threadesp0[5] = ((unsigned)(task[5].stack + 4096));
 
-    ipc_threadeip[0] = ((unsigned)(0x80000000));
+    ipc_threadeip[0] = ((unsigned)(0x00800000));
     ipc_threadeip[1] = ((unsigned)(0x80000000));
     ipc_threadeip[2] = ((unsigned)(0x80000000));
     ipc_threadeip[3] = ((unsigned)(0x80000000));
     ipc_threadeip[4] = ((unsigned)(0x80000000));
     ipc_threadeip[5] = ((unsigned)(0x80000000));
 
-    ipc_threadspace[0] = 0x00900000;
-    ipc_threadspace[1] = 0x00901000;
-    ipc_threadspace[2] = 0x00902000;
-    ipc_threadspace[3] = 0x00903000;
-    ipc_threadspace[4] = 0x00904000;
-    ipc_threadspace[5] = 0x00905000;
+    ipc_threadspace[0] = 0x00610000;
+    ipc_threadspace[1] = 0x00900000;
+    ipc_threadspace[2] = 0x00906000;
+    ipc_threadspace[3] = 0x0090C000;
+    ipc_threadspace[4] = 0x00903000;
+    ipc_threadspace[5] = 0x00904000;
 
     ipc_threadstate[0] = 1;
-    ipc_threadstate[1] = 1;
-    ipc_threadstate[2] = 1;
-    ipc_threadstate[3] = 1;
-    ipc_threadstate[4] = 1;
-    ipc_threadstate[5] = 1;
-
-    for (i = 0; i < 4096; i++)
-    {
-        task[0].stack[i] = 0xAAAAAAAA;
-        task[1].stack[i] = 0xBBBBBBBB;
-        task[2].stack[i] = 0xCCCCCCCC;
-        task[3].stack[i] = 0xDDDDDDDD;
-        task[4].stack[i] = 0xEEEEEEEE;
-        task[5].stack[i] = 0xFFFFFFFF;
-    }
+    ipc_threadstate[1] = 0;
+    ipc_threadstate[2] = 0;
+    ipc_threadstate[3] = 0;
+    ipc_threadstate[4] = 0;
+    ipc_threadstate[5] = 0;
 
     for (i = 1; i < 4; i++)
     {
