@@ -60,8 +60,8 @@ void discardable mmPhysicalInit(void)
 	buffer = (unsigned*)(0x40000);
     bufferIterator = (unsigned*)(0x40000);
 
-	for (i = 0; i < 40; i++) buffer[i]      = 0xFFFFFFFF;
-	for (i = 40; i < size; i++) buffer[i]   = 0x00000000;
+	for (i = 0; i < 72; i++) buffer[i]      = 0xFFFFFFFF;
+	for (i = 72; i < size; i++) buffer[i]   = 0x00000000;
 }
 
 unsigned mmPhysicalAlloc(void)

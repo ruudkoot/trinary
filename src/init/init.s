@@ -36,6 +36,7 @@ _Aye:
 	mov ecx, 0x60000
 	rep movsd
 
+
  	;Create the Page Directory
 	mov esi, 0
 	mov edi, 0

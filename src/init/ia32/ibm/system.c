@@ -184,5 +184,24 @@ void sys_arch_a20_enable_ps2(void)
 /******************************************************************************/
 void sys_arch_a20_enable(void)
 {
-    sys_arch_a20_enable_ps2();
+    asm(
+        "A20:"
+	    "call empty8042;"
+	    "movb $0xD1, %al;"
+	    "outb %al, $0x64;"
+	    "call empty8042;"
+	    "movb $0xDF, %al;"
+	    "outb %al ,$0x60;"
+	    "call empty8042;"
+	    "jmp argq;"
+
+        "empty8042:"
+	    "inb $0x64, %al;"
+	    "testb $0x02, %al;"
+	    "jnz empty8042;"
+	    "ret;"
+
+        "argq:"
+       );
+
 }

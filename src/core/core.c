@@ -52,23 +52,43 @@ void cmain(void)
     /* Initialize the basic core modules.                                     */
     heap_init();
     sys_init();
-    //cpu_init();
+    //cpu_init();   /* Removed this from the core. Need to trim it down.      */
     sig_init();
-    //smp_init();
+    //smp_init();   /* Nice, but WAAAAAY too slow when debuggin'.             */
     mm_init();
     sched_init();
     syscall_init();
 	space_init();
 
     space_create(1);
-    space_create(1);
+    space_create(2);
+    space_switch(0x900000);
 
-    space_switch(0x500000);
-    space_switch(0x501000);
+    space_map(((word*)(0xFF000000)), 0x80000000);
+    ((unsigned*)(0x80000000))[0] = 0xDEADBEEF;
+    ((unsigned*)(0x80000000))[1] = 0xC0DEBABE;
 
-    space_map(((word*)(0xFF000000)), (word)0x80000000);
+    logHex("Test 0", ((unsigned*)(0x80000000))[0]);
+    logHex("Test 1", ((unsigned*)(0x80000000))[1]);
 
-    space_switch(0x500000);
+    logItem("Downloading Root");
+
+    memcpy(0x80000000, 0xFF840000, 16 * 1024);
+
+    space_switch(0x901000);
+
+    space_map(((word*)(0xFF001000)), 0x80000000);
+    ((unsigned*)(0x80000000))[0] = 0xDEADBEEF;
+    ((unsigned*)(0x80000000))[1] = 0xC0DEBABE;
+
+    logHex("Test 0", ((unsigned*)(0x80000000))[0]);
+    logHex("Test 1", ((unsigned*)(0x80000000))[1]);
+
+    logItem("Downloading Test");
+
+    memcpy(0x80000000, 0xFF850000, 16 * 1024);
+
+    space_switch(0x900000);
 
     /* Enable multi-tasking.                                                  */
     logItem("Enabling Multi Tasking");
