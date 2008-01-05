@@ -10,9 +10,15 @@
 
 extern void cmain(void);
 
-void entry(void)
+void _entry(void)
 {
     cmain();
+    asm ("cli");
+    asm ("hlt");
+}
+
+void __stack_chk_fail(void)
+{
     asm ("cli");
     asm ("hlt");
 }
