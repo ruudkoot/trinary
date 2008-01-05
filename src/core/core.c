@@ -8,8 +8,6 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-#define word unsigned int
-
 extern kippointer;
 
 void cmain(void);
@@ -70,7 +68,6 @@ void cmain(void)
     sig_init();
     //smp_init();   /* Nice, but WAAAAAY too slow when debuggin'.             */
     mm_init();
-    vm_init(0xD0000000);
     sched_init();
     syscall_init();
 	space_init();

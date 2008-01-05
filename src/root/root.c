@@ -123,7 +123,7 @@ void cmain(void)
     disk.controller.portAlternate = 0x3f6;
 
     /* TEST                                                                   */
-
+    
     asm
     (
         "pushl %%ebp;"
@@ -133,11 +133,8 @@ void cmain(void)
         "=a" (i)
     );
 
-
-    u32toa(i, s, 16);
+    u32toa(i, s, 10);
     out(s);
-
-    for (;;);
 
     asm
     (

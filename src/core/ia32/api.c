@@ -17,17 +17,7 @@ void arch_api_init(void)
 
 unt32 arch_api_spacecontrol(void)
 {
-    word pdp, pdv;
-
-    pdv = vm_alloc();
-    pdp = vm_phys(pdv);
-
-    logHex("pdv", pdv);
-    logHex("pdp", pdp);
-
-    memcpy( ((void*)(pdv)), ((unsigned*)(0xFFC00C00)), 1024 );
-
-    return ( pdv );
+    return space_arch_create();
 }
 
 void arch_api_threadcontrol(unt32 space_id, unt32 map_data)

@@ -11,11 +11,11 @@
 cc = gcc -c -o
 sources     = core.c cpu.c debug.c heap.c ipc.c kdb.c log.c memory.c   \
               schedule.c signal.c smp.c space.c spinlock.c syscall.c system.c  \
-              vesa.c ia32/api.c
+              vesa.c
 
 core : entry.o core.o wrapper.o ipc.o kdb.o
 	ld -s -Tcore.l -o core entry.o core.o ipc.o kdb.o wrapper.o ../../bin/gcc/libgcc.a
-	objcopy core -S -O elf32-i386
+	objcopy core -S -O binary
 
 entry.o : ia32/entry.s
 	as -o entry.o ia32/entry.s

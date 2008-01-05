@@ -14,20 +14,3 @@ void discardable mm_init(void)
 {
     mm_arch_init();
 }
-
-word vm_pnt;
-
-void vm_init(word a)
-{
-    vm_pnt = a;
-}
-
-word vm_alloc(void)
-{
-    return (vm_pnt += 4096);
-}
-
-word vm_phys(word v)
-{
-    return ( (v - 0xD0000000) + 0x00E00000 );
-}
