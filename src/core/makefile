@@ -8,17 +8,19 @@
 # (at your option) any later version.                                          #
 ################################################################################
 
-cc = gcc -c -o
+as = as --32
+cc = gcc -m32 -c -o
+ld = ld -m elf_i386
 sources     = core.c cpu.c debug.c heap.c ipc.c kdb.c log.c memory.c   \
               schedule.c signal.c smp.c space.c spinlock.c syscall.c system.c  \
               vesa.c
 
 core : entry.o core.o wrapper.o ipc.o kdb.o
-	ld -s -Tcore.l -o core entry.o core.o ipc.o kdb.o wrapper.o ../../bin/gcc/libgcc.a
+	$(ld) -s -Tcore.l -o core entry.o core.o ipc.o kdb.o wrapper.o
 	objcopy core -S -O binary
 
 entry.o : ia32/entry.s
-	as -o entry.o ia32/entry.s
+	$(as) -o entry.o ia32/entry.s
 
 core.o : $(sources)
 	$(cc) core.o core.c
@@ -27,10 +29,10 @@ wrapper.o : ia32/wrapper.s
 	nasm ia32/wrapper.s -o wrapper.o -f elf
 
 ipc.o : ia32/ipc.s
-	as ia32/ipc.s -o ipc.o
+	$(as) ia32/ipc.s -o ipc.o
 
 kdb.o : ia32/kdb.s
-	as ia32/kdb.s -o kdb.o
+	$(as) ia32/kdb.s -o kdb.o
 
 clean :
 	rm core

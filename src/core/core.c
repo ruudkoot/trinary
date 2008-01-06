@@ -127,3 +127,7 @@ void dmain(void)
     for (;;) asm volatile ("hlt");
 }
 
+
+void __stack_chk_fail(void) {
+    for (;;) asm volatile ("hlt");
+}

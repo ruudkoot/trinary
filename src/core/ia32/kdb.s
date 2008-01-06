@@ -9,18 +9,18 @@
 /******************************************************************************/
 
 
-.global _arch_kdb_keyboard;
-.global _arch_kdb_input;
+.global arch_kdb_keyboard;
+.global arch_kdb_input;
 
 .text
 
-_arch_kdb_keyboard:
+arch_kdb_keyboard:
 
         pushal;
 
         movl $0x60, %edx;
         inb %dx, %al;
-        movb %al, _arch_kdb_input;
+        movb %al, arch_kdb_input;
 
         movb $0x20, %al;
         movl $0x20, %edx;
@@ -31,4 +31,4 @@ _arch_kdb_keyboard:
 
 .data
 
-_arch_kdb_input: .long 0x00000000;
+arch_kdb_input: .long 0x00000000;

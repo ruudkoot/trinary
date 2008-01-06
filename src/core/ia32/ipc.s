@@ -19,22 +19,22 @@
 /* Most branches have been eliminated through the use of conditional moves.   */
 /******************************************************************************/
 
-.global _asm_ipc;
-.global _switch_switch;
-.global _int_entry;
-.global _api_spacecontrol;
-.global _api_threadcontrol;
-.global _api_threadstart;
+.global asm_ipc;
+.global switch_switch;
+.global int_entry;
+.global api_spacecontrol;
+.global api_threadcontrol;
+.global api_threadstart;
 
-.global _ipc_currentthread;
-.global _ipc_schedulethread;
+.global ipc_currentthread;
+.global ipc_schedulethread;
 
-.global _ipc_threadstate;
-.global _ipc_threadstack;
-.global _ipc_threadspace;
-.global _ipc_threadedi;
-.global _ipc_threadeip;
-.global _ipc_threadesp0;
+.global ipc_threadstate;
+.global ipc_threadstack;
+.global ipc_threadspace;
+.global ipc_threadedi;
+.global ipc_threadeip;
+.global ipc_threadesp0;
 
 .text
 
@@ -54,7 +54,7 @@
 /* TS3: sending                                                               */
 /******************************************************************************/
 
-_asm_ipc:
+asm_ipc:
 
     /* Restore the kernel segments.                                           */
     movl $0x18, %ebx;
@@ -65,48 +65,48 @@ _asm_ipc:
 
     /* If we are sending make sure the receiver can receive.                  */
     cmpl $0, %eax;
-    je _asm_set_receive;
-    movl _ipc_threadstate(,%eax,4), %ebx;
+    je asm_set_receive;
+    movl ipc_threadstate(,%eax,4), %ebx;
     cmpl $2, %ebx;
-    jne _asm_send_error;
+    jne asm_send_error;
 
-_asm_set_receive:
+asm_set_receive:
 
     /* If we are receiving go into the receive state.                         */
     cmpl $0, %edx;
-    je _asm_send_unwait;
+    je asm_send_unwait;
 
     /**************************************************************************/
     
     /* If we are waiting for an interrupt return if it is already pending.    */
     cmpl $5, %edx;
-    jne _asm_set_continue;
+    jne asm_set_continue;
 
-    cmpl $0, _int_flag14;
-    je _asm_set_continue;
+    cmpl $0, int_flag14;
+    je asm_set_continue;
 
-    movl $0, _int_flag14;
-    jmp _asm_ipc_return;
+    movl $0, int_flag14;
+    jmp asm_ipc_return;
 
 
 xxx: .asciz "IPC: INTERRUPT 14 PENDING!";
     
     /**************************************************************************/
 
-_asm_set_continue:
+asm_set_continue:
 
-    movl _ipc_currentthread, %ebp;
-    movl $2, _ipc_threadstate(,%ebp,4);    
+    movl ipc_currentthread, %ebp;
+    movl $2, ipc_threadstate(,%ebp,4);    
 
-_asm_send_unwait:
+asm_send_unwait:
 
     /* If we are sending let the target stop waiting.                         */
     cmpl $0, %eax;
-    je _asm_thread_select;
+    je asm_thread_select;
 
-    movl $1, _ipc_threadstate(,%eax,4);
+    movl $1, ipc_threadstate(,%eax,4);
 
-_asm_thread_select:
+asm_thread_select:
     
     /* DOESNT WORK ENTIERLY YET, JUST ENOUGH FOR ping AND pong!               */
     /* AND SPECIAL HANDLING FOR root!                                         */
@@ -117,38 +117,38 @@ _asm_thread_select:
     movl %eax, %ebp;
 
     cmpl $0, %eax;
-    jne _asm_ipc_switch;
+    jne asm_ipc_switch;
 
     movl %edx, %ebp;
 
     cmpl $5, %ebp;
-    jne _asm_ipc_switch;
+    jne asm_ipc_switch;
 
     movl $1, %ebp;
     /**************************************************************************/
 
-_asm_ipc_switch:
+asm_ipc_switch:
 
     /* Switch the address space.                                              */
-    movl _ipc_threadspace(,%ebp,4), %ebx;
+    movl ipc_threadspace(,%ebp,4), %ebx;
     movl %ebx, %cr3;
 
     /* Switch ESP0.                                                           */
-    movl _ipc_threadesp0(,%ebp,4), %ebx;
+    movl ipc_threadesp0(,%ebp,4), %ebx;
     movl %ebx, 0xFF490004;
 
     /* Update _ipc_currentthread.                                             */
-    movl %ebp, _ipc_currentthread;
+    movl %ebp, ipc_currentthread;
 
     /* Switch Kernel Stack.                                                   */
-    movl _ipc_threadesp0(,%ebp,4), %esp;
+    movl ipc_threadesp0(,%ebp,4), %esp;
     subl $20, %esp;
 
-_asm_ipc_restore:
+asm_ipc_restore:
 
     /* If we are not sending restore the registers.                           */
     cmpl $0, %eax;
-    jne _asm_ipc_return;
+    jne asm_ipc_return;
 
     movl -4(%esp), %eax;
     movl -8(%esp), %ecx;
@@ -158,7 +158,7 @@ _asm_ipc_restore:
     movl -24(%esp), %esi;
     movl -28(%esp), %edi;
 
-_asm_ipc_return:
+asm_ipc_return:
 
     /* Restore the user segments.                                             */
     movl $0x2B, %ebx;
@@ -169,7 +169,7 @@ _asm_ipc_return:
 
     iretl;
 
-_asm_send_error:
+asm_send_error:
 
     movl $1234, %esi;
 
@@ -183,7 +183,7 @@ _asm_send_error:
 
 /******************************************************************************/
 
-_switch_switch:
+switch_switch:
 
     /* Save user state.                                                       */
     movl %eax, -4(%esp);
@@ -211,37 +211,37 @@ _switch_switch:
     xorl %ebx, %ebx;
     addl $0xB80A0, %eax;
     addl $0x1F30, %ebx;
-    addl _ipc_currentthread, %ebx;
+    addl ipc_currentthread, %ebx;
     movw %bx, (,%eax);
 
     /* Save the stack pointer.                                                */
-    movl _ipc_currentthread, %ebp;
-    movl %esp, _ipc_threadstack(,%ebp,4);
+    movl ipc_currentthread, %ebp;
+    movl %esp, ipc_threadstack(,%ebp,4);
 
 next_thread:
 
     /* Determine the next thread.                                             */
-    incl _ipc_currentthread;
-    cmpl $4, _ipc_currentthread;
+    incl ipc_currentthread;
+    cmpl $4, ipc_currentthread;
     jb switch_1;
-    movl $0, _ipc_currentthread;
+    movl $0, ipc_currentthread;
 
 switch_1:
 
-    movl _ipc_currentthread, %ebp;
+    movl ipc_currentthread, %ebp;
 
     /* Display the status of the threads.                                     */
     xorl %eax, %eax;
     xorl %ebx, %ebx;
-    addl _ipc_currentthread, %eax;
+    addl ipc_currentthread, %eax;
     shll $1, %eax;
     addl $0xB8000, %eax;
     addl $0x1F30, %ebx;
-    addl _ipc_threadstate(,%ebp,4), %ebx;
+    addl ipc_threadstate(,%ebp,4), %ebx;
     movw %bx, (,%eax);
 
     /* Make sure it is runnable.                                              */
-    movl _ipc_threadstate(,%ebp,4), %eax;
+    movl ipc_threadstate(,%ebp,4), %eax;
     cmpl $1, %eax; 
     jne next_thread;
 
@@ -250,13 +250,13 @@ switch_1:
     xorl %ebx, %ebx;
     addl $0xB80A2, %eax;
     addl $0x1F30, %ebx;
-    addl _ipc_currentthread, %ebx;
+    addl ipc_currentthread, %ebx;
     movw %bx, (,%eax);
 
 standard_switch:
 
     /* Change ESP0.                                                           */
-    movl _ipc_threadesp0(,%ebp,4), %eax;
+    movl ipc_threadesp0(,%ebp,4), %eax;
     movl %eax, 0xFF490004;
 
     /* Switch Kernel Stack.                                                   */
@@ -264,7 +264,7 @@ standard_switch:
     subl $20, %esp;
 
     /* Switch address space.                                                  */
-    movl _ipc_threadspace(,%ebp,4), %eax;
+    movl ipc_threadspace(,%ebp,4), %eax;
     movl %eax, %cr3;
 
 
@@ -288,7 +288,7 @@ standard_switch:
 
 /******************************************************************************/
 
-_int_entry:
+int_entry:
 
     /* Save user state.                                                       */
     movl %eax, -4(%esp);
@@ -323,18 +323,18 @@ _int_entry:
 
     /* Update currentthread.                                                  */
     movl $0, %ebp;
-    movl %ebp, _ipc_currentthread;
+    movl %ebp, ipc_currentthread;
 
     /* Make sure it is waiting.                                               */
-    movl _ipc_threadstate(,%ebp,4), %eax;
+    movl ipc_threadstate(,%ebp,4), %eax;
     cmpl $2, %eax; 
-    jne _int_panic;
+    jne int_panic;
 
     /* Let the thread stop waiting.                                           */
-    movl $1, _ipc_threadstate(,%ebp,4);
+    movl $1, ipc_threadstate(,%ebp,4);
 
     /* Change ESP0.                                                           */
-    movl _ipc_threadesp0(,%ebp,4), %eax;
+    movl ipc_threadesp0(,%ebp,4), %eax;
     movl %eax, 0xFF490004;
 
     /* Switch Kernel Stack.                                                   */
@@ -342,7 +342,7 @@ _int_entry:
     subl $20, %esp;
 
     /* Switch address space.                                                  */
-    movl _ipc_threadspace(,%ebp,4), %eax;
+    movl ipc_threadspace(,%ebp,4), %eax;
     movl %eax, %cr3;
 
     /* Restore the user segments.                                             */
@@ -354,10 +354,10 @@ _int_entry:
 
     iretl;
 
-_int_panic:
+int_panic:
 
     /* Raise the interrupt flag.                                              */
-    movl $1, _int_flag14;
+    movl $1, int_flag14;
 
     /* Restore the user segments.                                             */
     movl $0x2B, %eax;
@@ -379,66 +379,66 @@ _int_panic:
 
 /******************************************************************************/
 
-_api_spacecontrol:
-    call _arch_api_spacecontrol;
+api_spacecontrol:
+    call arch_api_spacecontrol;
     iretl;
 
 /******************************************************************************/
 
-_api_threadcontrol:
+api_threadcontrol:
     pushl %ebx;
     pushl %eax;
-    call _arch_api_threadcontrol;
+    call arch_api_threadcontrol;
     addl $8, %esp;
     iretl;
 
 /******************************************************************************/
 
-_api_threadstart:
+api_threadstart:
     pushl %eax;
-    call _arch_api_threadstart;
+    call arch_api_threadstart;
     addl $4, %esp;
     iretl;
 
 .data
 
-_int_panicmessage: .asciz "PANIC: INTERRUPT HANDLER NOT WAITING!";
+int_panicmessage: .asciz "PANIC: INTERRUPT HANDLER NOT WAITING!";
 
-_int_flag14:        .long 0x00000000;
+int_flag14:        .long 0x00000000;
 
-_ipc_currentthread: .long 0x00000000;
-_ipc_schedulethread:.long 0x00000000;
-_ipc_threadstate:   .long 0;
+ipc_currentthread: .long 0x00000000;
+ipc_schedulethread:.long 0x00000000;
+ipc_threadstate:   .long 0;
                     .long 1;
                     .long 2;
                     .long 3;
                     .long 4;
                     .long 5;
-_ipc_threadstack:   .long 0;
+ipc_threadstack:   .long 0;
                     .long 1;
                     .long 2;
                     .long 3;
                     .long 4;
                     .long 5;
-_ipc_threadspace:   .long 0;
+ipc_threadspace:   .long 0;
                     .long 1;
                     .long 2;
                     .long 3;
                     .long 4;
                     .long 5;
-_ipc_threadedi:     .long 0;
+ipc_threadedi:     .long 0;
                     .long 1;
                     .long 2;
                     .long 3;
                     .long 4;
                     .long 5;
-_ipc_threadeip:     .long 0;
+ipc_threadeip:     .long 0;
                     .long 1;
                     .long 2;
                     .long 3;
                     .long 4;
                     .long 5;
-_ipc_threadesp0:    .long 0;
+ipc_threadesp0:    .long 0;
                     .long 1;
                     .long 2;
                     .long 3;
