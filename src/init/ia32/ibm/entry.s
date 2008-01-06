@@ -52,7 +52,7 @@ entry_start:
     xorl %ebp, %ebp;
 
     /* And finally enter the real System Initializer.                         */
-    call _entry;
+    call entry;
 
     /* If we somehow return from the function halt the system.                */
     1:
