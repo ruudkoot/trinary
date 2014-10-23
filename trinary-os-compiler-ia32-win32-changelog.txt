@@ -1,0 +1,4 @@
+Trinary Operating System Cross-Compiler Set
+
+03.04.13: First Public Release on SourceForge.net.
+03.04.26: We're now using GCC 3.2 and Binutils 2.13 (MinGW32).

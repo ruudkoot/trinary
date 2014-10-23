@@ -1,0 +1,5 @@
+Trinary Operating System Disk Image
+
+This is the initial version of the Trinary Operating System, on SourceForge.net.
+Although TrinaryOS is still in a pre-alpha state we still want you to see some
+of it's very early features.

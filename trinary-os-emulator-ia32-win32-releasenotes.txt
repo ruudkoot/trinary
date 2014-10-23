@@ -1,0 +1,4 @@
+Trinary Operating System Emulator
+
+Package  Version  Architecture  Platform  License  Maintainer  Distribution
+Bochs    2.0.2    IA-32         Win32     LGPL     Bochs       Bochs
