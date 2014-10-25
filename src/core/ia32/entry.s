@@ -13,6 +13,6 @@
 
 _entry:
 movl %eax, _kippointer;
-jmp _cmain;
+jmp cmain;
 
 _kippointer: .long 0x00000000;

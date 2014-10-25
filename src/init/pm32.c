@@ -107,7 +107,7 @@ int _max(int a, int b)
 
 
 
-#include "log.c"
+//#include "log.c"
 
 typedef struct
 {

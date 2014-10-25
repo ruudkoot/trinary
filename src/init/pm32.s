@@ -8,13 +8,13 @@
 /* (at your option) any later version.                                        */
 /******************************************************************************/
 
-.extern _pm32;
+.extern pm32;
 
-.global _Aye;
+.global Aye;
 
 .text;
 
-_Aye:
+Aye:
 
     /* Setup the stack and data segments.                                     */
     mov $0x18, %ax;
@@ -24,6 +24,6 @@ _Aye:
     mov %ax, %fs;
     mov %ax, %gs;
 
-    jmp _pm32;
+    jmp pm32;
 
     cli;hlt;

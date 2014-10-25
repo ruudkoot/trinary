@@ -14,9 +14,9 @@
 
 bits 32
 
-global _sig_arch_interrupt_wrapper
+global sig_arch_interrupt_wrapper
 
-_sig_arch_interrupt_wrapper:
+sig_arch_interrupt_wrapper:
     iretd
 
 ;******************************************************************************;
@@ -25,10 +25,10 @@ _sig_arch_interrupt_wrapper:
 
 %macro sig_arch_exception_x_wrapper 1
 
-    global _sig_arch_exception_%1_wrapper
-    extern _sig_arch_exception_%1
+    global sig_arch_exception_%1_wrapper
+    extern sig_arch_exception_%1
 
-    _sig_arch_exception_%1_wrapper:
+    sig_arch_exception_%1_wrapper:
 
         pushad
         push ds
@@ -36,7 +36,7 @@ _sig_arch_interrupt_wrapper:
         push fs
         push gs
 
-        call _sig_arch_exception_%1
+        call sig_arch_exception_%1
 
         pop gs
         pop fs
@@ -111,10 +111,10 @@ sig_arch_exception_x_wrapper unknown1f
 
 %macro sig_arch_irqx_wrapper 1
 
-    global _sig_arch_irq%1_wrapper
-    extern _sig_arch_irq%1
+    global sig_arch_irq%1_wrapper
+    extern sig_arch_irq%1
 
-    _sig_arch_irq%1_wrapper:
+    sig_arch_irq%1_wrapper:
 
         pushad
         push ds
@@ -122,7 +122,7 @@ sig_arch_exception_x_wrapper unknown1f
         push fs
         push gs
 
-        call _sig_arch_irq%1
+        call sig_arch_irq%1
 
         pop gs
         pop fs

@@ -33,7 +33,26 @@ bool a20_enable(a20_methode methode)
 
     /* Try 'Keyboard Controller #1'.                                          */
     log_subitem("Keyboard Controller #1");
-    a20_enable_kbc1();
+    //a20_enable_kbc1();
+    asm(
+        "A20:"
+	    "call empty8042;"
+	    "movb $0xD1, %al;"
+	    "outb %al, $0x64;"
+	    "call empty8042;"
+	    "movb $0xDF, %al;"
+	    "outb %al ,$0x60;"
+	    "call empty8042;"
+	    "jmp argq;"
+
+        "empty8042:"
+	    "inb $0x64, %al;"
+	    "testb $0x02, %al;"
+	    "jnz empty8042;"
+	    "ret;"
+
+        "argq:"
+       );
     
     if (a20_test())
     {
@@ -147,24 +166,6 @@ void a20_enable_ps2(void)
 /******************************************************************************/
 void a20_enable_kbc1(void)
 {
-    asm(
-        "A20:"
-	    "call empty8042;"
-	    "movb $0xD1, %al;"
-	    "outb %al, $0x64;"
-	    "call empty8042;"
-	    "movb $0xDF, %al;"
-	    "outb %al ,$0x60;"
-	    "call empty8042;"
-	    "jmp argq;"
 
-        "empty8042:"
-	    "inb $0x64, %al;"
-	    "testb $0x02, %al;"
-	    "jnz empty8042;"
-	    "ret;"
-
-        "argq:"
-       );
 
 }

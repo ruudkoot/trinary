@@ -40,3 +40,4 @@ int main(int argc, char* argv[])
     writeblock(0, 1, super);
     closedevice();
 }
+

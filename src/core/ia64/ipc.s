@@ -1,1 +1,0 @@
-/* IA-64 : Inter Process Communication */

@@ -16,7 +16,7 @@
 #include "config.h"
 #include "trifs.h"
 
-void help(void);
+void help(char*);
 int makefs(void);
 int makerd(void);
 int parse(int argc, char* argv[]);
@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
 {
     if (argc <= 1)
     {
-        help();
+        help(argv[0]);
         exit(0);
     }
 
@@ -162,7 +162,7 @@ int parse(int argc, char* argv[])
     return 1;
 }
 
-void help(void)
+void help(char* cmd)
 {
     printf("Usage: %s [options] device\n"
            "Options:\n"
@@ -172,7 +172,7 @@ void help(void)
            "  -v, --verbose              Displays extra status information.\n"
            "  --version                  Displays the version\n"
            "  -w [COUNT], --wipe [COUNT] Wipes free disk space 1 or COUNT times.\n"
-          );
+          , cmd);
 }
 
 

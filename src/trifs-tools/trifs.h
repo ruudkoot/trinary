@@ -155,3 +155,4 @@ void disk_close(FILE* disk)
 {
 	fclose(disk);
 }
+

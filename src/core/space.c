@@ -14,6 +14,9 @@
 
 #define word unsigned int
 
+word space_arch_create(void);
+word space_arch_switch(word id);
+
 unsigned pageholder = 0;
 unsigned* pageholdertable = ((unsigned*)(0xFFFFC000));
 
