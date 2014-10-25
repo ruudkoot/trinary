@@ -1,0 +1,5 @@
+Trinary Operating System Source Code
+
+03.04.13: First Public Release on SourceForge.net
+03.04.26: Implementented the real scheduler code.
+03.07.12: Improved the boot loader.

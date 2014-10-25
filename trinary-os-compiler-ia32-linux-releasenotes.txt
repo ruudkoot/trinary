@@ -1,0 +1,14 @@
+Trinary Operating System Cross-Compiler Set
+
+Package      Version  Architecture  Platform  License  Maintainer  Distribution
+GCC          3.2.2    IA-32         Linux     GPL      GNU         Trinary
+Binutils     2.13     IA-32         Linux     GPL      GNU         Trinary
+Make         3.79.1   IA-32         Linux     GPL      GNU         RedHat
+NASM         0.98     IA-32         Linux     GPL      HPA         RedHat
+TriFS Tools  03.07.12 IA-32         Linux     GPL      Trinary     Trinary
+
+Full versions and source code can be obtained from the maintener's
+or distributor's website.
+
+
+

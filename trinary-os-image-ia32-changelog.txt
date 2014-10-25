@@ -1,0 +1,5 @@
+Trinary Operating System Disk Image
+
+03.04.13: First Public Release on SourceForge.net.
+03.04.26: Read the source code notes.
+03.07.12: Read the source code notes.

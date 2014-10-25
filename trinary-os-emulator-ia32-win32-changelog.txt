@@ -1,0 +1,6 @@
+Trinary Operating System Emulator
+
+03.04.13: First Public Release on SourceForge.net.
+03.04.26: Modified some settings, the directory structrure
+          and shrunk the distribution.
+03.07.12: Tweaked some settings.

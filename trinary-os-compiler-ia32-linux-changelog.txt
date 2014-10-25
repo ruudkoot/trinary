@@ -1,0 +1,4 @@
+Trinary Operating System Cross-Compiler Set
+
+03.04.26: First release for Linux.
+03.07.12: Added tools to work with TriFS images.
