@@ -1,0 +1,83 @@
+/******************************************************************************/
+/* Mithrill Library :                                                         */
+/* Copyright (c) 2004, Rudy Koot (Mithrill Foundation)                        */
+/*                                                                            */
+/* This program is free software; you can redistribute it and/or modify       */
+/* it under the terms of the GNU General Public License as published by       */
+/* the Free Software Foundation; either version 2 of the License, or          */
+/* (at your option) any later version.                                        */
+/******************************************************************************/
+
+/******************************************************************************/
+/* This module defines the basic types programs will use.                     */
+/******************************************************************************/
+
+#define private                         private:
+
+typedef bool                            _bool_;
+
+typedef signed char                     _int8_;
+typedef signed short                    _int16_;
+typedef signed int                      _int32_;
+typedef signed long long                _int64_;
+
+typedef unsigned char                   _uint8_;
+typedef unsigned short                  _uint16_;
+typedef unsigned int                    _uint32_;
+typedef unsigned long long              _uint64_;
+
+/******************************************************************************/
+/* Create the basic class hierarchy.                                          */
+/******************************************************************************/
+
+class object {
+};
+
+class boolean : public object
+{
+    _bool_                              a;
+
+    public : boolean(_bool_ b) : a(b) {}
+};
+
+class magnitude : public object {
+    virtual boolean operator<(const magnitude &m) = 0;
+    /*virtual boolean operator>(const magnitude &m) = 0;
+    virtual boolean operator<=(const magnitude &m) = 0;
+    virtual boolean operator>=(const magnitude &m) = 0;
+    virtual boolean operator==(const magnitude &m) = 0;
+    virtual boolean operator!=(const magnitude &m) = 0;*/
+};
+
+class aritmetic : public magnitude {
+    /*virtual aritmetic operator+(const aritmetic &a) = 0;
+    virtual aritmetic operator-(const aritmetic &a) = 0;
+    virtual aritmetic operator*(const aritmetic &a) = 0;
+    virtual aritmetic operator/(const aritmetic &a) = 0;*/
+};
+
+class number : public aritmetic {
+
+};
+
+class integer : public number {
+    /*virtual integer operator&(const integer &i) = 0;
+    virtual integer operator|(const integer &i) = 0;*/
+};
+
+class int32 : public integer {
+    private _int32_                     a;
+    
+    public: int32(_int32_ i) : a(i) {}
+    public: void print(void)
+    {
+        printf("%i", a);
+    }
+
+    virtual boolean operator<(const int32 &i)
+    {
+        return (a < i.a);
+    }
+};
+
+
