@@ -1,0 +1,290 @@
+<HTML>
+	<HEAD>
+		<TITLE>Trinary Operating System</TITLE>
+	</HEAD>
+
+	<BODY>
+		<H1>Trinary Operating System</H1>
+
+		<A NAME="contents">
+		<H2>Contents</H2>
+		<UL>
+			<LI><A HREF="#contents">Contents</A></LI>
+			<LI><A HREF="#overview">Overview</A></LI>
+			<UL>
+				<LI><A HREF="#introduction">Introduction</A></LI>
+				<LI><A HREF="#features">Features</A></LI>
+				<LI><A HREF="#aboutme">About Me</A></LI>
+			</UL>
+			<LI><A HREF="#download">Download</A></LI>
+			<UL>
+				<LI><A HREF="#downloadkernel">Kernel</A></LI>
+				<LI><A HREF="#downloaddevelopment">Development</A></LI>
+				<LI><A HREF="#downloadlogos">Logos</A></LI>
+
+			</UL>
+			<LI><A HREF="#support">Support</A></LI>
+			<UL>
+				<LI><A HREF="#supportsupporting">Supporting Trinary</A></LI>
+				<LI><A HREF="#supportwebsites">Websites</A></LI>
+				<LI><A HREF="#supportwebrings">Webrings</A></LI>
+				<LI><A HREF="#supporthosts">Hosts</A></LI>
+				<LI><A HREF="#disclaimer">Disclaimer</A></LI>
+			</UL>
+		</UL>
+
+		<A NAME="overview">
+		<H2>Overview</H2>
+
+		<A NAME="introduction">
+		<H3>Introduction</H3>
+		<P>
+			The Trinary Operating System is a new operating system designed
+			using the most modern and advanced technologies. The keywords here
+			are stability, simplicity and flexibility. That this goal is
+			achieved at the cost of speed and compatibility is acceptable.
+		</P>
+
+		<A NAME="features">
+		<H3>Features</H3>
+		<P>
+			The current version of the Trinary Operating System is in an
+			alpha-state, so most features listed below have not yet been
+			implemented.
+
+			<UL>
+				<LI>A modern object-orientated API</LI>
+				<LI>An advanced high-performance file system</LI>
+				<LI>A revolutionary device-management system</LI>
+			</UL>
+		</P>
+
+		<A NAME="aboutme">
+		<H3>About Me</H3>
+		<P>
+			My name is Rudy Koot. I live in Maarssen in the <A HREF="http://www.cia.gov/cia/publications/factbook/print/nl.html">Netherlands</A>. I'm 17 years old and still
+			going to <A HREF="http://www.niftarlake.nl">high-school</A>. After that I plan to study Information Technology / Computer Science.
+			In my free time I spend too much time programming and surfing on the Internet. Apart from that
+			I'm very fond of cabaret, English humor and fantasy role playing.
+		</P>
+		<P>
+			I you want to sent me a letter of praise, ask me something, talk to me, fan-mail me or anything else
+			(this includes hate-mail, but excludes a mail-bomb) you can do so by e-mailing me at
+			<A HREF="mailto:rudykoot@trinary.tk">rudykoot@trinary.tk</A>. But try to put the word 'Trinary' in the
+			subject, so you don't get blocked out by my spam-filter.
+		</P>
+
+		<A NAME="download">
+		<H2>Download</H2>
+
+		<A NAME="downloadkernel">
+		<H3>Kernel</H3>
+		<P>
+			To help us enhancing this OS run the most current version of TriOS on as many
+			computers (with a different hardware configuration) you have access to. If the
+			OS reports "Uncertified Hardware Detected", please make a report with the information given
+			about that hardware component, say if the hardware was correctly detected, and if not,
+			how it should be detected. And finally mail this report to <A HREF="mailto:rudykoot@trinary.tk">rudykoot@trinary.tk</A>.
+
+			<UL>
+				<LI><A HREF="os030308.zip">Trinary Operating System 03.04.12 (Alpha)</A></LI>
+				<P>
+					Started working on SMP support.
+				</P>
+				<LI><A HREF="os030308.zip">Trinary Operating System 03.03.02 (Alpha)</A></LI>
+				<P>
+					This version is been ported to GCC. Except for the Run Time Library most of the
+					code is completly rewritten. Although it no longer has ATA support it does have
+					better exception handling, which you hopefully don't see and multitasking, finaly.
+				</P>
+				<P>
+					Each of the counter you see is a seperate task. You can notice that by the fact that
+					they are noticably counting out of sync after about a minute. At the moment they are
+					kernel tasks, meaning that they run at privilege level 0. This will change in the next
+					release which will hopefully be out sooner than this version.
+				</P>
+				<P>
+					Every 20 seconds or so the screen gets messed up and the Interrupt Counter in the title
+					bar indicates that and IRQ7 has occured. This a problem with the interrupt controller
+					and is called a Spurious IRQ7. A Surious IRQ7 occures when the Interrupt Controller
+					can't handle the IRQs fast enough. The is caused by the Interval Timer which raises
+					IRQ0 close to 100 000 times a second. As a comparrison: under DOS/Windows 3.1/Windows 9x
+					IRQ0 is raised only 18.7 times a second and under Windows NT/2K/XP 1000 times a second.
+					I's better slow it down somewhat in the next release.
+				</P>
+				<LI><A HREF="os030207.zip">Trinary Operating System 03.02.07 (Alpha)</A></LI>
+				<P>
+					Interrupt support was added as well as some basic ATA disk support. The title bar
+					contains an interrupt counter. The model ofthe device connected to the master
+					or slave of your primary IDE port is displayed.
+				</P>
+				<LI><A HREF="os030201.zip">Trinary Operating System 03.02.01 (Alpha)</A></LI>
+				<P>
+					The previous versions would only run on a Pentium II, Athlon or higher, because of a wrong
+					compiler setting.
+					This version work on a 386 and up. Corrected some errors in the CPU detection
+					code. The light of the floppy drive is now turned off and the A20 is enabled.
+					Some major work was done to the run-time library.
+				</P>
+				<LI><A HREF="os030128.zip">Trinary Operating System 03.01.28 (Alpha)</A></LI>
+				<P>
+					This version has paging enabled, and some basic memory
+					management functions. The CPU detection also works
+					correctly now. A small bug in the <CODE>strcmp</CODE> function caused
+					it to fail on the Pentium II, Pentium III, Pentium 4 and AMD Athlons.
+				</P>
+
+				<LI><A HREF="os030127.zip">Trinary Operating System 03.01.27 (Alpha)</A></LI>
+				<P>
+					This version fixes the bugs in the previous ones.
+				</P>
+
+				<LI><A HREF="os030123.zip">Trinary Operating System 03.01.23 (Alpha)</A></LI>
+				<P>
+					TriOS can now identify your processor and will display it's
+					name on the screen. Anything form a 486 to a Pentium 4 to a
+					Cyrix MediaGX can be identified. Due to the simplicity of
+					the current bootloader, the kernel isn't loaded completely
+					in memory, and some of the text displayed will be messed up.
+				</P>
+
+				<LI><A HREF="os030120.zip">Trinary Operating System 03.01.20 (Alpha)</A></LI>
+				<P>
+					This is the first public release of the Trinary Operating
+					System. It has a basic bootloader and kernel. Due to a
+					small bug, it will only load under an emulator, an won't
+					load on a real computer.
+				</P>
+			</UL>
+		</P>
+
+		<A NAME="downloaddevelopment">
+		<H3>Development</H3>
+		<P>
+			<UL>
+				<LI><A HREF="dt030201.zip">Development Tools for Trinary Operating System 03.03.01</A></LI>
+				<P>
+					This archive contains a minimal DOS port of GCC 2.96 (DJGPP 2.03 with Binutils 2.9), NASM 0.98 and the
+					Bochs emulator (2.0.pre3). If you want to build TriOS under any other OS just use the GCC that
+					comes with your OS and look at the <CODE>build.bat</CODE> file to see how to build
+					what files. You'll have to be original with the files that need to be assembled with NASM
+					(extract them from the disk image for example). I'll port them to GAS soon.
+				</P>
+				<LI><A HREF="dt030201.zip">Development Tools for Trinary Operating System 03.02.01 - 03.02.07</A></LI>
+				<P>
+					This archive only includes NASM and the Visual Studio workspace. You still
+					need Microsoft Visual C++ (see below). TCC is no longer required.
+				</P>
+				<LI><A HREF="dt030120.zip">Development Tools for Trinary Operating System 03.01.20 - 03.01.28</A></LI>
+				<P>
+					This archive contains some of the tools needed to build the
+					kernel and a disk image. These include NASM, TCC and some
+					scripts. You will also need Microsoft Visual C++ to build
+					most of the C files, however. Alternatively you could try
+					<A HREF="msdn.microsoft.com">Microsoft Visual C.NET</A> or
+					the <A HREF="developer.intel.com">Intel Optimizing C++ Compiler</A>.
+				</P>
+				<LI><A HREF="de030201.zip">Emulator for Trinary Operating System 03.02.01</A></LI>
+				<P>
+					Bochs was rearchived, because I changed the directory structure of the distribution.
+				</P>
+				<LI><A HREF="de030120.zip">Emulator for Trinary Operating System 03.01.20 - 03.01.28</A></LI>
+				<P>
+					The emulator Bochs allows you to run the Trinary Operating
+					System without installing it on your computer. Visit their
+					site at <A HREF="http://bochs.sourceforge.net">bochs.sourceforge.net</A>.
+				</P>
+			</UL>
+		</P>
+
+		<A NAME="downloadlogos">
+		<H3>Images</H3>
+		<P>
+			<UL>	
+				<LI><A HREF="images.zip">Trinary Operating System Logos</A></LI>
+				<P>
+					This archive contains the current Trinary Operating System Logos. One in black-on-white, and
+					one in white-on-black.
+				</P>
+			</UL>
+		</P>
+
+		<A NAME="support">
+		<H2>Support</H2>
+
+		<A NAME="supportsupporting">
+		<H3>Supporting Trinary</H3>
+		<P>
+			The ultimate goal of the Trinary Operating System is to make it world's leading OS. To achieve this goal
+			we will need your support, however. So how do you support us? Well, it's very easy. Add a link to
+			<A HREF="http://www.trinary.tk">http://www.trinary.tk</A> on your homepage. If you want some more
+			decoration, you can use an <A HREF="#downloadlogos">image</A>. Once you done that, you can mail me at
+			<A HREF="mailto:rudykoot@trinary.tk">rudykoot@trinary.tk</A>. I will then add a link to your site on this
+			page.
+		</P>
+
+		<A NAME="supportwebsites">
+		<H3>Websites</H3>
+		<P>
+			<UL>
+				<LI><A HREF="http://www.groovyweb.uklinux.net/">Groovyweb</A></LI>
+				<LI><A HREF="http://aarongray.members.beeb.net/links">Aaron Gray</A></LI>
+				<LI><A HREF="http://cliki.tunes.org:8000/Operating%20Systems">Tunes.org</A></LI>
+			</UL>
+		</P>
+
+
+		<A NAME="supportwebrings">
+		<H3>Webrings</H3>
+		<P>
+			<UL>
+				<LI><A HREF="http://www.osdev.org/cgi-bin/projects.cgi">OSDev Ring</A> (<A HREF="http://www.osdev.org">OSDev.org</A>)</LI>
+				<LI><A HREF="http://ss.webring.com/navbar?f=l;y=trinary;u=10083191">Open Source WebRing</A> (<A HREF="http://www.webring.com">WebRing</A>)</LI>
+			</UL>
+		</P>
+
+		<A NAME="supporthosts">
+		<H3>Hosts</H3>
+		<P>
+			<UL>
+				<LI><A HREF="http://www.trinary.tk">http://www.trinary.tk</A> (<A HREF="http://www.dot.tk">DotTK</A>)</LI>
+				<LI><A HREF="http://www.angelfire.com/clone/trinary">http://www.angelfire.com/clone/trinary</A> (<A HREF="http://www.angelfire.com">Lycos Angelfire</A>)</LI>
+			</UL>
+		</P>
+
+		<A NAME="disclaimer">
+		<H3>Disclaimer</H3>
+		<P>
+			<CODE>
+				NO WARRANTY
+			</CODE>
+		</P>
+		<P>
+			<CODE>
+				BECAUSE THE PROGRAM IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY
+				FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW.  EXCEPT WHEN
+				OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
+				PROVIDE THE PROGRAM "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED
+				OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+				MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  THE ENTIRE RISK AS
+				TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU.  SHOULD THE
+				PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING,
+				REPAIR OR CORRECTION.
+			</CODE>
+		</P>
+		<P>
+			<CODE>
+				IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
+				WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR
+				REDISTRIBUTE THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES,
+				INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING
+				OUT OF THE USE OR INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED
+				TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY
+				YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER
+				PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
+				POSSIBILITY OF SUCH DAMAGES.
+			</CODE>
+		</P>
+
+	</BODY>
+</HTML>
